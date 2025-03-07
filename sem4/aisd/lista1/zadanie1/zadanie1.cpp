@@ -2,12 +2,13 @@
 #include <cstdlib>
 using namespace std;
 
+template<typename T>
 class Queue {
 private: 
 	struct Node {
-		int value;
+		T value;
 		Node* next;
-		Node(int value) {
+		Node(T value) {
 			this->value = value;
 			this->next = nullptr;
 		}
@@ -28,7 +29,7 @@ public:
 		return this->size;
 	}
 
-	void add(int value) {
+	void add(T value) {
 		Node* newNode = new Node(value);
 
 		if(this->size == 0) {
@@ -42,7 +43,7 @@ public:
 		}
 	}
 
-	int drop() {
+	T drop() {
 		if(this->size == 0) {
 			return -1;
 		} 
@@ -83,12 +84,13 @@ public:
 	}
 };
 
+template<typename T>
 class Stack {
 private:
 	struct Node {
-		int value;
+		T value;
 		Node* next;
-		Node(int value) {
+		Node(T value) {
 			this->value = value;
 		}
 	};
@@ -105,7 +107,7 @@ public:
 		this->top = newNode;
 	}
 
-	int pop() {
+	T pop() {
 		if(this->top == nullptr) {
 			return -1;
 		}
@@ -144,7 +146,7 @@ int main() {
 	int testCount = 50;
 
 	// queue
-	Queue queue;
+	Queue<int> queue;
 	cout << "queue test:" << endl;
 	
 	cout << "\tadding values to queue" << endl;
@@ -169,7 +171,7 @@ int main() {
 	}
 
 	// stack
-	Stack stack;
+	Stack<int> stack;
 	cout << endl << "stack test:" << endl;
 
 	cout << "\tadding values to stack" << endl;
