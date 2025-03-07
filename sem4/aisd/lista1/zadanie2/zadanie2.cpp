@@ -66,6 +66,21 @@ public:
 		}
 		cout << endl;
 	}
+
+	pair<bool, int> find(int value) {
+		pair<bool, int> p;
+		p.second = 0;
+		for(int i = 0; i < this->size; i++) {
+			p.second++;
+			if(this->node->value == value) {
+				p.first = true;
+				return p;
+			}
+			this->node = this->node->next;
+		}
+		p.first = false;
+		return p;
+	}
 };
 
 List insert(List l, int i) {
@@ -79,19 +94,41 @@ List merge(List l1, List l2) {
 }
 
 int main() {
-	List l1;
-	List l2;
-
-	for(int i = 0; i < 5; i++) {
-		l1 = insert(l1, rand() % 10 + 1);
-		l2 = insert(l2, rand() % 10 + 1);
+	// punkt 1
+	List l1, l2;
+	for(int i = 0; i < 10; i++) {
+		l1 = insert(l1, rand() % 100 + 10);
+		l2 = insert(l2, rand() % 100 + 10);
 	}
 
+	cout << "List 1: ";
 	l1.print();
+
+	cout << "List 2: ";
 	l2.print();
 
 	l1 = merge(l1, l2);
+	cout << "Merged list: ";
 	l1.print();
+	cout << endl;
+
+	// punkt 2
+	int t[10000];
+	List l;
+	for(int i = 0; i < 10000; i++) {
+		t[i] = rand() % 100000;
+		l = insert(l, t[i]);
+	}
+
+	int sum1 = 0; // suma wartosci z tablicy
+	int sum2 = 0; // suma losowych wartosci
+	for(int i = 0; i < 1000; i++) {
+		sum1 += l.find(t[rand() % 10000]).second;
+		sum2 += l.find(rand() % 100000).second;
+	}
+
+	cout << "Average number of comparisons when searching values from list: " << 1. * sum1 / 1000 << endl;
+	cout << "Average number of comparisons when searching values from range: " << 1. * sum2 / 1000 << endl;
 
 	return 0;
 }
