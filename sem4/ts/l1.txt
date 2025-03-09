@@ -1,0 +1,87 @@
+zadanie 1
+
+Ping:
+wrocław - www.wroclaw.pl: ttl=57 -> 7 hops
+poznań - www.poznan.pl: ttl=56 -> 8 hops
+warszawa - um.warszawa.pl: ttl=248 -> 8 hops
+czechy - prague.eu: ttl=118 -> 10 hops
+niemcy - berlin.de: ttl=244 -> 12 hops
+wielka brytania - london.gov.uk: ttl=57 -> 7 hops
+hiszpania - esmadrid.com: ttl=56 -> 8 hops
+egipt - www.experienceegypt.eg: ttl=57 -> 7 hops
+botswana - www.botswanatourism.co.bw: ttl=49 -> 15 hops
+rpa - gov.za: ttl=51 -> 13 hops
+arabia saudyjska - my.gov.sa: ttl=57 -> 7 hops
+indie - mcdonline.nic.in: ttl=240 -> 16 hops
+chiny - www.gov.cn: ttl=55 -> 9 hops
+japonia - japan.go.jp: ttl=248 -> 8 hops
+australia - www.australia.com: ttl=55 -> 9 hops
+nowa zelandia - www.govt.nz: ttl=53 -> 11 hops
+usa (wschód) - www.nyc.gov: ttl=55 -> 9 hops
+usa (zachód) - www.lacity.gov: ttl=52 -> 12 hops
+meksyk - www.gob.mx: ttl=52 -> 12 hops
+brazylia - www.visitbrazil.com: ttl=248 -> 8 hops
+argentyna - www.argentina.gob.ar: ttl=55 -> 9 hops
+tierra del fuego (argentyna - teren wysunięty najbardziej na południe) - tierradelfuego.org.ar: ttl=48 -> 16 hops
+kolumbia - www.cancilleria.gov.co: ttl=53 -> 11 hops
+wyspa chatam (nowa zelandia, prawie dokładnie druga strona globu) - chathamislands.co.nz: ttl=235 -> 21 hops
+mikronezja: gov.fm: ttl=38 -> 26 hops
+
+aby przetestować trasy w drugą stronę, możemy zmieniać wyjściowe ttl i sprawdzać, czy pakiet zdąży w tym czasie dotrzeć - w ten sposób zawężony wynik mówi ile skoków jest potrzebne. dla najbardziej oddalonego (względem skoków) serwera - gov.fm - strony rządowej Mikronezji, w jedną stronę je 26 skoków, a w drugą - 27. (ping -n 1 -i *ttl* gov.fm, dla ttl=26 - Request timed out, ttl=27 pakiet dotarł)
+
+dla tego samego serwera testowałem wpływ wielkości pakietu na czas wykonania żądania (ping -n 1 -l *size* gov.fm):
+size=1 -> 194ms
+size=16 -> 162ms
+size=32 -> 162ms
+size=64 -> 163ms
+size=128 -> 162ms
+size=512 -> 163ms
+size=1024 -> 165ms
+size=2048 -> Request timed out
+size=1472 (największy, który przeszedł) -> 164ms
+
+podobne pomiary dla serwera położonego blisko (geograficznie) - www.wroclaw.pl:
+size=1 -> 10ms
+size=16 -> 10ms
+size=32 -> 10ms
+size=64 -> 9ms
+size=128 -> 11ms
+size=512 -> 10ms
+size=1024 -> 10ms
+size=2048 -> Request timed out
+size=1472 (największy, który przeszedł) -> 10ms
+
+rozmiar pakietu nie ma zatem dużego wpływu na czas wykonywania żądania
+
+bez fragmentacji (flaga -f) dla gov.fm:
+size=1 -> 163ms
+size=16 -> 163ms
+size=32 -> 162ms
+size=64 -> 162ms
+size=128 -> 162ms
+size=512 -> 163ms
+size=1024 -> 162ms
+size=2048 -> Packet needs to be fragmented but DF set.
+size=1472 (największy, który przeszedł) -> 163ms
+
+dla www.wroclaw.pl:
+size=1 -> 9ms
+size=16 -> 10ms
+size=32 -> 10ms
+size=64 -> 10ms
+size=128 -> 10ms
+size=512 -> 11ms
+size=1024 -> 10ms
+size=2048 -> Packet needs to be fragmented but DF set.
+size=1472 (największy, który przeszedł) -> 11ms
+
+na podstawie tych pomiarów fragmentacja nie ma wpływu na czas wykonania żądania
+
+najdłuższa ścieżka, jaką udało mi się znaleźć to strona rządowa Mikronezji - gov.fm, o długości 26 skoków
+
+serwery strony spotify.com są postawione na serwerach google cloud platform, nie sprawia to jednak, że ilość skoków jest o wiele większa: ttl=119 -> 9 hops
+
+Traceroute: (tracert)
+program analizuje trasę do wybranego serwera wypisując wszystkie serwery, przez które przechodzi w formacie:
+numer przeskoku - 3 czasy odpowiedzi (RTT - round trip time) - adres ip lub domena
+
