@@ -1,87 +1,172 @@
-zadanie 1
+ping:
+połączenie przez kabel ethernet na systemie windows:
 
-Ping:
-wrocław - www.wroclaw.pl: ttl=57 -> 7 hops
-poznań - www.poznan.pl: ttl=56 -> 8 hops
-warszawa - um.warszawa.pl: ttl=248 -> 8 hops
-czechy - prague.eu: ttl=118 -> 10 hops
-niemcy - berlin.de: ttl=244 -> 12 hops
-wielka brytania - london.gov.uk: ttl=57 -> 7 hops
-hiszpania - esmadrid.com: ttl=56 -> 8 hops
-egipt - www.experienceegypt.eg: ttl=57 -> 7 hops
-botswana - www.botswanatourism.co.bw: ttl=49 -> 15 hops
-rpa - gov.za: ttl=51 -> 13 hops
-arabia saudyjska - my.gov.sa: ttl=57 -> 7 hops
-indie - mcdonline.nic.in: ttl=240 -> 16 hops
-chiny - www.gov.cn: ttl=55 -> 9 hops
-japonia - japan.go.jp: ttl=248 -> 8 hops
-australia - www.australia.com: ttl=55 -> 9 hops
-nowa zelandia - www.govt.nz: ttl=53 -> 11 hops
-usa (wschód) - www.nyc.gov: ttl=55 -> 9 hops
-usa (zachód) - www.lacity.gov: ttl=52 -> 12 hops
-meksyk - www.gob.mx: ttl=52 -> 12 hops
-brazylia - www.visitbrazil.com: ttl=248 -> 8 hops
-argentyna - www.argentina.gob.ar: ttl=55 -> 9 hops
-tierra del fuego (argentyna - teren wysunięty najbardziej na południe) - tierradelfuego.org.ar: ttl=48 -> 16 hops
-kolumbia - www.cancilleria.gov.co: ttl=53 -> 11 hops
-wyspa chatam (nowa zelandia, prawie dokładnie druga strona globu) - chathamislands.co.nz: ttl=235 -> 21 hops
-mikronezja: gov.fm: ttl=38 -> 26 hops
+PWR - cs.pwr.edu.pl: Request timed out.
+Wrocław - www.wroclaw.pl: ttl=57 -> 7 skoków, czas=10ms
+Poznań - www.poznan.pl: ttl=56 -> 8 skoków, czas=24ms
+Warszawa - um.warszawa.pl: ttl=248 -> 8 skoków, czas=14ms
+Niemcy - www.berlin.de: ttl=244 -> 12 skoków, czas=29ms
+Wielka Brytania - www.london.gov.uk: ttl=57 -> 7 skoków, czas=10ms
+Egipt - www.experienceegypt.eg: tll=57 -> 7 skoków, czas=10ms
+Botswana - www.botswanatourism.co.bw: ttl=49 -> 15 skoków, czas=155ms
+Indie - mcdonline.nic.in: ttl=236 -> 20 skoków, czas=202ms
+Chiny - www.gov.cn: ttl=53 -> 11 skoków, czas=26ms
+Japonia - japan.go.jp: ttl=248 -> 8 skoków, czas=15ms
+Australia - www.australia.com: ttl=58 -> 6 skoków, czas=25ms
+Wyspy Chathama (k. Nowej Zelandii, geograficznie jeden z najdalej oddalonych lądów od Wrocławia): ttl=235 -> 21 skoków, czas=300ms
+Mikronezja - gov.fm: ttl=38 -> 26 skoków, czas=163ms
+Stany Zjednoczone (wschód) - www.nyc.gov: ttl=55 -> 9 skoków, czas=25ms
+Stany Zjednoczone (zachód) - www.lacity.gov: ttl=52 -> 12 skoków, czas=23ms
+Argentyna - www.argentina.gob.ar: ttl=55 -> 9 skoków, czas=25ms
 
-aby przetestować trasy w drugą stronę, możemy zmieniać wyjściowe ttl i sprawdzać, czy pakiet zdąży w tym czasie dotrzeć - w ten sposób zawężony wynik mówi ile skoków jest potrzebne. dla najbardziej oddalonego (względem skoków) serwera - gov.fm - strony rządowej Mikronezji, w jedną stronę je 26 skoków, a w drugą - 27. (ping -n 1 -i *ttl* gov.fm, dla ttl=26 - Request timed out, ttl=27 pakiet dotarł)
+pomiary czasu dla www.wroclaw.pl (rozmiar: czas z fragmentacją, czas bez fragmentacji)
+1: 10, 10
+32: 9, 10
+128: 12, 10
+1024: 11, 10
+2048: Request timed out, Packet needs to be fragmented but DF set.
+1472 (największy rozmiar, który przeszedł): 10, 10
 
-dla tego samego serwera testowałem wpływ wielkości pakietu na czas wykonania żądania (ping -n 1 -l *size* gov.fm):
-size=1 -> 194ms
-size=16 -> 162ms
-size=32 -> 162ms
-size=64 -> 163ms
-size=128 -> 162ms
-size=512 -> 163ms
-size=1024 -> 165ms
-size=2048 -> Request timed out
-size=1472 (największy, który przeszedł) -> 164ms
+pomiary czasu dla gov.fm (najdalej oddalony skokami):
+1: 163, 162
+32: 163, 162
+128: 162, 162
+1024: 163, 163
+2048: Request timed out, Packet needs to be fragmented but DF set.
+1472 (największy rozmiar, który przeszedł): 163, 163
 
-podobne pomiary dla serwera położonego blisko (geograficznie) - www.wroclaw.pl:
-size=1 -> 10ms
-size=16 -> 10ms
-size=32 -> 10ms
-size=64 -> 9ms
-size=128 -> 11ms
-size=512 -> 10ms
-size=1024 -> 10ms
-size=2048 -> Request timed out
-size=1472 (największy, który przeszedł) -> 10ms
+pomiar drogi do serwera (wcześniejsze pomiary oznaczały drogę z serwera do mnie; ustawianie ttl i sprawdzanie kiedy pakiet nie dotrze do celu):
+www.wroclaw.pl - 8 skoków
+gov.fm - 27 skoków
 
-rozmiar pakietu nie ma zatem dużego wpływu na czas wykonywania żądania
 
-bez fragmentacji (flaga -f) dla gov.fm:
-size=1 -> 163ms
-size=16 -> 163ms
-size=32 -> 162ms
-size=64 -> 162ms
-size=128 -> 162ms
-size=512 -> 163ms
-size=1024 -> 162ms
-size=2048 -> Packet needs to be fragmented but DF set.
-size=1472 (największy, który przeszedł) -> 163ms
+połączenie przez wifi na systemie windows:
 
-dla www.wroclaw.pl:
-size=1 -> 9ms
-size=16 -> 10ms
-size=32 -> 10ms
-size=64 -> 10ms
-size=128 -> 10ms
-size=512 -> 11ms
-size=1024 -> 10ms
-size=2048 -> Packet needs to be fragmented but DF set.
-size=1472 (największy, który przeszedł) -> 11ms
+PWR - cs.pwr.edu.pl: Request timed out.
+Wrocław - www.wroclaw.pl: ttl=57 -> 7 skoków, czas=11ms
+Poznań - www.poznan.pl: ttl=56 -> 8 skoków, czas=25ms
+Warszawa - um.warszawa.pl: ttl=248 -> 8 skoków, czas=18ms
+Niemcy - www.berlin.de: ttl=244 -> 12 skoków, czas=31ms
+Wielka Brytania - www.london.gov.uk: ttl=57 -> 7 skoków, czas=11ms
+Egipt - www.experienceegypt.eg: tll=57 -> 7 skoków, czas=11ms
+Botswana - www.botswanatourism.co.bw: ttl=49 -> 15 skoków, czas=158ms
+Indie - mcdonline.nic.in: ttl=236 -> 20 skoków, czas=246ms
+Chiny - www.gov.cn: ttl=53 -> 11 skoków, czas=26ms
+Japonia - japan.go.jp: ttl=249 -> 7 skoków, czas=16ms
+Australia - www.australia.com: ttl=58 -> 6 skoków, czas=32ms
+Wyspy Chathama (k. Nowej Zelandii, geograficznie jeden z najdalej oddalonych lądów od Wrocławia) - chathamislands.co.nz: ttl=235 -> 21 skoków, czas=315ms
+Mikronezja - gov.fm: ttl=38 -> 26 skoków, czas=167ms
+Stany Zjednoczone (wschód) - www.nyc.gov: ttl=55 -> 9 skoków, czas=33ms
+Stany Zjednoczone (zachód) - www.lacity.gov: ttl=52 -> 12 skoków, czas=27ms
+Argentyna - www.argentina.gob.ar: ttl=55 -> 9 skoków, czas=27ms
 
-na podstawie tych pomiarów fragmentacja nie ma wpływu na czas wykonania żądania
+pomiary czasu dla www.wroclaw.pl (rozmiar: czas z fragmentacją, czas bez fragmentacji)
+1: 11, 11
+32: 10, 10
+128: 11, 11
+1024: 11, 17
+2048: Request timed out, Packet needs to be fragmented but DF set.
+1472 (największy rozmiar, który przeszedł): 13, 14
 
-najdłuższa ścieżka, jaką udało mi się znaleźć to strona rządowa Mikronezji - gov.fm, o długości 26 skoków
+pomiary czasu dla gov.fm (najdalej oddalony skokami):
+1: 185, 164
+32: 165, 164
+128: 163, 171
+1024: 167, 175
+2048: Request timed out, Packet needs to be fragmented but DF set.
+1472 (największy rozmiar, który przeszedł): 187, 178
 
-serwery strony spotify.com są postawione na serwerach google cloud platform, nie sprawia to jednak, że ilość skoków jest o wiele większa: ttl=119 -> 9 hops
+pomiar drogi do serwera (wcześniejsze pomiary oznaczały drogę z serwera do mnie; ustawianie ttl i sprawdzanie kiedy pakiet nie dotrze do celu):
+www.wroclaw.pl - 8 skoków
+gov.fm - 27 skoków
 
-Traceroute: (tracert)
-program analizuje trasę do wybranego serwera wypisując wszystkie serwery, przez które przechodzi w formacie:
-numer przeskoku - 3 czasy odpowiedzi (RTT - round trip time) - adres ip lub domena
 
+połączenie przez wifi na systemie linux:
+
+PWR - cs.pwr.edu.pl: packet lost
+Wrocław - www.wroclaw.pl: ttl=56 -> 8 skoków, czas=12ms
+Poznań - www.poznan.pl: ttl=55 -> 9 skoków, czas=25ms
+Warszawa - um.warszawa.pl: ttl=247 -> 9 skoków, czas=22ms
+Niemcy - www.berlin.de: ttl=243 -> 13 skoków, czas=33ms
+Wielka Brytania - www.london.gov.uk: ttl=56 -> 8 skoków, czas=13ms
+Egipt - www.experienceegypt.eg: tll=56 -> 8 skoków, czas=12ms
+Botswana - www.botswanatourism.co.bw: ttl=48 -> 16 skoków, czas=189ms
+Indie - mcdonline.nic.in: ttl=235 -> 21 skoków, czas=285ms
+Chiny - www.gov.cn: ttl=52 -> 12 skoków, czas=26ms
+Japonia - japan.go.jp: ttl=247 -> 9 skoków, czas=21ms
+Australia - www.australia.com: ttl=49 -> 15 skoków, czas=26ms
+Wyspy Chathama (k. Nowej Zelandii, geograficznie jeden z najdalej oddalonych lądów od Wrocławia) - chathamislands.co.nz: ttl=234 -> 22 skoków, czas=409ms
+Mikronezja - gov.fm: ttl=37 -> 27 skoków, czas=263ms
+Stany Zjednoczone (wschód) - www.nyc.gov: ttl=49 -> 15 skoków, czas=27ms
+Stany Zjednoczone (zachód) - www.lacity.gov: ttl=51 -> 13 skoków, czas=27ms
+Argentyna - www.argentina.gob.ar: ttl=54 -> 10 skoków, czas=42ms
+
+pomiary czasu dla www.wroclaw.pl (rozmiar: czas z fragmentacją, czas bez fragmentacji)
+1: 0, 0
+32: 14, 12
+128: 15, 14
+1024: 19, 14
+2048: packet lost, local error: message too long, mtu=1500
+1472 (największy rozmiar, który przeszedł): 14, 19
+
+pomiary czasu dla gov.fm (najdalej oddalony skokami):
+1: 0, 0
+32: 259, 347
+128: 210, 205
+1024: 186, 260
+2048: packet lost, local error: message too long, mtu=1500
+1472 (największy rozmiar, który przeszedł): 174, 275
+
+pomiar drogi do serwera (wcześniejsze pomiary oznaczały drogę z serwera do mnie; ustawianie ttl i sprawdzanie kiedy pakiet nie dotrze do celu):
+www.wroclaw.pl - 9 skoków
+gov.fm - 28 skoków
+
+
+połączenie przez vpn studencki na systemie linux:
+
+PWR - cs.pwr.edu.pl: packet lost
+Wrocław - www.wroclaw.pl: ttl=53 -> 11 skoków, czas=12ms
+Poznań - www.poznan.pl: ttl=53 -> 11 skoków, czas=13
+Warszawa - um.warszawa.pl: ttl=244 -> 12 skoków, czas=14ms
+Niemcy - www.berlin.de: ttl=242 -> 14 skoków, czas=42ms
+Wielka Brytania - www.london.gov.uk: ttl=53 -> 11 skoków, czas=73ms
+Egipt - www.experienceegypt.eg: tll=53 -> 11 skoków, czas=14ms
+Botswana - www.botswanatourism.co.bw: ttl=49 -> 15 skoków, czas=194ms
+Indie - mcdonline.nic.in: ttl=237 -> 19 skoków, czas=301ms
+Chiny - www.gov.cn: ttl=54 -> 10 skoków, czas=22ms
+Japonia - japan.go.jp: ttl=244 -> 12 skoków, czas=19ms
+Australia - www.australia.com: ttl=50 -> 14 skoków, czas=20ms
+Wyspy Chathama (k. Nowej Zelandii, geograficznie jeden z najdalej oddalonych lądów od Wrocławia) - chathamislands.co.nz: ttl=43 -> 21 skoków, czas=409ms
+Mikronezja - gov.fm: ttl=44 -> 20 skoków, czas=208ms
+Stany Zjednoczone (wschód) - www.nyc.gov: ttl=50 -> 14 skoków, czas=18ms
+Stany Zjednoczone (zachód) - www.lacity.gov: ttl=50 -> 14 skoków, czas=19ms
+Argentyna - www.argentina.gob.ar: ttl=51 -> 13 skoków, czas=15ms
+
+pomiary czasu dla www.wroclaw.pl (rozmiar: czas z fragmentacją, czas bez fragmentacji)
+1: 0, 0
+32: 15, 15
+128: 14, 14
+1024: packet lost, packet lost
+996 (największy rozmiar, który przeszedł): 14, 18
+
+pomiary czasu dla chathamislands.co.nz (najdalej oddalony skokami):
+1: 0, 0
+32: 355, 376
+128: 405, 345
+1024: packet lost, packet lost
+996 (największy rozmiar, który przeszedł): 381, 365
+
+pomiar drogi do serwera (wcześniejsze pomiary oznaczały drogę z serwera do mnie; ustawianie ttl i sprawdzanie kiedy pakiet nie dotrze do celu):
+www.wroclaw.pl - 13 skoków
+chathamislands.co.nz - 30 skoków
+
+
+traceroute:
+wypisuje całą trasę do serwera (wszstkie serwery, przez któe przechodzi)
+*wyjaśnienie co znajduje się w wyniku na linuxie*
+*wyjaśnienie co znajduje się w wyniku na windowsie*
+
+wireshark:
+*krótki opis co robi i jakie rzeczy można w nim znaleźć*
+będąc połączony przez tą samą sieć z innym komputerem mogliśmy z kolegą wysłać do siebie pingi (poprzez wysłanie na adres ip) i je odbierać (filtr icmp)
+przez pinga można zmieniać rozmiar pakietu, ttl lub ustawić wiadomość (tylko na linuxie), a przez wiresharka można było takie wiadomości odczytywać
