@@ -13,7 +13,7 @@ Indie - mcdonline.nic.in: ttl=236 -> 20 skoków, czas=202ms
 Chiny - www.gov.cn: ttl=53 -> 11 skoków, czas=26ms
 Japonia - japan.go.jp: ttl=248 -> 8 skoków, czas=15ms
 Australia - www.australia.com: ttl=58 -> 6 skoków, czas=25ms
-Wyspy Chathama (k. Nowej Zelandii, geograficznie jeden z najdalej oddalonych lądów od Wrocławia): ttl=235 -> 21 skoków, czas=300ms
+Wyspy Chathama (k. Nowej Zelandii, geograficznie jeden z najdalej oddalonych lądów od Wrocławia) chathamislands.co.nz: ttl=235 -> 21 skoków, czas=300ms
 Mikronezja - gov.fm: ttl=38 -> 26 skoków, czas=163ms
 Stany Zjednoczone (wschód) - www.nyc.gov: ttl=55 -> 9 skoków, czas=25ms
 Stany Zjednoczone (zachód) - www.lacity.gov: ttl=52 -> 12 skoków, czas=23ms
