@@ -109,6 +109,15 @@ footer {
     gap: 10px;
 }
 
+.section-title {
+    color: #444444;
+    font-family: Verdana;
+    font-size: 25px;
+    text-align: center;
+
+    margin: 0px;
+}
+
 .component {
     display: flex;
     flex-direction: column;
@@ -131,15 +140,10 @@ footer {
 
 .component-title {
     font-size: 20px;
-    cursor: pointer;
     width: 100%;
 }
 
 .component-content {
-    display: none;
-}
-
-.component.active .component-content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -162,6 +166,31 @@ footer {
     align-content: center;
 }
 
+hr {
+    background-color: #444444;
+    width: 95%;
+}
+
+.code-box {
+    background-color: #555555;
+    border-color: #444444;
+    border-width: 10px;
+    border-radius: 10px;
+    color: #ffffff;
+
+    width: 90%;
+    padding: 10px;
+
+    font-family: 'Courier New';
+    font-size: 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.comment {
+    color: #00bb00;
+}
+
 /* średnie ekrany */
 @media (min-width: 750px) {
     /* header */
@@ -181,8 +210,8 @@ footer {
         width: 30px;
     }
 
-    /* projekty */
-    .component.active .component-content {
+    /* część główna */
+    .component-content {
         flex-direction: row;
         vertical-align: middle;
         justify-content: space-between;
@@ -201,7 +230,10 @@ footer {
         font-size: 20px;
     }
 
-    /* projekty */
+    /* część główna */
+    .section-title {
+        font-size: 30px;
+    }
     .component-title {
         font-size: 25px;
     }

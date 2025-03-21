@@ -37,6 +37,8 @@
 
 		<main>
 			<section class="main-page">
+				<h1 class="section-title">Moje projekty</h1>
+
 				<div class="component">
 					<h2 class="component-title">Trylma - chińskie warcaby</h2>
 					<div class="component-content">
@@ -75,23 +77,56 @@
 						</div>
 					</div>
 				</div>
+				
+				<hr>
+
+				<h1 class="section-title">Najlepsze fragmenty kodu</h1>
+
+				<div class="code-box">
+<pre><span class="comment">// funkcja sprawdzająca czy liczba jest pierwsza - 95% skuteczności dla liczb mniejszych od 1000000</span>
+bool isPrime(int x) {
+    return false;
+}</pre>
+				</div>
+
+				<div class="code-box">
+<pre><span class="comment">-- tabela użytkowników</span>
+CREATE TABLE users (
+    user_id INT PRIMARY KEY,
+    login VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+
+    UNIQUE(password)
+);</pre>
+				</div>
+
+				<div class="code-box">
+<pre><span class="comment">// sortowanie tablicy</span>
+public void sort(int[] a) {
+    Thread[] threads = new Thread[a.length];
+
+    for (int i = 0; i < a.length; i++) {
+        final int num = a[i];
+        threads[i] = new Thread(() -> {
+            try {
+                Thread.sleep(num);
+                System.out.println(num + " ");
+            } catch (Exception e) {}
+        });
+        threads[i].start();
+    }
+
+    for (Thread t : threads) {
+        try {
+            t.join();
+        } catch(Exception e) {}
+    }
+
+    System.out.println();
+}</pre>
+				</div>
 			</section>
-		</main>
-		  
-		<script>
-			const components = document.querySelectorAll('.main-page .component');
-			
-			components.forEach(component => {
-				component.querySelector('h2').addEventListener('click', () => {
-					const isActive = component.classList.contains('active');
-					components.forEach(i => i.classList.remove('active'));
-					if (!isActive) {
-						component.classList.add('active');
-					}
-				});
-			});
-		</script>
-		  
+		</main>		  
 		
 		<footer>
 			<p>&copy; 2025 Błażej Pawluk</p>
