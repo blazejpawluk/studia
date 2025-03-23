@@ -14,23 +14,25 @@
 					<li><a href="home.html" class="active">Strona główna</a></li>
 					<li><a href="hobbies.html">Zainteresowania</a></li>
 					<li><a href="projects.html">Projekty</a></li>
-					<div class="social-box">
-						<li>
-							<a href="https://www.facebook.com/profile.php?id=100023762712516&locale=pl_PL" target="_blank" class="social">
-								<img src="images/facebook-icon.svg" alt="Facebook">
-							</a>
-						</li>
-						<li>
-							<a href="https://www.instagram.com/blazej.16/" target="_blank" class="social">
-								<img src="images/instagram-icon.svg" alt="Instagram">
-							</a>
-						</li>
-						<li>
-							<a href="https://www.linkedin.com/in/błażej-pawluk-67831132a/" target="_blank" class="social">
-								<img src="images/linkedin-icon.svg" alt="LinkedIn">
-							</a>
-						</li>
-					</div>
+					<li>
+						<ul class="social-box">
+							<li>
+								<a href="https://www.facebook.com/profile.php?id=100023762712516&locale=pl_PL" target="_blank" class="social">
+									<img src="images/facebook-icon.svg" alt="Facebook">
+								</a>
+							</li>
+							<li>
+								<a href="https://www.instagram.com/blazej.16/" target="_blank" class="social">
+									<img src="images/instagram-icon.svg" alt="Instagram">
+								</a>
+							</li>
+							<li>
+								<a href="https://www.linkedin.com/in/błażej-pawluk-67831132a/" target="_blank" class="social">
+									<img src="images/linkedin-icon.svg" alt="LinkedIn">
+								</a>
+							</li>
+						</ul>
+					</li>
 				</ul>
 			</nav>
 		</header>
@@ -40,7 +42,7 @@
 				<div class="component">
 					<h2 class="component-title">O mnie</h2>
 					<div class="component-content">
-						<img src="images/photo.png" class="component-image">
+						<img src="images/photo.png" alt="Moje zdjęcie" class="component-image">
 						<div class="component-desc">
 							<p class="component-text">Błażej Pawluk</p>
 							<p class="component-text">Student drugiego roku studiów na kierunku Informatyka Algorytmiczna na Politechnika Wrocławska (2023-obecnie)</p>
@@ -63,20 +65,6 @@
 				</div>
 			</section>
 		</main>
-
-		<script>
-			const components = document.querySelectorAll('.main-page .component');
-			
-			components.forEach(component => {
-				component.querySelector('h2').addEventListener('click', () => {
-					const isActive = component.classList.contains('active');
-					components.forEach(i => i.classList.remove('active'));
-					if (!isActive) {
-						component.classList.add('active');
-					}
-				});
-			});
-		</script>
 
 		<footer>
 			<p>&copy; 2025 Błażej Pawluk</p>

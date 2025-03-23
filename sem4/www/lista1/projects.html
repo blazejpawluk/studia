@@ -11,26 +11,28 @@
 			<a href="home.html" class="site-title">Błażej Pawluk</a>
 			<nav>
 				<ul class="nav-menu">
-					<li><a href="home.html">Strona główna</a></li>
+					<li><a href="home.html" class="active">Strona główna</a></li>
 					<li><a href="hobbies.html">Zainteresowania</a></li>
-					<li><a href="projects.html" class="active">Projekty</a></li>
-					<div class="social-box">
-						<li>
-							<a href="https://www.facebook.com/profile.php?id=100023762712516&locale=pl_PL" target="_blank" class="social">
-								<img src="images/facebook-icon.svg" alt="Facebook">
-							</a>
-						</li>
-						<li>
-							<a href="https://www.instagram.com/blazej.16/" target="_blank" class="social">
-								<img src="images/instagram-icon.svg" alt="Instagram">
-							</a>
-						</li>
-						<li>
-							<a href="https://www.linkedin.com/in/błażej-pawluk-67831132a/" target="_blank" class="social">
-								<img src="images/linkedin-icon.svg" alt="LinkedIn">
-							</a>
-						</li>
-					</div>
+					<li><a href="projects.html">Projekty</a></li>
+					<li>
+						<ul class="social-box">
+							<li>
+								<a href="https://www.facebook.com/profile.php?id=100023762712516&locale=pl_PL" target="_blank" class="social">
+									<img src="images/facebook-icon.svg" alt="Facebook">
+								</a>
+							</li>
+							<li>
+								<a href="https://www.instagram.com/blazej.16/" target="_blank" class="social">
+									<img src="images/instagram-icon.svg" alt="Instagram">
+								</a>
+							</li>
+							<li>
+								<a href="https://www.linkedin.com/in/błażej-pawluk-67831132a/" target="_blank" class="social">
+									<img src="images/linkedin-icon.svg" alt="LinkedIn">
+								</a>
+							</li>
+						</ul>
+					</li>
 				</ul>
 			</nav>
 		</header>
@@ -42,7 +44,7 @@
 				<div class="component">
 					<h2 class="component-title">Trylma - chińskie warcaby</h2>
 					<div class="component-content">
-						<img src="images/trylma.png" class="component-image"></img>
+						<img src="images/trylma.png" alt="Trylma" class="component-image">
 						<div class="component-desc">
 							<p class="component-text">Komputerowa implementacja chińskiej wersji popularnych warcabów.</p>
 							<p class="component-text">Zagrać można w 2 wersje gry - klasyczna i order out of chaos, w 2, 3, 4 lub 6 osób, a także można sprawdzić swoje umiejętności przeciwko komputerowi.</p>
@@ -56,7 +58,7 @@
 				<div class="component">
 					<h2 class="component-title">SzopDB - symulacja sklepu internetowego</h2>
 					<div class="component-content">
-						<img src="images/szopdb.png" class="component-image"></img>
+						<img src="images/szopdb.png" alt="SzopDB" class="component-image">
 						<div class="component-desc">
 							<p class="component-text">Aplikacja będąca symulacją odzieżowego sklepu internetowego.</p>
 							<p class="component-text">Aplikacja jest przeznaczona zarówno dla klientów sklepu, jak i sprzedawców i magazynierów. Klienci mogą przeglądać i zamawiać produkty. Mają również możliwość przeglądania swoich wcześniejszych zamówień. Sprzedawcy zajmują się dodawaniem i edycją produktów, natomiast magazynierzy poza obsługą dostaw do magazynu, kompletują również zamówienia klientów oraz rozpatrują zwroty.</p>
@@ -69,7 +71,7 @@
 				<div class="component">
 					<h2 class="component-title">Aplikacja do raportów</h2>
 					<div class="component-content">
-						<img src="images/raport.png" class="component-image"></img>
+						<img src="images/raport.png" alt="Raport" class="component-image">
 						<div class="component-desc">
 							<p class="component-text">Aplikacja dla lokalnej piekarni, usprawniająca proces kontroli wydawanych produktów.</p>
 							<p class="component-text">W aplikacji można tworzyć raporty dotyczące wydawanego pieczywa, generować podsumowania raportów filtrowane przez datę i/lub produkt do plików Excela. Aplikacja pozwala również na zarządzanie bazą danych pracowników czy produktów.</p>
@@ -105,7 +107,7 @@ CREATE TABLE users (
 public void sort(int[] a) {
     Thread[] threads = new Thread[a.length];
 
-    for (int i = 0; i < a.length; i++) {
+    for (int i = 0; i &lt; a.length; i++) {
         final int num = a[i];
         threads[i] = new Thread(() -> {
             try {
