@@ -1,0 +1,77 @@
+#include <iostream>
+using namespace std;
+
+int n;
+int comps;
+int swaps;
+
+template<typename T>
+bool isGreater(T x, T y) {
+	comps++;
+	return x > y;
+}
+
+template<typename T>
+void swap(T* A, int i, int j) {
+	swaps++;
+	swap(A[i], A[j]);
+}
+
+template<typename T>
+void printTab(T* A, int n) {
+	cout << "[";
+	if (n > 0) {	
+		for (int i = 0; i < n - 1; i++) {
+			cout << (A[i] < 10 ? "0" : "") << A[i] << ", ";
+		}
+		cout << (A[n - 1] < 10 ? "0" : "") << A[n - 1];
+	}
+	cout << "]" << endl;
+}
+
+template<typename T>
+void insertSort(T* A, int n) {
+	for (int j = 1; j < n; j++) {
+		T key = A[j];
+		int i = j-1;
+		while (i >= 0 && isGreater(A[i], key)) {
+			swap(A, i+1, i);
+			i--;
+		}
+
+		printTab(A, n);
+	}
+}
+
+int main() {
+	cout << "length: ";
+	cin >> n;
+
+	int A[n], startingArray[n];
+	cout << "array (" << n << " integers, for better display max. 99): ";
+	for (int i = 0; i < n; i++) {
+		cin >> A[i];
+		startingArray[i] = A[i];
+	}
+
+	if(n < 40) {
+		cout << "starting array: ";
+		printTab(A, n);
+	}
+
+	cout << "sorting: " << endl;
+	insertSort(A, n);
+
+	if(n < 40) {
+		cout << "starting array: ";
+		printTab(startingArray, n);
+		
+		cout << "sorted array: ";
+		printTab(A, n);
+	}
+
+	cout << "comparisons: " << comps << endl;
+	cout << "swaps: " << swaps << endl;
+
+	return 0;
+}
