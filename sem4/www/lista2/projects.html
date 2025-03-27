@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Błażej Pawluk: Projekty</title>
+		<!-- <link rel="stylesheet" href="styles/styles.css"> -->
+		<link rel="stylesheet" href="styles/styles.min.css">
+	</head>
+
+	<body>
+		<header>
+			<a href="home.html">Błażej Pawluk</a>
+			<nav>
+				<ul>
+					<li><a href="home.html">Strona główna</a></li>
+					<li><a href="hobbies.html">Zainteresowania</a></li>
+					<li><a href="projects.html" class="active">Projekty</a></li>
+					<li>
+						<ul>
+							<li>
+								<a href="https://www.facebook.com/profile.php?id=100023762712516&locale=pl_PL" target="_blank">
+									<img src="images/facebook-icon.svg" alt="Facebook">
+								</a>
+							</li>
+							<li>
+								<a href="https://www.instagram.com/blazej.16/" target="_blank">
+									<img src="images/instagram-icon.svg" alt="Instagram">
+								</a>
+							</li>
+							<li>
+								<a href="https://www.linkedin.com/in/błażej-pawluk-67831132a/" target="_blank">
+									<img src="images/linkedin-icon.svg" alt="LinkedIn">
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<main>
+			<article>
+				<h1>Moje projekty</h1>
+
+				<section>
+					<h2>Trylma - chińskie warcaby</h2>
+					<div class="section-content">
+						<img src="images/trylma.png" alt="Trylma">
+						<div class="description">
+							<p>Komputerowa implementacja chińskiej wersji popularnych warcabów.</p>
+							<p>Zagrać można w 2 wersje gry - klasyczna i order out of chaos, w 2, 3, 4 lub 6 osób, a także można sprawdzić swoje umiejętności przeciwko komputerowi.</p>
+							<p>Aplikacja stworzona w formacie klient-serwer. Na kilku serwerach rozgrywane są różne gry. Gracz z poziomu aplikacji może dołączyć do wybranego pokoju i grać w Trylmę.</p>
+							<p>Możliwość odtwarzania poprzednich gier i analizowania swoich zagrań.</p>
+							<p>Aplikacja pisana w języku Java, korzystając z JavyFX do interfejsu graficznego graczy oraz Springa do przechowywania poprzednich gier od otworzenia.</p>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>SzopDB - symulacja sklepu internetowego</h2>
+					<div class="section-content">
+						<img src="images/szopdb.png" alt="SzopDB">
+						<div class="description">
+							<p>Aplikacja będąca symulacją odzieżowego sklepu internetowego.</p>
+							<p>Aplikacja jest przeznaczona zarówno dla klientów sklepu, jak i sprzedawców i magazynierów. Klienci mogą przeglądać i zamawiać produkty. Mają również możliwość przeglądania swoich wcześniejszych zamówień. Sprzedawcy zajmują się dodawaniem i edycją produktów, natomiast magazynierzy poza obsługą dostaw do magazynu, kompletują również zamówienia klientów oraz rozpatrują zwroty.</p>
+							<p>Większość operacji wykonywana jest poprzez procedury w bazie danych, co zapobiega SQL Injection.</p>
+							<p>Aplikacja pisana w jęzku Java, korzystając z JavyFX do interfejsu graficznego użytkowników oraz Springa do połączenia z bazą danych, postawionej na serwerze MariaDB.</p>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>Aplikacja do raportów</h2>
+					<div class="section-content">
+						<img src="images/raport.png" alt="Raport">
+						<div class="description">
+							<p>Aplikacja dla lokalnej piekarni, usprawniająca proces kontroli wydawanych produktów.</p>
+							<p>W aplikacji można tworzyć raporty dotyczące wydawanego pieczywa, generować podsumowania raportów filtrowane przez datę i/lub produkt do plików Excela. Aplikacja pozwala również na zarządzanie bazą danych pracowników czy produktów.</p>
+							<p>Aplikacja pisana w języku Java, korzystając z JavyFX do interfejsu graficznego użytkowników oraz Springa do połączenia z bazą danych.</p>
+						</div>
+					</div>
+				</section>
+			</article>
+
+			<hr>
+
+			<article>
+				<h1>Najlepsze fragmenty kodu</h1>
+
+				<div class="code-box">
+<pre><span>// funkcja sprawdzająca czy liczba jest pierwsza - 95% skuteczności dla liczb mniejszych od 1000000</span>
+bool isPrime(int x) {
+    return false;
+}</pre>
+				</div>
+
+				<div class="code-box">
+<pre><span>-- tabela użytkowników</span>
+CREATE TABLE users (
+    user_id INT PRIMARY KEY,
+    login VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+
+    UNIQUE(password)
+);</pre>
+				</div>
+
+				<div class="code-box">
+<pre><span>// sortowanie tablicy</span>
+public void sort(int[] a) {
+    Thread[] threads = new Thread[a.length];
+
+    for (int i = 0; i &lt; a.length; i++) {
+        final int num = a[i];
+        threads[i] = new Thread(() -> {
+            try {
+                Thread.sleep(num);
+                System.out.println(num + " ");
+            } catch (Exception e) {}
+        });
+        threads[i].start();
+    }
+
+    for (Thread t : threads) {
+        try {
+            t.join();
+        } catch(Exception e) {}
+    }
+
+    System.out.println();
+}</pre>
+				</div>
+			</article>
+		</main>		  
+		
+		<footer>
+			<p>&copy; 2025 Błażej Pawluk</p>
+		</footer>
+	</body>
+</html>

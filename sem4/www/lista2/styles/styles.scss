@@ -1,0 +1,263 @@
+$primary-color: #444444;
+$section-color: #cccccc;
+$code-box-color: #555555;
+$highlight-color: #777777;
+
+$text-color: #444444;
+$header-text-color: #ffffff;
+$highlight-text-color: #ffffff;
+$code-color: #ffffff;
+
+$font: Verdana;
+
+@mixin centered-flex($direction) {
+	display: flex;
+	flex-direction: $direction;
+	align-items: center;
+}
+
+@mixin set-font($size) {
+	font-family: $font;
+	font-size: $size;
+}
+
+html {
+	margin: 0;
+
+	body {
+		margin: 0;
+
+		&::selection {
+			background-color: $highlight-color;
+			color: $highlight-text-color;
+		}
+
+		header {
+			@include centered-flex(column);
+			gap: 10px;
+			padding: 10px;
+
+			border-radius: 0 0 10px 10px;
+			border-width: 0;
+
+			background-color: $primary-color;
+
+			@media (min-width: 750px) {
+				flex-direction: row;
+				justify-content: space-between;
+				padding: 20px;
+			}
+
+			a {
+				padding: 10px;
+
+				@include set-font(20px);
+				font-weight: bold;
+				text-decoration: none;
+
+				color: $header-text-color;
+
+				@media (min-width: 1000px) {
+					font-size: 30px;
+				}
+
+				&:hover {
+					background-color: lighten($primary-color, 10%);
+				}
+			}
+
+			nav {
+				ul {
+					margin: 0;
+					padding: 0;
+
+					@include centered-flex(column);
+					gap: 5px;
+					list-style: none;
+
+					@media (min-width: 750px) {
+						flex-direction: row;
+					}
+
+					@media (min-width: 1000px) {
+						gap: 10px;
+					}
+
+					li {
+						a {
+							padding: 5px;
+
+							@include set-font(15px);
+
+							@media (min-width: 1000px) {
+								font-size: 20px;
+							}
+
+							&:hover {
+								background-color: lighten($primary-color, 10%);
+							}
+						}
+
+						.active {
+							text-decoration: underline;
+						}
+
+						ul {
+							@include centered-flex(row);
+							gap: 5px;
+							list-style: none;
+
+							li {
+								@include centered-flex(row);
+
+								a {
+									height: 100%;
+									width: 100%;
+
+									&:hover {
+										background-color: lighten($primary-color, 10%);
+									}
+
+									img {
+										height: 20px;
+										width: 20px;
+
+										@media (min-width: 750px) {
+											height: 30px;
+											width: 30px;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		main {
+			flex: 1;
+
+			article {
+				@include centered-flex(column);
+				justify-content: flex-start;
+				gap: 10px;
+				width: 100%;
+
+				h1 {
+					width: 90%;
+					text-align: center;
+
+					@include set-font(20px);
+					font-weight: bold;
+
+					color: $text-color;
+
+					@media (min-width: 1000px) {
+						font-size: 30px;
+					}
+				}
+
+				section {
+					@include centered-flex(column);
+					padding: 10px;
+					width: 90%;
+
+					border-radius: 10px;
+
+					background-color: $section-color;
+					color: $text-color;
+
+					h2 {
+						@include set-font(18px);
+
+						@media (min-width: 1000px) {
+							font-size: 25px;
+						}
+					}
+
+					.section-content {
+						@include centered-flex(column);
+						gap: 10px;
+
+						@media (min-width: 750px) {
+							flex-direction: row;
+							vertical-align: middle;
+							justify-content: space-between;
+						}
+
+						img {
+							width: 80%;
+
+							@media (min-width: 750px) {
+								width: 40%;
+							}
+
+							@media (min-width: 1000px) {
+								width: 30%;
+							}
+						}
+
+						.description {
+							@include centered-flex(column);
+							gap: 5px;
+
+							p {
+								@include set-font(15px);
+								margin: 0;
+								text-align: center;
+
+								@media (min-width: 1000px) {
+									font-size: 18px;
+								}
+							}
+						}
+					}
+				}
+
+				.code-box {
+					padding: 10px;
+					width: 90%;
+
+					border-radius: 10px;
+
+					background-color: $code-box-color;
+
+					overflow-x: auto;
+					white-space: nowrap;
+
+					pre {
+						font-family: 'Courier New';
+						font-size: 15px;
+
+						color: $code-color;
+
+						span {
+							color: #00bb00;
+						}
+					}
+				}
+			}
+
+			hr {
+				background-color: $primary-color;
+				width: 95%;
+			}
+		}
+
+		footer {
+			@include centered-flex(column);
+			border-radius: 10px 10px 0 0;
+			margin-top: 10px;
+
+			background-color: $primary-color;
+
+			p {
+				@include set-font(15px);
+				text-align: center;
+
+				color: $header-text-color;
+			}
+		}
+	}
+}

@@ -1,0 +1,229 @@
+html {
+  margin: 0;
+}
+html body {
+  margin: 0;
+}
+html body::selection {
+  background-color: #777777;
+  color: #ffffff;
+}
+html body header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 0 0 10px 10px;
+  border-width: 0;
+  background-color: #444444;
+}
+@media (min-width: 750px) {
+  html body header {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+  }
+}
+html body header a {
+  padding: 10px;
+  font-family: Verdana;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ffffff;
+}
+@media (min-width: 1000px) {
+  html body header a {
+    font-size: 30px;
+  }
+}
+html body header a:hover {
+  background-color: rgb(93.5, 93.5, 93.5);
+}
+html body header nav ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  list-style: none;
+}
+@media (min-width: 750px) {
+  html body header nav ul {
+    flex-direction: row;
+  }
+}
+@media (min-width: 1000px) {
+  html body header nav ul {
+    gap: 10px;
+  }
+}
+html body header nav ul li a {
+  padding: 5px;
+  font-family: Verdana;
+  font-size: 15px;
+}
+@media (min-width: 1000px) {
+  html body header nav ul li a {
+    font-size: 20px;
+  }
+}
+html body header nav ul li a:hover {
+  background-color: rgb(93.5, 93.5, 93.5);
+}
+html body header nav ul li .active {
+  text-decoration: underline;
+}
+html body header nav ul li ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  list-style: none;
+}
+html body header nav ul li ul li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+html body header nav ul li ul li a {
+  height: 100%;
+  width: 100%;
+}
+html body header nav ul li ul li a:hover {
+  background-color: rgb(93.5, 93.5, 93.5);
+}
+html body header nav ul li ul li a img {
+  height: 20px;
+  width: 20px;
+}
+@media (min-width: 750px) {
+  html body header nav ul li ul li a img {
+    height: 30px;
+    width: 30px;
+  }
+}
+html body main {
+  flex: 1;
+}
+html body main article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+}
+html body main article h1 {
+  width: 90%;
+  text-align: center;
+  font-family: Verdana;
+  font-size: 20px;
+  font-weight: bold;
+  color: #444444;
+}
+@media (min-width: 1000px) {
+  html body main article h1 {
+    font-size: 30px;
+  }
+}
+html body main article section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  width: 90%;
+  border-radius: 10px;
+  background-color: #cccccc;
+  color: #444444;
+}
+html body main article section h2 {
+  font-family: Verdana;
+  font-size: 18px;
+}
+@media (min-width: 1000px) {
+  html body main article section h2 {
+    font-size: 25px;
+  }
+}
+html body main article section .section-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+@media (min-width: 750px) {
+  html body main article section .section-content {
+    flex-direction: row;
+    vertical-align: middle;
+    justify-content: space-between;
+  }
+}
+html body main article section .section-content img {
+  width: 80%;
+}
+@media (min-width: 750px) {
+  html body main article section .section-content img {
+    width: 40%;
+  }
+}
+@media (min-width: 1000px) {
+  html body main article section .section-content img {
+    width: 30%;
+  }
+}
+html body main article section .section-content .description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+html body main article section .section-content .description p {
+  font-family: Verdana;
+  font-size: 15px;
+  margin: 0;
+  text-align: center;
+}
+@media (min-width: 1000px) {
+  html body main article section .section-content .description p {
+    font-size: 18px;
+  }
+}
+html body main article .code-box {
+  padding: 10px;
+  width: 90%;
+  border-radius: 10px;
+  background-color: #555555;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+html body main article .code-box pre {
+  font-family: "Courier New";
+  font-size: 15px;
+  color: #ffffff;
+}
+html body main article .code-box pre span {
+  color: #00bb00;
+}
+html body main hr {
+  background-color: #444444;
+  width: 95%;
+}
+html body footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px 10px 0 0;
+  margin-top: 10px;
+  background-color: #444444;
+}
+html body footer p {
+  font-family: Verdana;
+  font-size: 15px;
+  text-align: center;
+  color: #ffffff;
+}
+
+/*# sourceMappingURL=styles.css.map */
