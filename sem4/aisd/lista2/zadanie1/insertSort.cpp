@@ -40,10 +40,20 @@ void insertSort(T* A, int n) {
 		}
 
 		if (n < 40) {
-			cout << "array: "
+			cout << "array: ";
 			printTab(A, n);
 		}
 	}
+}
+
+template<typename T>
+bool isSorted(T* A, int n) {
+	for (int i = 1; i < n; i++) {
+		if (A[i] < A[i - 1]) {
+			return false;
+		}
+	}
+	return true;
 }
 
 int main() {
@@ -72,6 +82,8 @@ int main() {
 		cout << "sorted array: ";
 		printTab(A, n);
 	}
+
+	cout << "array is " << (isSorted(A, n) ? "" : "not ") << "sorted" << endl;
 
 	cout << "comparisons: " << comps << endl;
 	cout << "swaps: " << swaps << endl;

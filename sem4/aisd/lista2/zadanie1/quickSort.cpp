@@ -95,6 +95,16 @@ void quickSort(T* A, int n) {
 	quickSortRec(A, 0, n - 1);
 }
 
+template<typename T>
+bool isSorted(T* A, int n) {
+	for (int i = 1; i < n; i++) {
+		if (A[i] < A[i - 1]) {
+			return false;
+		}
+	}
+	return true;
+}
+
 int main() {
 	cout << "length: ";
 	cin >> n;
@@ -121,6 +131,8 @@ int main() {
 		cout << "  sorted array: ";
 		printTab(A, n);
 	}
+	
+	cout << "array is " << (isSorted(A, n) ? "" : "not ") << "sorted" << endl;
 
 	cout << "comparisons: " << comps << endl;
 	cout << "swaps: " << swaps << endl;
