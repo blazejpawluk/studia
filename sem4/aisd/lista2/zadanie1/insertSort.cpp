@@ -12,7 +12,7 @@ bool isGreater(T x, T y) {
 }
 
 template<typename T>
-void swap(T* A, int i, int j) {
+void swapInArray(T* A, int i, int j) {
 	swaps++;
 	swap(A[i], A[j]);
 }
@@ -33,13 +33,16 @@ template<typename T>
 void insertSort(T* A, int n) {
 	for (int j = 1; j < n; j++) {
 		T key = A[j];
-		int i = j-1;
+		int i = j - 1;
 		while (i >= 0 && isGreater(A[i], key)) {
-			swap(A, i+1, i);
+			swapInArray(A, i+1, i);
 			i--;
 		}
 
-		printTab(A, n);
+		if (n < 40) {
+			cout << "array: "
+			printTab(A, n);
+		}
 	}
 }
 

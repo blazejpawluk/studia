@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+
 int n;
 int comps;
 int swaps;
@@ -33,6 +34,23 @@ void printTab(T* A, int n) {
 		cout << (A[n - 1] < 10 ? "0" : "") << A[n - 1];
 	}
 	cout << "]" << endl;
+}
+
+template<typename T>
+void insertSort(T* A, int l, int r) {
+	for (int j = l; j <= r; j++) {
+		T key = A[j];
+		int i = j - 1;
+		while (i >= 0 && isGreater(A[i], key)) {
+			swapInArray(A, i+1, i);
+			i--;
+		}
+
+		if (n < 40) {
+			cout << "array: ";
+			printTab(A, n);
+		}
+	}
 }
 
 template<typename T> 
@@ -71,28 +89,34 @@ int myPartition(T* A, int l, int r) {
 
 template<typename T>
 void quickSortRec(T* A, int l, int r) {
-	if (l < r) {
+	if (r - l + 1 > 10) {
 		if (n < 40) {
 			cout << "pivot: " << A[l];
 		}
 
-		int pivot = hoarePartition(A, l, r);
-		// int pivot = myPartition(A, l, r);
+		// int pivot = hoarePartition(A, l, r);
+		int pivot = myPartition(A, l, r);
 
 		if (n < 40) {
 			cout << ", array (after partition): ";
 			printTab(A + l, r - l + 1);
 		}
 
-		quickSortRec(A, l, pivot);
-		// quickSortRec(A, l, pivot - 1);
+		// quickSortRec(A, l, pivot);
+		quickSortRec(A, l, pivot - 1);
 		quickSortRec(A, pivot + 1, r);
+	} else {
+		insertSort(A, l, r);
 	}
 }
 
 template<typename T>
-void quickSort(T* A, int n) {
-	quickSortRec(A, 0, n - 1);
+void hybridSort(T* A, int n) {
+	if (n < 10) {
+		insertSort(A, 0, n - 1);
+	} else {
+		quickSortRec(A, 0, n - 1);
+	}
 }
 
 int main() {
@@ -112,7 +136,7 @@ int main() {
 	}
 
 	cout << "sorting: " << endl;
-	quickSort(A, n);
+	hybridSort(A, n);
 
 	if(n < 40) {
 		cout << "starting array: ";
