@@ -101,10 +101,10 @@ int main() {
 		// rozmiary tablicy dla wszystkich algorytmow
 		for (int n = 10; n <= 50; n += 10) {
 			cout << "\tn: " << n << endl;
+			uniform_int_distribution<> dis(0, 2 * n - 1);
 
 			for (int i = 0; i < k; i++) {
 				// generowanie tablicy
-				uniform_int_distribution<> dis(0, 2 * n - 1);
 				int tabI[n], tabQ[n], tabH[n];
 				for (int j = 0; j < n; j++) {
 					tabI[j] = dis(gen);
@@ -115,27 +115,27 @@ int main() {
 				comps = 0;
 				swaps = 0;
 				insertSort(tabI, n);
-				fileI << n << " " << i + 1 << " " << comps << " " << swaps << endl;
+				fileI << n << " " << k << " " << comps << " " << swaps << endl;
 
 				comps = 0;
 				swaps = 0;
 				quickSort(tabQ, n);
-				fileQ << n << " " << i + 1 << " " << comps << " " << swaps << endl;
+				fileQ << n << " " << k << " " << comps << " " << swaps << endl;
 
 				comps = 0;
 				swaps = 0;
 				hybridSort(tabH, n);
-				fileH << n << " " << i + 1 << " " << comps << " " << swaps << endl;
+				fileH << n << " " << k << " " << comps << " " << swaps << endl;
 			}
 		}
 
 		// rozmiary dla wszystkich algorytmów poza insert sortem
 		for (int n = 1000; n <= 50000; n += 1000) {
 			cout << "\tn: " << n << endl;
+			uniform_int_distribution<> dis(0, 2 * n - 1);
 
 			for (int i = 0; i < k; i++) {
 				// generowanie tablicy
-				uniform_int_distribution<> dis(0, 2 * n - 1);
 				int tabQ[n], tabH[n];
 				for (int j = 0; j < n; j++) {
 					tabQ[j] = dis(gen);
@@ -145,12 +145,12 @@ int main() {
 				comps = 0;
 				swaps = 0;
 				quickSort(tabQ, n);
-				fileQ << n << " " << i + 1 << " " << comps << " " << swaps << endl;
+				fileQ << n << " " << k << " " << comps << " " << swaps << endl;
 
 				comps = 0;
 				swaps = 0;
 				hybridSort(tabH, n);
-				fileH << n << " " << i + 1 << " " << comps << " " << swaps << endl;
+				fileH << n << " " << k << " " << comps << " " << swaps << endl;
 			}
 		}
 	}
