@@ -1,7 +1,6 @@
 #include <iostream>
 using namespace std;
 
-
 int n;
 int comps;
 int swaps;
