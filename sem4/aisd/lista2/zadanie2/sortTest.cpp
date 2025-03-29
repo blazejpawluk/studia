@@ -115,17 +115,17 @@ int main() {
 				comps = 0;
 				swaps = 0;
 				insertSort(tabI, n);
-				fileI << n << " " << i + 1 << " " << comps << " " << swaps << endl;
+				fileI << n << " " << k << " " << comps << " " << swaps << endl;
 
 				comps = 0;
 				swaps = 0;
 				quickSort(tabQ, n);
-				fileQ << n << " " << i + 1 << " " << comps << " " << swaps << endl;
+				fileQ << n << " " << k << " " << comps << " " << swaps << endl;
 
 				comps = 0;
 				swaps = 0;
 				hybridSort(tabH, n);
-				fileH << n << " " << i + 1 << " " << comps << " " << swaps << endl;
+				fileH << n << " " << k << " " << comps << " " << swaps << endl;
 			}
 		}
 
@@ -145,12 +145,12 @@ int main() {
 				comps = 0;
 				swaps = 0;
 				quickSort(tabQ, n);
-				fileQ << n << " " << i + 1 << " " << comps << " " << swaps << endl;
+				fileQ << n << " " << k << " " << comps << " " << swaps << endl;
 
 				comps = 0;
 				swaps = 0;
 				hybridSort(tabH, n);
-				fileH << n << " " << i + 1 << " " << comps << " " << swaps << endl;
+				fileH << n << " " << k << " " << comps << " " << swaps << endl;
 			}
 		}
 	}
