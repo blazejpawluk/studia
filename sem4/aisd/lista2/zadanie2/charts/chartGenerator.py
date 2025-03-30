@@ -8,7 +8,7 @@ if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
 files = ["insertSortTest.txt", "quickSortTest.txt", "hybridSortTest.txt"]
-labels = ["Sortowanie 1", "Sortowanie 2", "Sortowanie 3"]
+labels = ["InsertSort", "QuickSort", "HybridSort"]
 colors = ['blue', 'orange', 'green']  # Kolory dla poszczególnych serii
 
 k_values = [1, 10, 100]
@@ -32,17 +32,22 @@ for file in files:
             's': np.array(avg_s)
         })
 
-def create_chart(k, metric, ylabel, filename):
+def create_chart(k, metric, ylabel, filename, filter_n=False):
     plt.figure(figsize=(8, 6))
     legend_handles = []
     for idx, res in enumerate(results[k]):
-        # mask = res['n'] <= 50
-        # plt.scatter(res['n'][mask], res[metric][mask], color=colors[idx])
-        plt.scatter(res['n'], res[metric], color=colors[idx])
+        if filter_n:
+            mask = res['n'] <= 50
+            n_values = res['n'][mask]
+            metric_values = res[metric][mask]
+        else:
+            n_values = res['n']
+            metric_values = res[metric]
+        plt.scatter(n_values, metric_values, color=colors[idx])
         handle = Line2D([0], [0], marker='o', color='w',
                         markerfacecolor=colors[idx], markersize=8, label=labels[idx])
         legend_handles.append(handle)
-    plt.title(f"Średnia liczba {ylabel} (k = {k})")
+    plt.title(f"Średnia liczba {ylabel} (k = {k})" + (" [n<=50]" if filter_n else ""))
     plt.xlabel("Długość tablicy (n)")
     plt.ylabel(f"Średnia liczba {ylabel}")
     plt.legend(handles=legend_handles)
@@ -52,5 +57,7 @@ def create_chart(k, metric, ylabel, filename):
     plt.close()
 
 for k in k_values:
-    create_chart(k, 'c', "porównań", f"porownania_k{k}.png")
-    create_chart(k, 's', "zamian", f"zamiany_k{k}.png")
+    create_chart(k, 'c', "porównań", f"porownania_k{k}_all.png", filter_n=False)
+    create_chart(k, 'c', "porównań", f"porownania_k{k}_filtered.png", filter_n=True)
+    create_chart(k, 's', "zamian", f"zamiany_k{k}_all.png", filter_n=False)
+    create_chart(k, 's', "zamian", f"zamiany_k{k}_filtered.png", filter_n=True)
