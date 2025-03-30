@@ -54,7 +54,6 @@ template<typename T>
 void quickSortRec(T* A, int l, int r) {
 	if (l < r) {
 		int pivot = hoarePartition(A, l, r);
-
 		quickSortRec(A, l, pivot);
 		quickSortRec(A, pivot + 1, r);
 	}
@@ -78,11 +77,22 @@ void insertHybridSort(T* A, int l, int r) {
 }
 
 template<typename T>
+void quickHybridSortRec(T* A, int l, int r) {
+	if (r - l + 1 > 10) {
+		int pivot = hoarePartition(A, l, r);
+		quickHybridSortRec(A, l, pivot);
+		quickHybridSortRec(A, pivot + 1, r);
+	} else {
+		insertHybridSort(A, l, r);
+	}
+}
+
+template<typename T>
 void hybridSort(T* A, int n) {
 	if (n < 10) {
 		insertHybridSort(A, 0, n - 1);
 	} else {
-		quickSortRec(A, 0, n - 1);
+		quickHybridSortRec(A, 0, n - 1);
 	}
 }
 
