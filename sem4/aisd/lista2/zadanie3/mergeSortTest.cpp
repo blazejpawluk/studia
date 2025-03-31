@@ -1,9 +1,8 @@
 #include <iostream>
-#include <vector>
-#include <cmath>
+#include <random>
+#include <fstream>
 using namespace std;
 
-int n;
 int comps;
 int swaps;
 
@@ -23,28 +22,6 @@ template<typename T>
 void swapInArray(T* A, int i, int j) {
 	swaps++;
 	swap(A[i], A[j]);
-}
-
-template<typename T>
-void printTab(T* A, int n) {
-	cout << "[";
-	if (n > 0) {	
-		for (int i = 0; i < n - 1; i++) {
-			cout << (A[i] < 10 ? "0" : "") << A[i] << ", ";
-		}
-		cout << (A[n - 1] < 10 ? "0" : "") << A[n - 1];
-	}
-	cout << "]" << endl;
-}
-
-template<typename T>
-bool isSorted(T* A, int n) {
-	for (int i = 1; i < n; i++) {
-		if (A[i] < A[i - 1]) {
-			return false;
-		}
-	}
-	return true;
 }
 
 template<typename T> 
@@ -85,6 +62,21 @@ void merge(T* A, int l, int m, int r) {
 		j++;
 		k++;
 	}
+}
+
+template<typename T>
+void mergeSortRec(T* A, int l, int r) {
+	if (l < r) {
+		int m = l + (r - l) / 2;
+		mergeSortRec(A, l, m);
+		mergeSortRec(A, m + 1, r);
+		merge(A, l, m, r);
+	}
+}
+
+template<typename T>
+void mergeSort(T* A, int n) {
+	mergeSortRec(A, 0, n - 1);
 }
 
 struct run {
@@ -154,46 +146,45 @@ void ownSort(T* A, int n) {
 }
 
 int main() {
-	cout << "length: ";
-	cin >> n;
+	random_device rd;
+	mt19937 gen(rd());
 
-	int A[n], startingArray[n];
-	cout << "array (" << n << " integers, for better display use numbers lower than 99): ";
-	for (int i = 0; i < n; i++) {
-		cin >> A[i];
-		startingArray[i] = A[i];
+	ofstream fileM("mergeSortTest.txt");
+	ofstream fileO("ownSortTest.txt");
+
+	// liczba testow
+	for (int k = 1; k <= 100; k *= 10) {
+		cout << "k: " << k << endl;
+
+		for (int n = 100; n <= 5000; n += 100) {
+			cout << "\tn: " << n << endl;
+			uniform_int_distribution<> dis(0, 2 * n - 1);
+
+			for (int i = 0; i < k; i++) {
+				// generowanie tablicy
+				int tabM[n], tabO[n];
+				for (int j = 0; j < n; j++) {
+					tabM[j] = dis(gen);
+					tabO[j] = tabM[j];
+				}
+
+				comps = 0;
+				swaps = 0;
+				mergeSort(tabM, n);
+				fileM << n << " " << k << " " << comps << " " << swaps << endl;
+
+				comps = 0;
+				swaps = 0;
+				ownSort(tabO, n);
+				fileO << n << " " << k << " " << comps << " " << swaps << endl;
+			}
+		}
 	}
 
-	
-	if(n < 40) {
-		cout << endl << "==============================" << endl;
-		cout << "starting array: ";
-		printTab(A, n);
-	}
-	
-	cout << "==============================" << endl;
-	
-	cout << "sorting ..." << endl;
-	ownSort(A, n);
-	
-	cout << "==============================" << endl;
-	
-	if(n < 40) {
-		cout << "starting array: ";
-		printTab(startingArray, n);
-		
-		cout << "sorted array: ";
-		printTab(A, n);
-		
-		cout << "==============================" << endl;
-	}
-	
-	cout << "array is " << (isSorted(A, n) ? "" : "not ") << "sorted" << endl;
-	
-	cout << "==============================" << endl;
-	
-	cout << "comparisons: " << comps << endl;
-	cout << "swaps: " << swaps << endl;
+	fileM.close();
+	fileO.close();
+
+	cout << "tests saved to files: mergeSortTest.txt, ownSortTest.txt" << endl;
 
 	return 0;
 }

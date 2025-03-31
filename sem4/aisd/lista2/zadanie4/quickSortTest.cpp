@@ -1,7 +1,8 @@
 #include <iostream>
+#include <random>
+#include <fstream>
 using namespace std;
 
-int n;
 int comps;
 int swaps;
 
@@ -23,16 +24,33 @@ void swapInArray(T* A, int i, int j) {
 	swap(A[i], A[j]);
 }
 
-template<typename T>
-void printTab(T* A, int n) {
-	cout << "[";
-	if (n > 0) {	
-		for (int i = 0; i < n - 1; i++) {
-			cout << (A[i] < 10 ? "0" : "") << A[i] << ", ";
-		}
-		cout << (A[n - 1] < 10 ? "0" : "") << A[n - 1];
+template<typename T> 
+int hoarePartition(T* A, int l, int r) {
+	T pivot = A[l];
+	int i = l - 1;
+	int j = r + 1;
+	while (true) {
+		do {i++;} while (isLower(A[i], pivot));
+		do {j--;} while (isGreater(A[j], pivot));
+
+		if(i >= j) return j;
+		swapInArray(A, i, j);
 	}
-	cout << "]" << endl;
+}
+
+template<typename T>
+void quickSortRec(T* A, int l, int r) {
+	if (l < r) {
+		int pivot = hoarePartition(A, l, r);
+
+		quickSortRec(A, l, pivot);
+		quickSortRec(A, pivot + 1, r);
+	}
+}
+
+template<typename T>
+void quickSort(T* A, int n) {
+	quickSortRec(A, 0, n - 1);
 }
 
 template<typename T> 
@@ -107,11 +125,6 @@ void DPQuickSortRec(T* A, int l, int r) {
 	if (l < r) {
 		pair<int, int> pivots = DPPartition(A, l, r);
 		
-		if (n < 40) {
-			cout << "p: " << A[pivots.first] << ", q: " << A[pivots.second] << ", array (after partition): ";
-			printTab(A + l, r - l + 1);
-		}
-
 		DPQuickSortRec(A, l, pivots.first - 1);
 		DPQuickSortRec(A, pivots.first + 1, pivots.second - 1);
 		DPQuickSortRec(A, pivots.second + 1, r);
@@ -123,57 +136,46 @@ void DPQuickSort(T* A, int n) {
 	DPQuickSortRec(A, 0, n - 1);
 }
 
-template<typename T>
-bool isSorted(T* A, int n) {
-	for (int i = 1; i < n; i++) {
-		if (A[i] < A[i - 1]) {
-			return false;
+int main() {
+	random_device rd;
+	mt19937 gen(rd());
+
+	ofstream fileQ("quickSortTest.txt");
+	ofstream fileDPQ("DPQuickSortTest.txt");
+
+	// liczba testow
+	for (int k = 1; k <= 100; k *= 10) {
+		cout << "k: " << k << endl;
+
+		for (int n = 1000; n <= 50000; n += 1000) {
+			cout << "\tn: " << n << endl;
+			uniform_int_distribution<> dis(0, 2 * n - 1);
+
+			for (int i = 0; i < k; i++) {
+				// generowanie tablicy
+				int tabQ[n], tabDPQ[n];
+				for (int j = 0; j < n; j++) {
+					tabQ[j] = dis(gen);
+					tabDPQ[j] = tabQ[j];
+				}
+
+				comps = 0;
+				swaps = 0;
+				quickSort(tabQ, n);
+				fileQ << n << " " << k << " " << comps << " " << swaps << endl;
+
+				comps = 0;
+				swaps = 0;
+				DPQuickSort(tabDPQ, n);
+				fileDPQ << n << " " << k << " " << comps << " " << swaps << endl;
+			}
 		}
 	}
-	return true;
-}
 
-int main() {
-	cout << "length: ";
-	cin >> n;
+	fileQ.close();
+	fileDPQ.close();
 
-	int A[n], startingArray[n];
-	cout << "array (" << n << " integers, for better display use numbers lower than 99): ";
-	for (int i = 0; i < n; i++) {
-		cin >> A[i];
-		startingArray[i] = A[i];
-	}
-
-	
-	if(n < 40) {
-		cout << endl << "==============================" << endl;
-		cout << "starting array: ";
-		printTab(A, n);
-	}
-	
-	cout << "==============================" << endl;
-	
-	cout << "sorting ..." << endl;
-	DPQuickSort(A, n);
-	
-	cout << "==============================" << endl;
-	
-	if(n < 40) {
-		cout << "starting array: ";
-		printTab(startingArray, n);
-		
-		cout << "sorted array: ";
-		printTab(A, n);
-		
-		cout << "==============================" << endl;
-	}
-	
-	cout << "array is " << (isSorted(A, n) ? "" : "not ") << "sorted" << endl;
-	
-	cout << "==============================" << endl;
-	
-	cout << "comparisons: " << comps << endl;
-	cout << "swaps: " << swaps << endl;
+	cout << "tests saved to files: quickSortTest.txt, DPQuickSortTest.txt" << endl;
 
 	return 0;
 }
