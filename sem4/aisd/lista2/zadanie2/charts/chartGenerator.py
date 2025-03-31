@@ -2,14 +2,15 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+import glob
 
 output_dir = "charts"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-files = ["insertSortTest.txt", "quickSortTest.txt", "hybridSortTest.txt"]
-labels = ["InsertSort", "QuickSort", "HybridSort"]
-colors = ['blue', 'orange', 'green']  # Kolory dla poszczególnych serii
+files = glob.glob("*Test.txt")
+
+labels = [os.path.basename(f).replace("Test.txt", "") for f in files]
 
 k_values = [1, 10, 100]
 
@@ -43,9 +44,10 @@ def create_chart(k, metric, ylabel, filename, filter_n=False):
         else:
             n_values = res['n']
             metric_values = res[metric]
-        plt.scatter(n_values, metric_values, color=colors[idx])
+        sc = plt.scatter(n_values, metric_values)  # Domyślne kolory
+        marker_color = sc.get_facecolors()[0]
         handle = Line2D([0], [0], marker='o', color='w',
-                        markerfacecolor=colors[idx], markersize=8, label=labels[idx])
+                        markerfacecolor=marker_color, markersize=8, label=labels[idx])
         legend_handles.append(handle)
     plt.title(f"Średnia liczba {ylabel} (k = {k})" + (" [n<=50]" if filter_n else ""))
     plt.xlabel("Długość tablicy (n)")
