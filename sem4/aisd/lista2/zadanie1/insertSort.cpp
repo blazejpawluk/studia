@@ -61,30 +61,40 @@ int main() {
 	cin >> n;
 
 	int A[n], startingArray[n];
-	cout << "array (" << n << " integers, for better display max. 99): ";
+	cout << "array (" << n << " integers, for better display use numbers lower than 99): ";
 	for (int i = 0; i < n; i++) {
 		cin >> A[i];
 		startingArray[i] = A[i];
 	}
 
+	
 	if(n < 40) {
+		cout << endl << "==============================" << endl;
 		cout << "starting array: ";
 		printTab(A, n);
 	}
-
-	cout << "sorting: " << endl;
+	
+	cout << "==============================" << endl;
+	
+	cout << "sorting ..." << endl;
 	insertSort(A, n);
-
+	
+	cout << "==============================" << endl;
+	
 	if(n < 40) {
 		cout << "starting array: ";
 		printTab(startingArray, n);
 		
 		cout << "sorted array: ";
 		printTab(A, n);
+		
+		cout << "==============================" << endl;
 	}
-
+	
 	cout << "array is " << (isSorted(A, n) ? "" : "not ") << "sorted" << endl;
-
+	
+	cout << "==============================" << endl;
+	
 	cout << "comparisons: " << comps << endl;
 	cout << "swaps: " << swaps << endl;
 

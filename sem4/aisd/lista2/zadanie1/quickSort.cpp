@@ -50,26 +50,6 @@ int hoarePartition(T* A, int l, int r) {
 }
 
 template<typename T>
-int myPartition(T* A, int l, int r) {
-	T pivot = A[l];
-	int index = l;
-
-	for (int i = l + 1; i <= r; i++) {
-		if (isLower(A[i], pivot)) {
-			if(i == index + 1) {
-				swapInArray(A, i, index);
-			} else {
-				swapInArray(A, index, index + 1);
-				swapInArray(A, index, i);
-			}
-			index++;
-		}
-	}
-
-	return index;
-}
-
-template<typename T>
 void quickSortRec(T* A, int l, int r) {
 	if (l < r) {
 		if (n < 40) {
@@ -77,7 +57,6 @@ void quickSortRec(T* A, int l, int r) {
 		}
 
 		int pivot = hoarePartition(A, l, r);
-		// int pivot = myPartition(A, l, r);
 
 		if (n < 40) {
 			cout << ", array (after partition): ";
@@ -85,7 +64,6 @@ void quickSortRec(T* A, int l, int r) {
 		}
 
 		quickSortRec(A, l, pivot);
-		// quickSortRec(A, l, pivot - 1);
 		quickSortRec(A, pivot + 1, r);
 	}
 }
@@ -110,30 +88,40 @@ int main() {
 	cin >> n;
 
 	int A[n], startingArray[n];
-	cout << "array (" << n << " integers, for better display max. 99): ";
+	cout << "array (" << n << " integers, for better display use numbers lower than 99): ";
 	for (int i = 0; i < n; i++) {
 		cin >> A[i];
 		startingArray[i] = A[i];
 	}
 
+	
 	if(n < 40) {
+		cout << endl << "==============================" << endl;
 		cout << "starting array: ";
 		printTab(A, n);
 	}
-
-	cout << "sorting: " << endl;
+	
+	cout << "==============================" << endl;
+	
+	cout << "sorting ..." << endl;
 	quickSort(A, n);
-
+	
+	cout << "==============================" << endl;
+	
 	if(n < 40) {
 		cout << "starting array: ";
 		printTab(startingArray, n);
 		
-		cout << "  sorted array: ";
+		cout << "sorted array: ";
 		printTab(A, n);
+		
+		cout << "==============================" << endl;
 	}
 	
 	cout << "array is " << (isSorted(A, n) ? "" : "not ") << "sorted" << endl;
-
+	
+	cout << "==============================" << endl;
+	
 	cout << "comparisons: " << comps << endl;
 	cout << "swaps: " << swaps << endl;
 

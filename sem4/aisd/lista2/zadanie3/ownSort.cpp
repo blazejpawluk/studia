@@ -102,7 +102,9 @@ void ownSort(T* A, int n) {
 		run currentRun;
 		currentRun.l = 0;
 		currentRun.desc = A[0] > A[1];
+		comps++;
 		for (int i = 2; i < n; i++) {
+			comps++;
 			if (currentRun.desc != A[i - 1] > A[i]) {
 				currentRun.r = i - 1;
 				runs.push_back(currentRun);
@@ -110,6 +112,7 @@ void ownSort(T* A, int n) {
 				currentRun.l = i;
 				if (i + 1 < n) {
 					currentRun.desc = A[i] > A[i + 1];
+					comps++;
 				} else {
 					currentRun.desc = false;
 				}
@@ -118,7 +121,7 @@ void ownSort(T* A, int n) {
 		currentRun.r = n - 1;
 		runs.push_back(currentRun);
 
-		// ordering descernding runs
+		// ordering descending runs
 		for (int i = 0; i < runs.size(); i++) {
 			if (runs[i].desc) {
 				for (int j = 0; j <= (runs[i].r - runs[i].l) / 2; j++) {
@@ -127,6 +130,7 @@ void ownSort(T* A, int n) {
 			}
 		}
 
+		// looking for runs closest in size and merging until whole array is sorted
 		int sizeDiff = 0;
 		bool increaseDiff = false;
 		while (runs.size() > 1) {
@@ -134,7 +138,10 @@ void ownSort(T* A, int n) {
 			increaseDiff = true;
 			for (int i = 1; i < runs.size(); i++) {
 				if (abs((runs[i - 1].r - runs[i - 1].l) - (runs[i].r - runs[i].l)) <= sizeDiff) {
-					cout << "merging (" << runs[i - 1].l << ", " << runs[i - 1].r << ") and (" << runs[i].l << ", " << runs[i].r << ")" << endl;
+					if (n < 40) {
+						cout << "merging (" << runs[i - 1].l << ", " << runs[i - 1].r << ") and (" << runs[i].l << ", " << runs[i].r << ")" << endl;
+					}
+
 					merge(A, runs[i - 1].l, runs[i - 1].r, runs[i].r);
 					runs[i - 1].r = runs[i].r;
 					runs.erase(runs.begin() + i);
