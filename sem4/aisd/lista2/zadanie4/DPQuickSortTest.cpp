@@ -111,27 +111,28 @@ int main() {
 	random_device rd;
 	mt19937 gen(rd());
 
-	int k = 100;
+	int k, n;
+	cout << "tests: ";
+	cin >> k;
+	cout << "array length: ";
+	cin >> n;
+
+	uniform_int_distribution<> dis(0, 2 * n - 1);
+	double nlogn = n * log(n);
+	
 	double c = 0;
-
-	for (int n = 100; n <= 5000; n += 100) {
-		cout << n << endl;
-		double nlogn = n * log(n);
-		uniform_int_distribution<> dis(0, 2 * n - 1);
-
-		for (int i = 0; i < k; i++) {
-			int tab[n];
-			for (int j = 0; j < n; j++) {
-				tab[i] = dis(gen);
-			}
-
-			comps = 0;
-			swaps = 0;
-			DPQuickSort(tab, n);
-
-			c += 1.0 * comps / 50 / k / nlogn;
+	for (int i = 0; i < k; i++) {
+		int tab[n];
+		for (int j = 0; j < n; j++) {
+			tab[j] = dis(gen);
 		}
+
+		comps = 0;
+		DPQuickSort(tab, n);
+
+		c += (comps / nlogn);
 	}
+	c /= k;
 
 	cout << "constant: " << c << endl;
 }
