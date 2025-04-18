@@ -5,6 +5,8 @@
 
 class RandomSelect {
 private:
+	int n;
+
 	template<typename T>
 	int partition(T* A, int p, int q);
 
@@ -25,6 +27,8 @@ public:
 
 class Select {
 private:
+	int n;
+
 	template<typename T>
 	int partition(T* A, int p, int q);
 

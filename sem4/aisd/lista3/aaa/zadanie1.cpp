@@ -24,44 +24,54 @@ int main() {
 
 	std::cout << "==================================================\n";
 	std::cout << "----- RANDOM SELECT -----\n";
-	std::cout << "Starting array: ";
-	a.print(startArray, n);
-	std::cout << "Looking for " << k << " order statistic...\n"; 
 
-	RandomSelect rs;
+	if (n < 30) {	
+		std::cout << "Starting array: ";
+		a.print(startArray, n);
+		std::cout << "Looking for " << k << " order statistic...\n";
+	}
+		
+	RandomSelect rs;	
 	int rsX = rs.randomSelect(rArray, n, k);
 
-	std::cout << k << " order statistic: " << rsX << std::endl;
-	std::cout << "Starting array: ";
-	a.print(startArray, n);
-	std::cout << "  Ending array: ";
-	a.print(rArray, n);
-	std::cout << "  Sorted array: ";
-	std::sort(rArray, rArray + n);
-	a.print(rArray, n);
-	std::cout << "Found value is " << (rsX == rArray[k - 1] ? "" : "not ") << "correct.\n";
+	if (n < 30) {
+		std::cout << k << " order statistic: " << rsX << std::endl;
+		std::cout << "Starting array: ";
+		a.print(startArray, n);
+		std::cout << "  Ending array: ";
+		a.print(rArray, n);
+		std::cout << "  Sorted array: ";
+		std::sort(rArray, rArray + n);
+		a.print(rArray, n);
+		std::cout << "Found value is " << (rsX == rArray[k - 1] ? "" : "not ") << "correct.\n";
+	}
 
 	std::cout << "Comparisons: " << rs.c.getComps() << std::endl;
 	std::cout << "      Swaps: " << rs.c.getSwaps() << std::endl;
 
 	std::cout << "==================================================\n";
 	std::cout << "----- SELECT -----\n";
-	std::cout << "Starting array: ";
-	a.print(startArray, n);
-	std::cout << "Looking for " << k << " order statistic...\n"; 
+
+	if (n < 30) {
+		std::cout << "Starting array: ";
+		a.print(startArray, n);
+		std::cout << "Looking for " << k << " order statistic...\n"; 
+	}
 
 	Select s;
 	int sX = s.select(sArray, n, k);
 
-	std::cout << k << " order statistic: " << sX << std::endl;
-	std::cout << "Starting array: ";
-	a.print(startArray, n);
-	std::cout << "  Ending array: ";
-	a.print(sArray, n);
-	std::cout << "  Sorted array: ";
-	std::sort(sArray, sArray + n);
-	a.print(sArray, n);
-	std::cout << "Found value is " << (sX == sArray[k - 1] ? "" : "not ") << "correct.\n";
+	if (n < 30) {
+		std::cout << k << " order statistic: " << sX << std::endl;
+		std::cout << "Starting array: ";
+		a.print(startArray, n);
+		std::cout << "  Ending array: ";
+		a.print(sArray, n);
+		std::cout << "  Sorted array: ";
+		std::sort(sArray, sArray + n);
+		a.print(sArray, n);
+		std::cout << "Found value is " << (sX == sArray[k - 1] ? "" : "not ") << "correct.\n";
+	}
 
 	std::cout << "Comparisons: " << s.c.getComps() << std::endl;
 	std::cout << "      Swaps: " << s.c.getSwaps() << std::endl;
