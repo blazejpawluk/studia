@@ -49,21 +49,21 @@ T Select::selectRec(T* A, int p, int q, int i) {
 
 	int size = q - p + 1;
 	
-	int N = size / 5 + (size % 5 == 0 ? 0 : 1);
+	int N = size / treshold + (size % treshold == 0 ? 0 : 1);
 	T B[N];
 
-	for (int i = 0; i < size / 5; i++) {
-		sortFragment(A, p + i * 5,  p + i * 5 + 4);
-		B[i] = A[p + i * 5 + 2];
+	for (int i = 0; i < size / treshold; i++) {
+		sortFragment(A, p + i * treshold,  p + i * treshold + treshold - 1);
+		B[i] = A[p + i * treshold + treshold / 2];
 	}
 	
-	if (size % 5 != 0) {
-		sortFragment(A, p + (size / 5) * 5, q);
-		B[size / 5] = A[(p + (size / 5) * 5 + q) / 2];
+	if (size % treshold != 0) {
+		sortFragment(A, p + (size / treshold) * treshold, q);
+		B[size / treshold] = A[(p + (size / treshold) * treshold + q) / 2];
 	}
 
 	if (n < 30) {
-		std::cout << "  -> after sorting 5-element fragments: ";
+		std::cout << "  -> after sorting " << treshold << "-element fragments: ";
 		aS.printFragment(A, p, q);
 	}
 
@@ -108,17 +108,17 @@ int Select::selectIndexRec(T* A, int p, int q, int i) {
 
 	int size = q - p + 1;
 	
-	int N = size / 5 + (size % 5 == 0 ? 0 : 1);
+	int N = size / treshold + (size % treshold == 0 ? 0 : 1);
 	T B[N];
 
-	for (int i = 0; i < size / 5; i++) {
-		sortFragment(A, p + i * 5,  p + i * 5 + 4);
-		B[i] = A[p + i * 5 + 2];
+	for (int i = 0; i < size / treshold; i++) {
+		sortFragment(A, p + i * treshold,  p + i * treshold + treshold - 1);
+		B[i] = A[p + i * treshold + treshold / 2];
 	}
 	
 	if (size % 5 != 0) {
-		sortFragment(A, p + (size / 5) * 5, q);
-		B[size / 5] = A[(p + (size / 5) * 5 + q) / 2];
+		sortFragment(A, p + (size / treshold) * treshold, q);
+		B[size / treshold] = A[(p + (size / treshold) * treshold + q) / 2];
 	}
 
 	if (n < 30) {
@@ -166,6 +166,10 @@ int Select::selectIndex(T* A, int n, int i) {
 	c = Count();
 	this->n = n;
 	return selectIndexRec(A, 0, n - 1, i);
+}
+
+void Select::setTreshold(int newTreshold) {
+	treshold = newTreshold;
 }
 
 #endif

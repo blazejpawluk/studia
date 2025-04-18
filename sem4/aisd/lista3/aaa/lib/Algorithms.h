@@ -28,6 +28,7 @@ public:
 class Select {
 private:
 	int n;
+	int treshold = 5;
 
 	template<typename T>
 	int partition(T* A, int p, int q);
@@ -48,6 +49,8 @@ public:
 
 	template<typename T>
 	int selectIndex(T* A, int n, int i);
+
+	void setTreshold(int newTreshold);
 };
 
 class BinSearch {
