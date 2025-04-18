@@ -3,9 +3,6 @@
 #include <algorithm>
 using namespace std;
 
-random_device rd;
-mt19937 gen(rd());
-
 int n;
 int comps;
 int swaps;
@@ -14,7 +11,7 @@ template<typename T>
 void printArray(T* A, int l, int r) {
 	cout << "[";
 	for (int i = l; i < r; i++) {
-		cout << A[i] << ", ";
+		cout << (A[i] < 10 ? "0" : "") << A[i] << ", ";
 	}
 	cout << A[r] << "]" << endl;
 }
