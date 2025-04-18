@@ -56,12 +56,12 @@ public:
 class BinSearch {
 private:
 	template<typename T>
-	int binSearchRec(T* A, int p, int q, int x);
+	int binSearchRec(T* A, int p, int q, int v);
 public:
 	Count c;
 
 	template<typename T>
-	int binSearch(T* A, int n, int x);
+	int binSearch(T* A, int n, int v);
 };
 
 class QuickSort {
