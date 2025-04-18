@@ -14,7 +14,7 @@ int main() {
 	Select s;
 
 	int m = 50;
-	for (int n = 100; n <= 10000; n += 100) {
+	for (int n = 100; n <= 50000; n += 100) {
 		std::cout << n << std::endl;
 		std::uniform_int_distribution<> dis(0, 2 * n - 1);
 
