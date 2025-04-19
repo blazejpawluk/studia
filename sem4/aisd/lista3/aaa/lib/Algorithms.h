@@ -12,17 +12,11 @@ private:
 
 	template<typename T>
 	T randomSelectRec(T* A, int p, int q, int i);
-
-	template<typename T>
-	int randomSelectIndexRec(T* A, int p, int q, int i);
 public:
 	Count c;
 
 	template<typename T>
 	T randomSelect(T* A, int n, int i);
-
-	template<typename T>
-	int randomSelectIndex(T* A, int n, int i);
 };
 
 class Select {
@@ -36,11 +30,7 @@ private:
 	template<typename T>
 	void sortFragment(T* A, int l, int r);
 
-	template<typename T>
-	T selectRec(T* A, int p, int q, int i);
 
-	template<typename T>
-	int selectIndexRec(T* A, int p, int q, int i);
 public:
 	Count c;
 
@@ -48,8 +38,8 @@ public:
 	T select(T* A, int n, int i);
 
 	template<typename T>
-	int selectIndex(T* A, int n, int i);
-
+	T selectRec(T* A, int p, int q, int i);
+	
 	void setTreshold(int newTreshold);
 };
 
@@ -66,6 +56,8 @@ public:
 
 class QuickSort {
 private:
+	int n;
+
 	template<typename T>
 	int partition(T* A, int p, int q);
 

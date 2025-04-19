@@ -96,76 +96,10 @@ T Select::selectRec(T* A, int p, int q, int i) {
 }
 
 template<typename T>
-int Select::selectIndexRec(T* A, int p, int q, int i) {
-	if (p == q) {
-		return p;
-	}
-
-	if (n < 30) {
-		std::cout << "-> looking for " << i << " statistic position in: ";
-		aS.printFragment(A, p, q);
-	}
-
-	int size = q - p + 1;
-	
-	int N = size / treshold + (size % treshold == 0 ? 0 : 1);
-	T B[N];
-
-	for (int i = 0; i < size / treshold; i++) {
-		sortFragment(A, p + i * treshold,  p + i * treshold + treshold - 1);
-		B[i] = A[p + i * treshold + treshold / 2];
-	}
-	
-	if (size % 5 != 0) {
-		sortFragment(A, p + (size / treshold) * treshold, q);
-		B[size / treshold] = A[(p + (size / treshold) * treshold + q) / 2];
-	}
-
-	if (n < 30) {
-		std::cout << "  -> after sorting 5-element fragments: ";
-		aS.printFragment(A, p, q);
-	}
-
-	T pivot = B[selectIndexRec(B, 0, N - 1, N / 2)];
-	int index;
-	for (int i = p; i <= q; i++) {
-		if (c.eq(A[i], pivot)) {
-			index = i;
-			break;
-		}
-	}
-	c.swapInArray(A, index, q);
-
-	int r = partition(A, p, q);
-
-	if (n < 30) {
-		std::cout << "  -> pivot=" << (A[r] < 10 ? "0" : "") << A[r] << ", after partition: ";
-		aS.printFragment(A, p, q);
-	}
-
-	int k = r - p + 1;
-
-	if (i == k) {
-		return r;
-	}
-	if (i < k) {
-		return selectRec(A, p, r - 1, i);
-	}
-	return selectRec(A, r + 1, q, i - k);
-}
-
-template<typename T>
 T Select::select(T* A, int n, int i) {
 	c = Count();
 	this->n = n;
 	return selectRec(A, 0, n - 1, i);
-}
-
-template<typename T>
-int Select::selectIndex(T* A, int n, int i) {
-	c = Count();
-	this->n = n;
-	return selectIndexRec(A, 0, n - 1, i);
 }
 
 void Select::setTreshold(int newTreshold) {

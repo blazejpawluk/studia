@@ -2,6 +2,8 @@
 #define QUICK_SORT
 
 #include "Algorithms.h"
+#include "Array.h"
+#include <iostream>
 
 template<typename T>
 int QuickSort::partition(T* A, int p, int q) {
@@ -87,10 +89,23 @@ std::pair<int, int> QuickSort::DPPartition(T* A, int l, int r) {
 	return result;
 }
 
+Array a3;
+
 template<typename T>
 void QuickSort::quickSortRec(T* A, int p, int q) {
 	if (p < q) {
+		if (n < 30) {
+			std::cout << "> quick sort on: ";
+			a3.printFragment(A, p, q);
+		}
+
 		int pivot = partition(A, p, q);
+
+		if (n < 30) {
+			std::cout << " > after quick sort partition (pivot: " << A[pivot] << "): ";
+			a3.printFragment(A, p, q);
+		}
+
 		quickSortRec(A, p, pivot - 1);
 		quickSortRec(A, pivot + 1, q);
 	}
@@ -99,19 +114,47 @@ void QuickSort::quickSortRec(T* A, int p, int q) {
 template<typename T>
 void QuickSort::quickSelectSortRec(T* A, int p, int q) {
 	if (p < q) {
+		if (n < 30) {
+			std::cout << "> quick select sort on: ";
+			a3.printFragment(A, p, q);
+		}
+
 		Select s;
-		int pivot = s.selectIndexRec(A, p, q, (q - p) / 2 + 1);
-		c.swapInArray(A, pivot, q);
-		pivot = partition(A, p, q);
-		quickSelectSortRec(A, p, pivot - 1);
-		quickSelectSortRec(A, pivot + 1, q);
+		T pivot = s.selectRec(A, p, q, (q - p) / 2 + 1);
+		for (int i = p; i <= q; i++) {
+			if (c.eq(A[i], pivot)) {
+				c.swapInArray(A, i, q);
+				break;
+			}
+		}
+
+		int pivotIndex = partition(A, p, q);
+
+		if (n < 30) {
+			std::cout << " > after quick select sort partition (pivot: " << A[pivot] << "): ";
+			a3.printFragment(A, p, q);
+		}
+
+		quickSelectSortRec(A, p, pivotIndex - 1);
+		quickSelectSortRec(A, pivotIndex + 1, q);
 	}
 }
 
 template<typename T>
 void QuickSort::DPQuickSortRec(T* A, int p, int q) {
 	if (p < q) {
+		if (n < 30) {
+			std::cout << "> dual-pivot quick sort on: ";
+			a3.printFragment(A, p, q);
+		}
+
 		std::pair pivots = DPPartition(A, p, q);
+
+		if (n < 30) {
+			std::cout << " > after dual-pivot quick sort partition (pivots: " << A[pivots.first] << ", " << A[pivots.second] << "): ";
+			a3.printFragment(A, p, q);
+		}
+
 		DPQuickSortRec(A, p, pivots.first - 1);
 		DPQuickSortRec(A, pivots.first + 1, pivots.second - 1);
 		DPQuickSortRec(A, pivots.second + 1, q);
@@ -121,10 +164,30 @@ void QuickSort::DPQuickSortRec(T* A, int p, int q) {
 template<typename T>
 void QuickSort::DPQuickSelectSortRec(T* A, int p, int q) {
 	if (p < q) {
+		if (n < 30) {
+			std::cout << "> dual-pivot quick select sort on: ";
+			a3.printFragment(A, p, q);
+		}
+
 		Select s;
-		c.swapInArray(A, p, s.selectIndexRec(A, p, q, (q - p) / 3 + 1));
-		c.swapInArray(A, s.selectIndexRec(A, p + 1, q, 2 * (q - p) / 3), q);
+		T pivotLeft = s.selectRec(A, p, q, (q - p) / 3 + 1);
+		T pivotRight = s.selectRec(A, p, q, 2 * (q - p) / 3 + 1);
+
+		for (int i = p; i <= q; i++) {
+			if (c.eq(A[i], pivotLeft)) {
+				c.swapInArray(A, p, i);
+			} else if (c.eq(A[i], pivotRight)) {
+				c.swapInArray(A, i, q);
+			}
+		}
+
 		std::pair pivots = DPPartition(A, p, q);
+
+		if (n < 30) {
+			std::cout << " > after dual-pivot quick select sort partition (pivots: " << A[pivots.first] << ", " << A[pivots.second] << "): ";
+			a3.printFragment(A, p, q);
+		}
+
 		DPQuickSortRec(A, p, pivots.first - 1);
 		DPQuickSortRec(A, pivots.first + 1, pivots.second - 1);
 		DPQuickSortRec(A, pivots.second + 1, q);
@@ -134,24 +197,28 @@ void QuickSort::DPQuickSelectSortRec(T* A, int p, int q) {
 template<typename T>
 void QuickSort::quickSort(T* A, int n) {
 	c = Count();
+	this->n = n;
 	quickSortRec(A, 0, n - 1);
 }
 
 template<typename T>
 void QuickSort::quickSelectSort(T* A, int n) {
 	c = Count();
+	this->n = n;
 	quickSelectSortRec(A, 0, n - 1);
 }
 
 template<typename T>
 void QuickSort::DPQuickSort(T* A, int n) {
 	c = Count();
+	this->n = n;
 	DPQuickSortRec(A, 0, n - 1);
 }
 
 template<typename T>
 void QuickSort::DPQuickSelectSort(T* A, int n) {
 	c = Count();
+	this->n = n;
 	DPQuickSelectSortRec(A, 0, n - 1);
 }
 
