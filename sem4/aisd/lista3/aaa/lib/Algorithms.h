@@ -21,7 +21,7 @@ public:
 
 class Select {
 private:
-	int n;
+	int n = 30;
 	int treshold = 5;
 
 	template<typename T>
@@ -56,7 +56,7 @@ public:
 
 class QuickSort {
 private:
-	int n;
+	int n = 30;
 
 	template<typename T>
 	int partition(T* A, int p, int q);

@@ -24,7 +24,7 @@ int QuickSort::partition(T* A, int p, int q) {
 
 template<typename T> 
 std::pair<int, int> QuickSort::DPPartition(T* A, int l, int r) {
-	if (A[l] > A[r]) {
+	if (c.gt(A[l], A[r])) {
 		c.swapInArray(A, l, r);
 	}
 
