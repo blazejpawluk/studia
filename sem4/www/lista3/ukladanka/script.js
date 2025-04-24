@@ -143,6 +143,7 @@ startButton.addEventListener('click', () => {
 		img.src = URL.createObjectURL(imageInput.files[0]);
 
 		defaultImage = -1;
+		imageInput.value = "";
 	} else {
 		const randIndex = Math.floor(Math.random() * images.length);
 		img.src = images[randIndex];
