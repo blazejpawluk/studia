@@ -225,6 +225,25 @@ hr {
     color: #00bb00;
 }
 
+.gallery {
+    display: grid;
+    row-gap: 5px;
+    column-gap: 5px;
+    width: 90%;
+    padding: 10px;
+
+    align-items: center;
+
+    border-radius: 10px;
+    
+    background-color: #cccccc;
+    border-color: transparent;
+}
+
+.gallery img {
+    width: 100%;
+}
+
 /* ----- ZAPYTANIA MEDIALNE ----- */
 /* Średnie ekrany */
 @media (min-width: 750px) {
@@ -261,6 +280,10 @@ hr {
     .component-image {
         width: 40%;
     }
+
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* Duże ekrany */
@@ -288,5 +311,9 @@ hr {
     }
     .component-desc {
         font-size: 18px;
+    }
+
+    .gallery {
+        grid-template-columns: repeat(3, 1fr);
     }
 }

@@ -53,3 +53,33 @@ projectsButton.addEventListener('mouseenter', () => {
 projectsButton.addEventListener('mouseleave', () => {
 	projectsImage.style.display = 'none';
 });
+
+const gallery = document.getElementById('gallery');
+const imgPaths = [
+	'images/bazy-danych.png',
+	'images/muzyka.jpg',
+	'images/raport.png',
+	'images/sport.jpg',
+	'images/szopdb.png',
+	'images/trylma.png'
+];
+
+function loadImg(path) {
+	return new Promise((resolve, reject) => {
+		const img = document.createElement('img');
+		img.src = path;
+		img.alt = 'Galeria';
+		img.onload = () => resolve(img);
+		img.onerror = () => reject(new Error(`Nie udało się załadować pliku z ${path}`));
+	});
+}
+
+Promise
+	.all(imgPaths.map(loadImg))
+	.then(images => {
+		images.forEach(img => gallery.appendChild(img));
+	})
+	.catch(e => {
+		console.error(e);
+		gallery.textContent = 'Wystąpił błąd przy ładowaniu zdjęć.';
+	})
