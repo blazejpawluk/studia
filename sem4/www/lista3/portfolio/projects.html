@@ -5,6 +5,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Błażej Pawluk: Projekty</title>
 		<link rel="stylesheet" href="styles.css">
+
+		<!-- kolory -->
+		<link rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.css">
+
+		<!-- rdzeń prism -->
+		<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+
+		<!-- java -->
+		<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-java.min.js"></script>
+
+		<!-- sql -->
+		<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-sql.min.js"></script>
 	</head>
 	<body>
 		<header>
@@ -100,25 +113,25 @@
 				<h1>Najlepsze fragmenty kodu</h1>
 
 				<div class="code-box">
-<pre><span class="comment">// funkcja sprawdzająca czy liczba jest pierwsza - 95% skuteczności dla liczb mniejszych od 1000000</span>
+<pre><code class="language-java">// funkcja sprawdzająca czy liczba jest pierwsza - 95% skuteczności dla liczb mniejszych od 1000000
 bool isPrime(int x) {
     return false;
-}</pre>
+}</code></pre>
 				</div>
 
 				<div class="code-box">
-<pre><span class="comment">-- tabela użytkowników</span>
+<pre><code class="language-sql">-- tabela użytkowników
 CREATE TABLE users (
     user_id INT PRIMARY KEY,
     login VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
 
     UNIQUE(password)
-);</pre>
+);</code></pre>
 				</div>
 
 				<div class="code-box">
-<pre><span class="comment">// sortowanie tablicy</span>
+<pre><code class="language-java">// sortowanie tablicy
 public void sort(int[] a) {
     Thread[] threads = new Thread[a.length];
 
@@ -140,7 +153,7 @@ public void sort(int[] a) {
     }
 
     System.out.println();
-}</pre>
+}</code></pre>
 				</div>
 			</article>
 		</main>		  

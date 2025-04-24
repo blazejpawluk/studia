@@ -18,16 +18,20 @@ menuIcon.addEventListener("click", function() {
 
 window.addEventListener("resize", function() {
 	if (window.innerWidth >= 750) {
+		menuIcon.style.display = "none";
 		menu.style.display = "block";
 	} else {
+		menuIcon.style.display = "block";
 		menu.style.display = "none";
 	}
 });
 
 window.addEventListener("load", function() {
 	if (window.innerWidth >= 750) {
+		menuIcon.style.display = "none";
 		menu.style.display = "block";
 	} else {
+		menuIcon.style.display = "block";
 		menu.style.display = "none";
 	}
 });

@@ -41,11 +41,12 @@ header {
 .menuIcon {
     height: 30px;
     width: 30px;
+    display: none;
 }
 
 header nav {
     padding: 10px 0;
-    display: none;
+    display: block;
 }
 
 .nav-menu {
@@ -204,7 +205,6 @@ hr {
 }
 
 .code-box {
-    padding: 10px;
     width: 90%;
 
     border-width: 10px;
@@ -221,8 +221,8 @@ hr {
     white-space: nowrap;
 }
 
-.comment {
-    color: #00bb00;
+pre {
+    margin: 0 !important;
 }
 
 .gallery {
@@ -252,10 +252,6 @@ hr {
         flex-direction: row;
         justify-content: space-between;
         padding: 20px;
-    }
-
-    .menuIcon {
-        display: none;
     }
 
     .nav-menu {
