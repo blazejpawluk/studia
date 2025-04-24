@@ -24,7 +24,7 @@ const sounds = [
 	'sounds/tungTungSahur.mp3'
 ]
 
-let img;
+let img = new Image();
 let rows;
 let columns;
 let tiles;
@@ -32,6 +32,7 @@ let size;
 let tileWidth;
 let tileHeight;
 let emptyIndex;
+let defaultImage;
 
 // mieszanie obrazka
 function shuffle() {
@@ -104,6 +105,10 @@ function draw() {
 	for (let i = 0; i < size; i++) {
 		highlight(Math.floor(i / columns), i % columns, false);
 	}
+
+	puzzleCanvas.style.visibility = 'visible';
+	winMessage.style.visibility = 'hidden';
+	resetButton.style.visibility = 'visible';
 }
 
 window.addEventListener('resize', () => {
@@ -121,18 +126,29 @@ startButton.addEventListener('click', () => {
 	shuffle();
 
 	img = new Image();
-	img.onload = () => {
-		draw();
-	};
+	img.onload = () => draw();
 	if (imageInput.files[0]) {
+		if (!imageInput.files[0].type.startsWith('image/')) {
+			alert('Wybierz plik typu obraz.');
+			return;
+		}
+
+		const reader = new FileReader();
+		reader.onload = () => {
+			img.src = reader.result;
+		}
+		reader.readAsDataURL(imageInput.files[0]);
+
 		img.src = URL.createObjectURL(imageInput.files[0]);
+
+		defaultImage = -1;
 	} else {
 		const randIndex = Math.floor(Math.random() * images.length);
 		img.src = images[randIndex];
+		defaultImage = randIndex;
 	}
 
-	winMessage.style.visibility = 'hidden';
-	resetButton.style.visibility = 'visible';
+	saveState();
 });
 resetButton.addEventListener('click', () => {
 	startButton.click();
@@ -171,16 +187,13 @@ puzzleCanvas.addEventListener('pointerdown', e => {
 
 	if (gameWon()) {
 		winMessage.style.visibility = 'visible';
-
-		let index;
-		for (let i = 0; i < images.length; i++) {
-			if ((img.src).includes(images[i])) {
-				index = i;
-			}
+		localStorage.removeItem('puzzle');
+		if (defaultImage != -1) {
+			let audio = new Audio(sounds[index]);
+			audio.play();
 		}
-		let audio = new Audio(sounds[index]);
-		audio.play();
-		console.log(index);
+	} else {
+		saveState();
 	}
 });
 
@@ -243,3 +256,42 @@ function gameWon() {
 	}
 	return true;
 }
+
+// zapisanie do localStorage
+function saveState() {
+	localStorage.setItem('puzzle', JSON.stringify({
+		defaultImage,
+		imgSrc: img.src,
+		columns,
+		rows,
+		tiles,
+		emptyIndex
+	}));
+}
+
+// ładowanie gry z localStorage
+function loadState() {
+	if (!localStorage.puzzle) {
+		return;
+	}
+
+	const savedState = JSON.parse(localStorage.puzzle);
+	console.log(savedState);
+
+	defaultImage = savedState.defaultImage;
+	img = new Image();
+	if (defaultImage != -1) {
+		img.src = images[defaultImage];
+	} else {
+		img.src = savedState.imgSrc;
+	}
+	columns = savedState.columns;
+	rows = savedState.rows;
+	size = rows * columns;
+	tiles = savedState.tiles;
+	emptyIndex = savedState.emptyIndex;
+
+	img.onload = () => draw();
+}
+
+window.addEventListener('load', loadState);
