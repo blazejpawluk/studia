@@ -1,85 +1,96 @@
-const menuIcon = document.getElementById('menuIcon');
-const menu = document.getElementById('menu');
+#!/usr/bin/env node
+/*jslint browser, devel, white*/
 
-menuIcon.addEventListener('click', () => {
-	if (menu.style.display === 'none' || menu.style.display === '') {
-		menu.style.display = 'block';
+// browser - undeclared document, window
+// devel - undeclared console
+// white - use spaces, not tabs
+
+const menuIcon = document.getElementById("menuIcon");
+const menu = document.getElementById("menu");
+
+menuIcon.addEventListener("click", function() {
+	if (menu.style.display === "none" || menu.style.display === "") {
+		menu.style.display = "block";
 	} else {
-		menu.style.display = 'none';
+		menu.style.display = "none";
 	}
 });
 
-window.addEventListener('resize', () => {
+window.addEventListener("resize", function() {
 	if (window.innerWidth >= 750) {
-		menu.style.display = 'block';
+		menu.style.display = "block";
 	} else {
-		menu.style.display = 'none';
+		menu.style.display = "none";
 	}
 });
 
-window.addEventListener('load', () => {
+window.addEventListener("load", function() {
 	if (window.innerWidth >= 750) {
-		menu.style.display = 'block';
+		menu.style.display = "block";
 	} else {
-		menu.style.display = 'none';
+		menu.style.display = "none";
 	}
 });
 
-const homeButton = document.getElementById('homeButton');
-const hobbiesButton = document.getElementById('hobbiesButton');
-const projectsButton = document.getElementById('projectsButton');
+const homeButton = document.getElementById("homeButton");
+const hobbiesButton = document.getElementById("hobbiesButton");
+const projectsButton = document.getElementById("projectsButton");
 
-const homeImage = document.getElementById('homeImage');
-const hobbiesImage = document.getElementById('hobbyImage');
-const projectsImage = document.getElementById('projectImage');
+const homeImage = document.getElementById("homeImage");
+const hobbiesImage = document.getElementById("hobbyImage");
+const projectsImage = document.getElementById("projectImage");
 
-homeButton.addEventListener('mouseenter', () => {
-	homeImage.style.display = 'block';
+homeButton.addEventListener("mouseenter", function() {
+	homeImage.style.display = "block";
 });
-homeButton.addEventListener('mouseleave', () => {
-	homeImage.style.display = 'none';
-});
-
-hobbiesButton.addEventListener('mouseenter', () => {
-	hobbiesImage.style.display = 'block';
-});
-hobbiesButton.addEventListener('mouseleave', () => {
-	hobbiesImage.style.display = 'none';
+homeButton.addEventListener("mouseleave", function() {
+	homeImage.style.display = "none";
 });
 
-projectsButton.addEventListener('mouseenter', () => {
-	projectsImage.style.display = 'block';
+hobbiesButton.addEventListener("mouseenter", function() {
+	hobbiesImage.style.display = "block";
 });
-projectsButton.addEventListener('mouseleave', () => {
-	projectsImage.style.display = 'none';
+hobbiesButton.addEventListener("mouseleave", function() {
+	hobbiesImage.style.display = "none";
 });
 
-const gallery = document.getElementById('gallery');
+projectsButton.addEventListener("mouseenter", function() {
+	projectsImage.style.display = "block";
+});
+projectsButton.addEventListener("mouseleave", function() {
+	projectsImage.style.display = "none";
+});
+
+const gallery = document.getElementById("gallery");
 const imgPaths = [
-	'images/bazy-danych.png',
-	'images/muzyka.jpg',
-	'images/raport.png',
-	'images/sport.jpg',
-	'images/szopdb.png',
-	'images/trylma.png'
+	"images/bazy-danych.png",
+	"images/muzyka.jpg",
+	"images/raport.png",
+	"images/sport.jpg",
+	"images/szopdb.png",
+	"images/trylma.png"
 ];
 
 function loadImg(path) {
-	return new Promise((resolve, reject) => {
-		const img = document.createElement('img');
+	return new Promise(function(resolve, reject) {
+		const img = document.createElement("img");
 		img.src = path;
-		img.alt = 'Galeria';
-		img.onload = () => resolve(img);
-		img.onerror = () => reject(new Error(`Nie udało się załadować pliku z ${path}`));
+		img.alt = "Galeria";
+		img.onload = () =>
+            resolve(img);
+		img.onerror = () =>
+            reject(new Error(`Nie udało się załadować pliku z ${path}`));
 	});
 }
 
 Promise
 	.all(imgPaths.map(loadImg))
-	.then(images => {
-		images.forEach(img => gallery.appendChild(img));
+	.then(function(images) {
+        images.forEach(function(img) {
+            gallery.appendChild(img);
+        });
 	})
-	.catch(e => {
+	.catch(function(e) {
 		console.error(e);
-		gallery.textContent = 'Wystąpił błąd przy ładowaniu zdjęć.';
-	})
+		gallery.textContent = "Wystąpił błąd przy ładowaniu zdjęć.";
+	});
