@@ -7,15 +7,15 @@
 #include <cstdint>
 #include <ctime>
 
-class Game4x4 {
+class Game3x3 {
 private:
 	std::uint64_t board;
 
 	bool areNeighbour(int i, int j) {
-		if (std::abs(i - j) == 4) {
+		if (std::abs(i - j) == 3) {
 			return true;
 		}
-		if (std::abs(i - j) == 1 && i/4 == j/4) {
+		if (std::abs(i - j) == 1 && i/3 == j/3) {
 			return true;
 		}
 		return false;
@@ -26,14 +26,14 @@ private:
 		int row = 0;
 		int blankRow = 0;
 
-		for (int i = 0; i < 16; i++) {
-			if (i % 4 == 0) row++;
+		for (int i = 0; i < 9; i++) {
+			if (i % 3 == 0) row++;
 
 			if (get(i) == 0) {
 				blankRow = row;
 				continue;
 			}
-			for (int j = i + 1; j < 16; j++) {
+			for (int j = i + 1; j < 9; j++) {
 				if (get(i) > get(j) && get(j) != 0) {
 					parity++;
 				}
@@ -41,22 +41,22 @@ private:
 		}
 
 		if (blankRow % 2 == 0) {
-			return parity % 2 == 0;
+			return parity % 2 == 1;
 		}
-		return parity % 2 == 1;
+		return parity % 2 == 0;
 	}
 
 public:
-	Game4x4() {
+	Game3x3() {
 		board = 0;
 		std::srand(static_cast<unsigned>(std::time(nullptr)));
 	}
 
 	void set(int value, int pos) {
-		if (value < 0 || value > 15) {
+		if (value < 0 || value > 8) {
 			throw std::out_of_range("value out of range");
 		}
-		if (pos < 0 || pos > 15) {
+		if (pos < 0 || pos > 8) {
 			throw std::out_of_range("pos out of range");
 		}
 
@@ -69,7 +69,7 @@ public:
 	}
 
 	int get(int pos) {
-		if (pos < 0 || pos > 15) {
+		if (pos < 0 || pos > 8) {
 			throw std::out_of_range("pos out of range");
 		}
 
@@ -81,11 +81,11 @@ public:
 	}
 
 	void shuffle() {
-		for (int i = 0; i < 16; i++) {
+		for (int i = 0; i < 9; i++) {
 			set(i, i);
 		}
 
-		for (int i = 15; i >= 1; i--) {
+		for (int i = 8; i >= 1; i--) {
 			int j = std::rand() % (i + 1);
 
 			int iValue = get(i);
@@ -101,18 +101,18 @@ public:
 	}
 
 	void shuffle(int moves) {
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 8; i++) {
 			set(i + 1, i);
 		}
-		set(0, 15);
+		set(0, 8);
 
 		std::srand(static_cast<unsigned>(std::time(nullptr)));
 
-		int emptyIndex = 15;
+		int emptyIndex = 8;
 		for (int i = 0; i < moves; i++) {
 			bool ready = false;
 			while (!ready) {
-				int randomIndex = std::rand() % 16;
+				int randomIndex = std::rand() % 9;
 				try {
 					move(emptyIndex, randomIndex);
 					emptyIndex = randomIndex;
@@ -138,21 +138,25 @@ public:
 	}
 
 	void print() {
-		for (int i = 0; i < 4; i++) {
-			std::cout << "+--+--+--+--+\n|";
-			for (int j = 0; j < 4; j++) {
-				int value = get(i * 4 + j);
-				std::cout << (value < 10 ? "0" : "") << value << "|" << (j == 3 ? "\n" : "");
+		for (int i = 0; i < 3; i++) {
+			std::cout << "+-+-+-+\n|";
+			for (int j = 0; j < 3; j++) {
+				int value = get(i * 3 + j);
+				std::cout << value << "|" << (j == 2 ? "\n" : "");
 			}
 		}
-		std::cout << "+--+--+--+--+\n";
+		std::cout << "+-+-+-+\n";
 	}
 };
 
 #endif
 
-// int main() {
-// 	Game4x4 g;
-// 	g.shuffle();
-// 	g.print();
-// }
+int main() {
+	Game3x3 g;
+	g.shuffle();
+	g.print();
+
+	g = Game3x3();
+	g.shuffle(20);
+	g.print();
+}
