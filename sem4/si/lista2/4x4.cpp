@@ -44,33 +44,39 @@ int misplacedTiles(uint64_t a) {
 // heurystyka 2 - Manhattan
 int manhattan(uint64_t a) {
 	array<uint8_t, 16> board = unpack(a);
-    int distance = 0;
-    for (int i = 0; i < 16; i++) {
-        int value = board[i];
-        if (value == 0) continue;
-        int valRow = (value-1) / 4, valColumn = (value-1) % 4;
-        int row = i/4, column = i%4;
-        distance += abs(row-valRow) + abs(column-valColumn);
-    }
-    return distance;
+	int distance = 0;
+	for (int i = 0; i < 16; i++) {
+		int value = board[i];
+		if (value == 0) continue;
+		int valRow = (value-1) / 4, valColumn = (value-1) % 4;
+		int row = i/4, column = i%4;
+		distance += abs(row-valRow) + abs(column-valColumn);
+	}
+	return distance;
 }
 
 struct Node {
 	uint64_t state;
 	uint8_t emptyIndex;
-	vector<uint8_t> path;
+	shared_ptr<Node> parent;
 
 	int g; // koszt dojścia do węzła od początku
 	int f; // g + wynik heurystyki
-	bool operator>(Node const& o) const {return f > o.f;}
+};
+
+struct NodeCompare {
+	bool operator()(shared_ptr<Node> const& a, shared_ptr<Node> const& b) const {
+		return a->f > b->f;
+	}
 };
 
 vector<uint8_t> aStar(uint64_t startingState, uint8_t emptyIndex, int (*heur)(uint64_t), size_t& visited) {
-	priority_queue<Node, vector<Node>, greater<Node>> pq;
+	priority_queue<shared_ptr<Node>, vector<shared_ptr<Node>>, NodeCompare> pq;
 	unordered_set<uint64_t> checked;
 
-	Node root {startingState, emptyIndex, {emptyIndex}, 0, heur(startingState)};
-	pq.push(root);
+	Node root {startingState, emptyIndex, nullptr, 0, heur(startingState)};
+	shared_ptr<Node> rootPtr = make_shared<Node>(root);
+	pq.push(rootPtr);
 
 	visited = 0;
 
@@ -79,42 +85,50 @@ vector<uint8_t> aStar(uint64_t startingState, uint8_t emptyIndex, int (*heur)(ui
 	int dh[4] = {0, 0, -1, 1};
 
 	while (!pq.empty()) {
-		Node current = pq.top();
+		shared_ptr<Node> current = pq.top();
 		pq.pop();
 
-		if (checked.count(current.state)) continue;
+		if (checked.count(current->state)) continue;
 
-		checked.insert(current.state);
+		checked.insert(current->state);
 		visited++;
 
 		if (visited % 1000000 == 0) cout << "Odwiedzono juz " << visited << " stanow\n";
 
-		if (current.f - current.g == 0) {
-			return current.path;
-		} 
+		if ((current->f) - (current->g) == 0) {
+			vector<uint8_t> path;
+			shared_ptr<Node> node = current;
+			while (node) {
+				path.push_back(node->emptyIndex);
+				node = node->parent;
+			}
+			reverse(path.begin(), path.end());
+			return path;
+		}
 
-		int row = current.emptyIndex / 4, column = current.emptyIndex % 4;
-		array<uint8_t, 16> board = unpack(current.state);
+		int row = (current->emptyIndex) / 4;
+		int column = (current->emptyIndex) % 4;
+		array<uint8_t, 16> board = unpack(current->state);
 
 		for (int i = 0; i < 4; i++) {
 			int newRow = row + dv[i], newColumn = column + dh[i];
-
+			
 			if (newRow < 0 || newRow >= 4 || newColumn < 0 || newColumn >= 4) continue;
 
 			int newEmptyIndex = newRow * 4 + newColumn;
 
 			array<uint8_t, 16> newBoard = board;
-			swap(newBoard[current.emptyIndex], newBoard[newEmptyIndex]);
+			swap(newBoard[current->emptyIndex], newBoard[newEmptyIndex]);
 			uint64_t newState = pack(newBoard);
 
 			if (checked.count(newState)) continue;
 
-			int newG = current.g + 1;
+			int newG = (current->g) + 1;
 			int newH = heur(newState);
 
-			Node nextNode {newState, (uint8_t)newEmptyIndex, current.path, newG, newG+newH};
-			nextNode.path.push_back(nextNode.emptyIndex);
-			pq.push(nextNode);
+			Node nextNode {newState, (uint8_t)newEmptyIndex, current, newG, newG+newH};
+			shared_ptr<Node> nextPtr = make_shared<Node>(nextNode);
+			pq.push(nextPtr);
 		}
 	}
 
@@ -134,44 +148,44 @@ int main() {
 	// board = {7, 5, 8, 12, 1, 6, 9, 14, 10, 0, 2, 4, 3, 11, 13, 15}; uint8_t emptyIndex = 8;
 
 	// losowa permutacja
-	// do {
-	// 	shuffle(board.begin(), board.end() - 1, gen);
-	// } while (!isSolvable(board));
-	// uint8_t emptyIndex = 15;
+	do {
+		shuffle(board.begin(), board.end() - 1, gen);
+	} while (!isSolvable(board));
+	uint8_t emptyIndex = 15;
 
 	// losowe przesunięcia
-	int index = 15;
-	uniform_int_distribution<> dis(1, 4);
-	for (int i = 0; i < 20; i++) {
-		int column = index % 4, row = index / 4;
+	// int index = 15;
+	// uniform_int_distribution<> dis(1, 4);
+	// for (int i = 0; i < 20; i++) {
+	// 	int column = index % 4, row = index / 4;
 
-		bool legal = false;
-		while (!legal) {
-			int direction = dis(gen);
-			switch (direction) {
-				case 1: if (column - 1 >= 0) {
-					legal = true;
-					column--;
-				} break;
-				case 2: if (column + 1 < 4) {
-					legal = true;
-					column++;
-				} break;
-				case 3: if (row - 1 >= 0) {
-					legal = true;
-					row--;
-				} break;
-				case 4: if(row + 1 < 4) {
-					legal = true;
-					row++;
-				} break;
-			}
-		}
-		int newIndex = row * 4 + column;
-		swap(board[index], board[newIndex]);
-		index = newIndex;
-	}
-	uint8_t emptyIndex = (int)index;
+	// 	bool legal = false;
+	// 	while (!legal) {
+	// 		int direction = dis(gen);
+	// 		switch (direction) {
+	// 			case 1: if (column - 1 >= 0) {
+	// 				legal = true;
+	// 				column--;
+	// 			} break;
+	// 			case 2: if (column + 1 < 4) {
+	// 				legal = true;
+	// 				column++;
+	// 			} break;
+	// 			case 3: if (row - 1 >= 0) {
+	// 				legal = true;
+	// 				row--;
+	// 			} break;
+	// 			case 4: if(row + 1 < 4) {
+	// 				legal = true;
+	// 				row++;
+	// 			} break;
+	// 		}
+	// 	}
+	// 	int newIndex = row * 4 + column;
+	// 	swap(board[index], board[newIndex]);
+	// 	index = newIndex;
+	// }
+	// uint8_t emptyIndex = (int)index;
 
 	uint64_t startingState = pack(board);
 
