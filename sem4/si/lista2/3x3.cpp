@@ -44,33 +44,39 @@ int misplacedTiles(uint64_t a) {
 // heurystyka 2 - Manhattan
 int manhattan(uint64_t a) {
 	array<uint8_t, 9> board = unpack(a);
-    int distance = 0;
-    for (int i = 0; i < 9; i++) {
-        int value = board[i];
-        if (value == 0) continue;
-        int valRow = (value-1) / 3, valColumn = (value-1) % 3;
-        int row = i/3, column = i%3;
-        distance += abs(row-valRow) + abs(column-valColumn);
-    }
-    return distance;
+	int distance = 0;
+	for (int i = 0; i < 9; i++) {
+		int value = board[i];
+		if (value == 0) continue;
+		int valRow = (value-1) / 3, valColumn = (value-1) % 3;
+		int row = i/3, column = i%3;
+		distance += abs(row-valRow) + abs(column-valColumn);
+	}
+	return distance;
 }
 
 struct Node {
 	uint64_t state;
 	uint8_t emptyIndex;
-	vector<uint8_t> path;
+	shared_ptr<Node> parent;
 
 	int g; // koszt dojścia do węzła od początku
 	int f; // g + wynik heurystyki
-	bool operator>(Node const& o) const {return f > o.f;}
+};
+
+struct NodeCompare {
+	bool operator()(shared_ptr<Node> const& a, shared_ptr<Node> const& b) const {
+		return a->f > b->f;
+	}
 };
 
 vector<uint8_t> aStar(uint64_t startingState, uint8_t emptyIndex, int (*heur)(uint64_t), size_t& visited) {
-	priority_queue<Node, vector<Node>, greater<Node>> pq;
+	priority_queue<shared_ptr<Node>, vector<shared_ptr<Node>>, NodeCompare> pq;
 	unordered_set<uint64_t> checked;
 
-	Node root {startingState, emptyIndex, {emptyIndex}, 0, heur(startingState)};
-	pq.push(root);
+	Node root {startingState, emptyIndex, nullptr, 0, heur(startingState)};
+	shared_ptr<Node> rootPtr = make_shared<Node>(root);
+	pq.push(rootPtr);
 
 	visited = 0;
 
@@ -79,18 +85,30 @@ vector<uint8_t> aStar(uint64_t startingState, uint8_t emptyIndex, int (*heur)(ui
 	int dh[4] = {0, 0, -1, 1};
 
 	while (!pq.empty()) {
-		Node current = pq.top();
+		shared_ptr<Node> current = pq.top();
 		pq.pop();
 
-		if (checked.count(current.state)) continue;
+		if (checked.count(current->state)) continue;
 
-		checked.insert(current.state);
+		checked.insert(current->state);
 		visited++;
 
-		if (current.f - current.g == 0) return current.path;
+		if (visited % 1000000 == 0) cout << "Odwiedzono juz " << visited << " stanow\n";
 
-		int row = current.emptyIndex / 3, column = current.emptyIndex % 3;
-		array<uint8_t, 9> board = unpack(current.state);
+		if (current->f - current->g == 0) {
+			vector<uint8_t> path;
+			shared_ptr<Node> node = current;
+			while (node) {
+				path.push_back(node->emptyIndex);
+				node = node->parent;
+			}
+			reverse(path.begin(), path.end());
+			return path;
+		}
+
+		int row = (current->emptyIndex) / 3; 
+		int column = (current->emptyIndex) % 3;
+		array<uint8_t, 9> board = unpack(current->state);
 
 		for (int i = 0; i < 4; i++) {
 			int newRow = row + dv[i], newColumn = column + dh[i];
@@ -100,17 +118,17 @@ vector<uint8_t> aStar(uint64_t startingState, uint8_t emptyIndex, int (*heur)(ui
 			int newEmptyIndex = newRow * 3 + newColumn;
 
 			array<uint8_t, 9> newBoard = board;
-			swap(newBoard[current.emptyIndex], newBoard[newEmptyIndex]);
+			swap(newBoard[current->emptyIndex], newBoard[newEmptyIndex]);
 			uint64_t newState = pack(newBoard);
 
 			if (checked.count(newState)) continue;
 
-			int newG = current.g + 1;
+			int newG = (current->g) + 1;
 			int newH = heur(newState);
 
-			Node nextNode {newState, (uint8_t)newEmptyIndex, current.path, newG, newG+newH};
-			nextNode.path.push_back(nextNode.emptyIndex);
-			pq.push(nextNode);
+			Node nextNode {newState, (uint8_t)newEmptyIndex, current, newG, newG+newH};
+			shared_ptr<Node> nextPtr = make_shared<Node>(nextNode);
+			pq.push(nextPtr);
 		}
 	}
 
