@@ -68,6 +68,54 @@ int manhattan(uint64_t a) {
 	return distance;
 }
 
+// heurystyka 3 - walking distance
+const int goalRow[16] = {3,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3};
+const int goalCol[16] = {3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2};
+// const int goalRow[9] = {2,0,0,0,1,1,1,2,2};
+// const int goalCol[9] = {2,0,1,2,0,1,2,0,1};
+int heuristic(uint64_t a) {
+	array<uint8_t, 16> board = unpack(a);
+
+	// manhattan
+	int distance = 0;
+	for (int i = 0; i < SIZE; i++) {
+		int value = board[i];
+		if (value == 0) continue;
+		int valRow = (value-1) / WIDTH, valColumn = (value-1) % WIDTH;
+		int row = i/WIDTH, column = i%WIDTH;
+		distance += abs(row-valRow) + abs(column-valColumn);
+	}
+
+	// konflikty liniowe
+	for (int row = 0; row < WIDTH; row++) {
+		vector<uint8_t> tiles;
+		for (int col = 0; col < WIDTH; col++) {
+			if (board[row*4+col] != 0 && goalRow[board[row*4+col]] == row) tiles.push_back(board[row*4+col]);
+		}
+
+		for (int i = 0; i < tiles.size(); i++) {
+			for (int j = i+1; j < tiles.size(); j++) {
+				if (tiles[i] > tiles[j]) distance += 2;
+			}
+		}
+	}
+
+	for (int col = 0; col < WIDTH; col++) {
+		vector<uint8_t> tiles;
+		for (int row = 0; row < WIDTH; row++) {
+			if (board[row*4+col] != 0 && goalCol[board[row*4+col]] == col) tiles.push_back(board[row*4+col]);
+		}
+
+		for (int i = 0; i < tiles.size(); i++) {
+			for (int j = i+1; j < tiles.size(); j++) {
+				if (tiles[i] > tiles[j]) distance += 2;
+			}
+		}
+	}
+
+	return distance;
+}
+
 struct Node {
 	uint64_t state;
 	uint8_t emptyIndex;
