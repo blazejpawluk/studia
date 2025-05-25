@@ -4,39 +4,51 @@
 #include <iostream>
 using namespace std;
 
-struct Node{
+struct Node {
 	int key;
 	Node* left;
 	Node* right;
 };
 
+int comps;
+bool compare(bool a) {
+	comps++;
+	return a;
+}
+
+int reads;
+Node* read(Node* node) {
+	reads++;
+	return node;
+}
+
 Node* root;
 
 Node* Insert(Node* node, int key) {
-	if (node == nullptr) node = new Node{key, nullptr, nullptr};
-	else if (node->key > key) node->left = Insert(node->left, key);
-	else node->right = Insert(node->right, key);
+	if (node == nullptr) node = read(new Node{key, nullptr, nullptr});
+	else if (compare(node->key > key)) node->left = read(Insert(node->left, key));
+	else node->right = read(Insert(node->right, key));
 	return node;
 }
 
 Node* successor(Node* node) {
-	node = node->right;
-	while (node != nullptr && node->left != nullptr) node = node->left;
+	node = read(node->right);
+	while (node != nullptr && node->left != nullptr) node = read(node->left);
 	return node;
 }
 
 Node* Delete(Node* node, int key) {
 	if (node == nullptr) return nullptr;
-	if (node->key > key) node->left = Delete(node->left, key);
-	else if (node->key < key) node->right = Delete(node->right, key);
+	if (compare(node->key > key)) node->left = read(Delete(node->left, key));
+	else if (compare(node->key < key)) node->right = read(Delete(node->right, key));
 	else {
-		if (node->left == nullptr && node->right == nullptr) node = nullptr;
-		else if (node->left == nullptr) node = node->right;
-		else if (node->right == nullptr) node = node->left;
+		if (node->left == nullptr && node->right == nullptr) node = read(nullptr);
+		else if (node->left == nullptr) node = read(node->right);
+		else if (node->right == nullptr) node = read(node->left);
 		else {
 			Node* succ = successor(node);
 			node->key = succ->key;
-			node->right = Delete(node->right, succ->key);
+			node->right = read(Delete(node->right, succ->key));
 		}
 	}
 	return node;
