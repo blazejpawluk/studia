@@ -186,6 +186,7 @@ void Delete(Node* node, int key) {
 	Node* delNode = find(root, key);
 
 	if (delNode == NIL) return;
+	cout << "Found node with value.\n";
 
 	if (delNode->left == NIL || delNode->right == NIL) y = delNode;
 	else y = successor(delNode);
@@ -201,7 +202,10 @@ void Delete(Node* node, int key) {
 
 	if (y != delNode) delNode->key = y->key;
 
+	cout << "Nodes set.\n";
+
 	if (y->color == 'b') fixupDelete(x);
+	cout << "Fixup done.\n";
 	delete y;
 }
 
@@ -214,8 +218,8 @@ int height(Node* node) {
 char left_trace[30];
 char right_trace[30];
 void Print(Node* node, int depth, char prefix) {
-	if (node == nullptr) return;
-	if (node->left != nullptr) Print(node->left, depth + 1, '/');
+	if (node == NIL) return;
+	if (node->left != NIL) Print(node->left, depth + 1, '/');
 	if (prefix == '/') left_trace[depth - 1] = '|';
 	if (prefix == '\\') right_trace[depth - 1] = ' ';
 	if (depth == 0) cout << "-";
@@ -227,7 +231,7 @@ void Print(Node* node, int depth, char prefix) {
 	if (depth > 0) cout << prefix << "-";
 	cout << (node->color == 'b' ? "[" : "(") << node->key << (node->color == 'b' ? "]" : ")") << endl;
 	left_trace[depth] = ' ';
-	if (node->right != nullptr) {
+	if (node->right != NIL) {
 		right_trace[depth] = '|';
 		Print(node->right, depth + 1, '\\');
 	}
