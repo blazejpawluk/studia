@@ -4,13 +4,14 @@ public class Bot {
 	private static Random r = new Random();
 
 	public static int move(int player, int depth) {
-		int bestMove = -1, bestScore = Integer.MIN_VALUE;
+		int bestMove = -1;
+		int bestScore = Integer.MIN_VALUE;
 
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
 				if (Board.board[i][j] == 0) {
 					Board.board[i][j] = player;
-					int score = minimax(player, depth - 1, false, player);
+					int score = minimax(player, depth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
 					Board.board[i][j] = 0;
 
 					if (score > bestScore || (score == bestScore && r.nextBoolean())) {
@@ -20,26 +21,50 @@ public class Bot {
 				}
 			}
 		}
+
 		System.out.println("Najlepszy ruch ma wartosc: " + bestScore);
+
 		return bestMove == -1 ? 0 : bestMove;
 	}
 
-	private static int minimax(int player, int depth, boolean maximizing, int rootPlayer) {
-		if (Board.winCheck(rootPlayer)) return 987654321;
-		if (Board.winCheck(3 - rootPlayer)) return -987654321;
-		if (Board.loseCheck(rootPlayer)) return -123456789;
-		if (Board.loseCheck(3 - rootPlayer)) return 123456789;
+	private static int minimax(int rootPlayer, int depth, int alpha, int beta, boolean maximizing) {
+		if (Board.winCheck(rootPlayer)) return 2000;
+		if (Board.winCheck(3 - rootPlayer)) return -2000;
+		if (Board.loseCheck(rootPlayer)) return -1000;
+		if (Board.loseCheck(3 - rootPlayer)) return 1000;
 
 		if (depth == 0) return evaluate(rootPlayer);
 
-		int best = (maximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE);
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				if (Board.board[i][j] == 0) {
-					Board.board[i][j] = (maximizing ? rootPlayer : 3 - rootPlayer);
-					int val = minimax(player, depth - 1, !maximizing, rootPlayer);
-					Board.board[i][j] = 0;
-					best = (maximizing ? Math.max(best, val) : Math.min(best, val)); 
+		int best;
+		if (maximizing) {
+			best = Integer.MIN_VALUE;
+			for (int i = 0; i < 5; i++) {
+				for (int j = 0; j < 5; j++) {
+					if (Board.board[i][j] == 0) {
+						Board.board[i][j] = rootPlayer;
+						int val = minimax(rootPlayer, depth - 1, alpha, beta, false);
+						Board.board[i][j] = 0;
+
+						best = Math.max(best, val); 
+						alpha = Math.max(alpha, best);
+						if (alpha >= beta) return alpha;
+					}
+				}
+			}
+		} else {
+			best = Integer.MAX_VALUE;
+			int opp = 3 - rootPlayer;
+			for (int i = 0; i < 5; i++) {
+				for (int j = 0; j < 5; j++) {
+					if (Board.board[i][j] == 0) {
+						Board.board[i][j] = opp;
+						int val = minimax(rootPlayer, depth - 1, alpha, beta, true);
+						Board.board[i][j] = 0;
+
+						best = Math.min(best, val); 
+						beta = Math.min(beta, best);
+						if (alpha >= beta) return beta;
+					}
 				}
 			}
 		}
@@ -64,7 +89,7 @@ public class Bot {
 			if (canWinPlayer) winLineDiff++;
 			if (canWinOpp) winLineDiff--;
 		}
-		score += winLineDiff;
+		score += 2*winLineDiff;
 
 		// różnica przegrywających linii
 		int loseLineDiff = 0;
@@ -96,7 +121,7 @@ public class Bot {
 				}
 			}
 		}
-		score += availableDiff;
+		score += 2*availableDiff;
 
 		return score;
 	}
