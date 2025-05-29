@@ -12,8 +12,8 @@ public class Bot {
 	private static Random r = new Random();
 	private static int goal;
 
-	public static int move(int player, int depth, int prev) {
-		goal = prev;
+	public static int move(int player, int depth) {
+		goal = evaluate(player);
 		int bestMove = -1;
 		Result best = new Result(Integer.MIN_VALUE, depth+1);
 
@@ -100,7 +100,7 @@ public class Bot {
 						Board.board[i][j] = opp;
 
 						Result val = minimax(rootPlayer, depth - 1, alpha, beta, true);
-						if (evaluate(rootPlayer) == val.score) val.depth = depth;
+						if (evaluate(3-rootPlayer) == val.score) val.depth = depth;
 
 						Board.board[i][j] = 0;
 

@@ -51,7 +51,6 @@ public class BotClient {
             endGame = false;
 
             // Pętla gry
-            int prev = 0;
             while (!endGame) {
                 // Odbiór wiadomości od serwera
                 r = in.read(buffer);
@@ -68,9 +67,9 @@ public class BotClient {
                 // Nasza tura lub kontynuacja gry
                 if (msg == 0 || msg == 6) {
                     // Wywołanie Bot.move z głębokością
-                    move = Bot.move(player, depth, prev);
+                    // move = Bot.move(player, depth);
+                    move = NewBot.move(player, depth);
                     Board.setMove(move, player);
-                    prev = move;
 
                     // Wysyłanie ruchu
                     playerMessage = Integer.toString(move);
