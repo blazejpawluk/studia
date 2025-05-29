@@ -6,21 +6,46 @@ Random Boot ver. 0.2
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
+
+// ******************************
+// #include <gsl/gsl_rng.h>
+// #include <gsl/gsl_randist.h>
+// ******************************
+
 #include <time.h>
-#include <arpa/inet.h>
+
+// ******************************
+// #include <unistd.h>
+// #include <arpa/inet.h>
+
+#ifdef _WIN32
+#  include <winsock2.h>
+#  include <ws2tcpip.h>
+#  define close(sock) closesocket(sock)
+#else
+#  include <arpa/inet.h>
+#  include <unistd.h>
+#endif
+// ******************************
 
 #include "./board.h"
 
-int randomMove(int player, gsl_rng *generator) {
+// ******************************
+// int randomMove(int player, gsl_rng *generator) {
+int randomMove(int player) {
+// ******************************
+
   int n = 0;
   for (int i=0; i < 5; i++)
     for (int j=0; j < 5; j++)
       if (board[i][j] == 0)
         n++;
-  n = gsl_rng_uniform_int(generator, n	);
+
+  // ******************************
+  n = rand() % n;
+  // n = gsl_rng_uniform_int(generator, n	);
+  // ******************************
+
   for (int i=0; i < 5; i++)
     for (int j=0; j < 5; j++)
       if (board[i][j] == 0)
@@ -31,6 +56,16 @@ int randomMove(int player, gsl_rng *generator) {
 }
 
 int main(int argc, char *argv[]) {
+  // ******************************
+  #ifdef _WIN32
+    WSADATA wsaData;
+    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0) {
+      fprintf(stderr, "WSAStartup failed\n");
+      return -1;
+    }
+  #endif
+  // ******************************
+
   int server_socket;
   struct sockaddr_in server_addr;
   char server_message[16], player_message[16];
@@ -38,8 +73,11 @@ int main(int argc, char *argv[]) {
   bool end_game;
   int player, msg, move;
 
-  gsl_rng *generator = gsl_rng_alloc(gsl_rng_mt19937);
-  gsl_rng_set(generator, time(NULL));
+  // ******************************
+  // gsl_rng *generator = gsl_rng_alloc(gsl_rng_mt19937);
+  // gsl_rng_set(generator, time(NULL));
+  srand((unsigned)time(NULL));
+  // ******************************
 
   if ( argc != 5 ) {
     printf("Wrong number of arguments\n");
@@ -98,7 +136,11 @@ int main(int argc, char *argv[]) {
       setMove(move, 3-player);
     }
     if ( (msg == 0) || (msg == 6) ) {
-      move = randomMove(player, generator);
+      // ******************************
+      // move = randomMove(player, generator);
+      move = randomMove(player);
+      // ******************************
+
       setMove(move, player);
       memset(player_message, '\0', sizeof(player_message));
       snprintf(player_message, sizeof(player_message), "%d", move);
@@ -120,6 +162,10 @@ int main(int argc, char *argv[]) {
 
   // Close socket
   close(server_socket);
+
+  #ifdef _WIN32
+    WSACleanup();
+  #endif
 
   return 0;
 }

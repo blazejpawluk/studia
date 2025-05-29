@@ -6,12 +6,34 @@ Client ver. 0.2
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <arpa/inet.h>
+
+// ******************************
+// #include <unistd.h>
+// #include <arpa/inet.h>
+
+#ifdef _WIN32
+#  include <winsock2.h>
+#  include <ws2tcpip.h>
+#  define close(sock) closesocket(sock)
+#else
+#  include <arpa/inet.h>
+#  include <unistd.h>
+#endif
+// ******************************
 
 #include "./board.h"
 
 int main(int argc, char *argv[]) {
+  // ******************************
+  #ifdef _WIN32
+    WSADATA wsaData;
+    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0) {
+      fprintf(stderr, "WSAStartup failed\n");
+      return -1;
+    }
+  #endif
+  // ******************************
+
   int server_socket;
   struct sockaddr_in server_addr;
   char server_message[16], player_message[16];
@@ -108,6 +130,10 @@ int main(int argc, char *argv[]) {
 
   // Close socket
   close(server_socket);
+
+  #ifdef _WIN32
+    WSACleanup();
+  #endif
 
   return 0;
 }
