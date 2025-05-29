@@ -1,7 +1,7 @@
 #include "ukladanka.cpp"
 
 int main() {
-	WIDTH = 3;
+	WIDTH = 4;
 	SIZE = WIDTH*WIDTH;
 
 	array<uint8_t, 16> board;
@@ -12,15 +12,15 @@ int main() {
 	mt19937 gen(rd());
 
 	// przykładowe układanki
+	board = {7, 5, 8, 12, 1, 6, 9, 14, 10, 0, 2, 4, 3, 11, 13, 15}; uint8_t emptyIndex = 8;
 	// board = {12, 10, 14, 11, 9, 8, 6, 2, 0, 7, 15, 13, 4, 1, 5, 3}; uint8_t emptyIndex = 8;
 	// board = {4, 12, 15, 5, 14, 10, 11, 13, 0, 7, 2, 8, 6, 9, 1, 3}; uint8_t emptyIndex = 8;
-	// board = {7, 5, 8, 12, 1, 6, 9, 14, 10, 0, 2, 4, 3, 11, 13, 15}; uint8_t emptyIndex = 8;
 
 	// losowa permutacja
-	do {
-		shuffle(board.begin(), board.begin() + SIZE - 1, gen);
-	} while (!isSolvable(board));
-	uint8_t emptyIndex = SIZE-1;
+	// do {
+	// 	shuffle(board.begin(), board.begin() + SIZE - 1, gen);
+	// } while (!isSolvable(board));
+	// uint8_t emptyIndex = SIZE-1;
 
 	// losowe przesunięcia
 	// int index = SIZE-1;
@@ -76,11 +76,26 @@ int main() {
 	// }
 	// cout << "Podsumowanie: odwiedzono " << visitedMisplaced << " stanow, rozwiazano w " << misplacedPath.size()-1 << " ruchach.\n";
 	
+	// cout << "==================================================\n";
+	
+	// cout << "Heurystyka: Manhattan.\n";
+	// size_t visitedManhattan;
+	// vector<uint8_t> manhattanPath = aStar(startingState, emptyIndex, manhattan, visitedManhattan);
+	
+	// array<uint8_t, 16> tempBoard = board;
+	// printBoard(tempBoard);
+	// for (int i = 1; i < manhattanPath.size(); i++) {
+	// 	cout << i << ":\n";
+	// 	swap(tempBoard[manhattanPath[i-1]], tempBoard[manhattanPath[i]]);
+	// 	printBoard(tempBoard);
+	// }
+	// cout << "Podsumowanie: odwiedzono " << visitedManhattan << " stanow, rozwiazano w " << manhattanPath.size()-1 << " ruchach.\n";
+	
 	cout << "==================================================\n";
 	
-	cout << "Heurystyka: Manhattan.\n";
+	cout << "Heurystyka: Manhattan z ulepszeniami.\n";
 	size_t visitedManhattan;
-	vector<uint8_t> manhattanPath = aStar(startingState, emptyIndex, manhattan, visitedManhattan);
+	vector<uint8_t> manhattanPath = aStar(startingState, emptyIndex, heuristic, visitedManhattan);
 	
 	array<uint8_t, 16> tempBoard = board;
 	printBoard(tempBoard);
