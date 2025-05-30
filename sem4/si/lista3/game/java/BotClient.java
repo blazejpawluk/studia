@@ -55,7 +55,8 @@ public class BotClient {
 				if (move != 0) Board.setMove(move, 3 - player);
 
 				if (msg == 0 || msg == 6) {
-					move = Bot.move(player, depth);
+					// move = Bot.move(player, depth);
+					move = NewBot.move(player, depth);
 					Board.setMove(move, player);
 
 					playerMessage = Integer.toString(move);
