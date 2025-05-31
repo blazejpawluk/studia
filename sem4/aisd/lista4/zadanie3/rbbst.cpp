@@ -101,112 +101,105 @@ void Insert(Node* node, int key) {
 	fixupInsert(newNode);
 }
 
-void fixupDelete(Node* x) {
-	while (x != root && x->color == 'b') {
-		if (x == x->parent->left) {
-			Node* w = x->parent->right;
+Node* find(Node* node, int key) {
+	if (node == NIL || node->key == key) return node;
+	if (node->key < key) return find(node->right, key);
+	return find(node->left, key);
+}
+
+Node* treeMinimum(Node* node) {
+	while (node != NIL && node->left != NIL) node = node->left;
+	return node;
+}
+
+Node* succesor(Node* node) {
+	if (node->right != NIL) return treeMinimum(node->right);
+	Node* parent = node->parent;
+	while (parent != NIL && node == parent->right) {
+		node = parent;
+		parent = parent->parent;
+	}
+	return parent;
+}
+
+void fixUpDelete(Node* node) {
+	while (node != root && node->color == 'b') {
+		if (node == node->parent->left) {
+			Node* w = node->parent->right;
 			if (w->color == 'r') {
-				w->color = 'b';
-				w->parent->color = 'r';
-				leftRotate(x->parent);
-				w = x->parent->right;
+				leftRotate(node->parent);
+				w = node->parent->right;
 			}
 
 			if (w->left->color == 'b' && w->right->color == 'b') {
 				w->color = 'r';
-				x = x->parent;
+				node = node->parent;
 			} else {
 				if (w->right->color == 'b') {
 					w->left->color = 'b';
 					w->color = 'r';
 					rightRotate(w);
-					w = x->parent->right;
+					w = node->parent->right;
 				}
 
-				x->color = x->parent->color;
-				x->parent->color = 'b';
-				x->right->color = 'b';
-				leftRotate(x->parent);
-				x = root;
+				w->color = node->parent->color;
+				node->parent->color = 'b';
+				w->right->color = 'b';
+				leftRotate(node->parent);
+				node = root;
 			}
 		} else {
-			Node* w = x->parent->left;
+			Node* w = node->parent->left;
 			if (w->color == 'r') {
 				w->color = 'b';
-				x->parent->color = 'r';
-				rightRotate(x->parent);
-				w = x->parent->left;
+				node->parent->color = 'r';
+				rightRotate(node->parent);
+				w = node->parent->left;
 			}
 
 			if (w->right->color == 'b' && w->left->color == 'b') {
 				w->color = 'r';
-				x = x->parent;
+				node = node->parent;
 			} else {
 				if (w->left->color == 'b') {
 					w->right->color = 'b';
 					w->color = 'r';
 					leftRotate(w);
-					w = x->parent->left;
+					w = node->parent->left;
 				}
 
-				w->color = x->parent->color;
-				x->parent->color = 'b';
+				w->color = node->parent->color;
+				node->parent->color = 'b';
 				w->left->color = 'b';
-				rightRotate(x->parent);
-				x = root;
+				rightRotate(node->parent);
+				node = root;
 			}
 		}
 	}
-	x->color = 'b';
-}
-
-Node* find(Node* node, int key) {
-	if (node == NIL) return NIL;
-	if (node->key == key) return node;
-	if (node->key < key) return find(node->right, key);
-	return find(node->left, key);
-}
-
-Node* successor(Node* node) {
-	if (node->right != NIL) {
-		while (node != NIL && node->right != NIL) node = node->right;
-		return node;
-	}
-
-	Node* parent = node->parent;
-	while (parent != NIL && node == parent->right) {
-		node = parent;
-		parent = parent->right;
-	}
-	return parent;
+	node->color = 'b';
 }
 
 void Delete(Node* node, int key) {
-	Node *x = NIL, *y = NIL;
-	Node* delNode = find(root, key);
+	Node* toDelete = find(root, key);
+	if (toDelete != NIL) {
+		Node* y = NIL;
+		if (toDelete->left == NIL || toDelete->right == NIL) y = toDelete;
+		else y = succesor(toDelete);
 
-	if (delNode == NIL) return;
-	cout << "Found node with value.\n";
+		Node* x;
+		if (y->left != NIL) x = y->left;
+		else x = y->right;
 
-	if (delNode->left == NIL || delNode->right == NIL) y = delNode;
-	else y = successor(delNode);
+		x->parent = y->parent;
 
-	if (y->left != NIL) x = y->left;
-	else x = y->right;
+		if (y->parent == NIL) root = x;
+		else if (y == y->parent->left) y->parent->left = x;
+		else y->parent->right = x;
 
-	x->parent = y->parent;
-
-	if (y->parent == NIL) root = x;
-	else if (y == y->parent->left) y->parent->left = x;
-	else y->parent->right = x;
-
-	if (y != delNode) delNode->key = y->key;
-
-	cout << "Nodes set.\n";
-
-	if (y->color == 'b') fixupDelete(x);
-	cout << "Fixup done.\n";
-	delete y;
+		if (y != toDelete) toDelete->key = y->key;
+		if (y->color == 'b') fixUpDelete(x);
+		delete y;
+	}
 }
 
 int height(Node* node) {

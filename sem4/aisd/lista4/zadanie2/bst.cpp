@@ -25,30 +25,30 @@ Node* read(Node* node) {
 Node* root;
 
 Node* Insert(Node* node, int key) {
-	if (node == nullptr) node = read(new Node{key, nullptr, nullptr});
-	else if (compare(node->key > key)) node->left = read(Insert(node->left, key));
-	else node->right = read(Insert(node->right, key));
+	if (node == nullptr) node = new Node{key, nullptr, nullptr};
+	else if (compare(node->key > key)) node->left = read(Insert(read(node->left), key));
+	else node->right = read(Insert(read(node->right), key));
 	return node;
 }
 
 Node* successor(Node* node) {
 	node = read(node->right);
-	while (node != nullptr && node->left != nullptr) node = read(node->left);
+	while (node != nullptr && read(node->left) != nullptr) node = read(node->left);
 	return node;
 }
 
 Node* Delete(Node* node, int key) {
 	if (node == nullptr) return nullptr;
-	if (compare(node->key > key)) node->left = read(Delete(node->left, key));
-	else if (compare(node->key < key)) node->right = read(Delete(node->right, key));
+	if (compare(node->key > key)) node->left = read(Delete(read(node->left), key));
+	else if (compare(node->key < key)) node->right = read(Delete(read(node->right), key));
 	else {
-		if (node->left == nullptr && node->right == nullptr) node = read(nullptr);
-		else if (node->left == nullptr) node = read(node->right);
-		else if (node->right == nullptr) node = read(node->left);
+		if (read(node->left) == nullptr && read(node->right) == nullptr) node = nullptr;
+		else if (read(node->left) == nullptr) node = read(node->right);
+		else if (read(node->right) == nullptr) node = read(node->left);
 		else {
 			Node* succ = successor(node);
 			node->key = succ->key;
-			node->right = read(Delete(node->right, succ->key));
+			node->right = read(Delete(read(node->right), succ->key));
 		}
 	}
 	return node;
@@ -56,7 +56,7 @@ Node* Delete(Node* node, int key) {
 
 int Height(Node* node) {
 	if (node == nullptr) return 0;
-	int heightL = Height(node->left), heightR = Height(node->right);
+	int heightL = Height(read(node->left)), heightR = Height(read(node->right));
 	return (heightL > heightR ? heightL : heightR) + 1;
 }
 
