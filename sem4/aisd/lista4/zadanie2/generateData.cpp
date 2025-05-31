@@ -10,7 +10,7 @@ int main() {
 	random_device rd;
 	mt19937 gen(rd());
 	
-	for (int n = 1000; n <= 10000; n += 1000) {
+	for (int n = 10000; n <= 100000; n += 10000) {
 		cout << n << endl;
 		uniform_int_distribution<> dis(0, 2 * n - 1);
 
