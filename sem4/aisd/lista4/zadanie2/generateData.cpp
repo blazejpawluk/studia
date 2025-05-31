@@ -15,6 +15,7 @@ int main() {
 		uniform_int_distribution<> dis(0, 2 * n - 1);
 
 		for (int k = 0; k < 20; k++) {
+			cout << '\t' << k << endl;
 			int ascArr[n], ranArr[n], del[n];
 			for (int i = 0; i < n; i++) {
 				ranArr[i] = dis(gen);

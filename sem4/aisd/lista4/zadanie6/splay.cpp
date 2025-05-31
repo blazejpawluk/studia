@@ -137,9 +137,9 @@ void Delete(Node* node, int key) {
 	}
 }
 
-int height(Node* node) {
+int Height(Node* node) {
 	if (node == NIL) return 0;
-	int heightL = height(read(node->left)), heightR = height(read(node->right));
+	int heightL = Height(read(node->left)), heightR = Height(read(node->right));
 	return (heightL > heightR ? heightL : heightR) + 1;
 }
 
