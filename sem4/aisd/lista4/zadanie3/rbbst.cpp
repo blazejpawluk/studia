@@ -16,7 +16,10 @@ Node* root;
 Node* NIL;
 
 void initNIL() {
-	NIL = new Node{0, NIL, NIL, NIL, 'b'};
+	NIL = new Node;
+	NIL->key = 0;
+	NIL->color = 'b';
+	NIL->left = NIL->right = NIL->parent = NIL;
 }
 
 void leftRotate(Node* node) {
@@ -127,6 +130,8 @@ void fixUpDelete(Node* node) {
 		if (node == node->parent->left) {
 			Node* w = node->parent->right;
 			if (w->color == 'r') {
+				w->color = 'b';
+				node->parent->color = 'r';
 				leftRotate(node->parent);
 				w = node->parent->right;
 			}
@@ -180,26 +185,57 @@ void fixUpDelete(Node* node) {
 }
 
 void Delete(Node* node, int key) {
-	Node* toDelete = find(root, key);
-	if (toDelete != NIL) {
-		Node* y = NIL;
-		if (toDelete->left == NIL || toDelete->right == NIL) y = toDelete;
-		else y = succesor(toDelete);
+	Node* z = find(root, key);
+	if (z == NIL) return;
 
-		Node* x;
-		if (y->left != NIL) x = y->left;
-		else x = y->right;
+	Node* y = z;
+	char yOriginalColor = y->color;
+	Node* x = nullptr;
 
-		x->parent = y->parent;
-
-		if (y->parent == NIL) root = x;
-		else if (y == y->parent->left) y->parent->left = x;
-		else y->parent->right = x;
-
-		if (y != toDelete) toDelete->key = y->key;
-		if (y->color == 'b') fixUpDelete(x);
-		delete y;
+	if (z->left == NIL) {
+		x = z->right;
+		if (z->parent == NIL) root = x;
+		else if (z == z->parent->left) z->parent->left = x;
+		else z->parent->right = x;
+		x->parent = z->parent;
 	}
+	else if (z->right == NIL) {
+		x = z->left;
+		if (z->parent == NIL) root = x;
+		else if (z == z->parent->left) z->parent->left = x;
+		else z->parent->right = x;
+		x->parent = z->parent;
+	}
+	else {
+		y = succesor(z);
+		yOriginalColor = y->color;
+		x = y->right;
+
+		if (y->parent == z) x->parent = y;
+		else {
+			if (y->parent == NIL) root = x;
+			else if (y == y->parent->left) y->parent->left = x;
+			else y->parent->right = x;
+			x->parent = y->parent;
+
+			y->right = z->right;
+			y->right->parent = y;
+		}
+
+		if (z->parent == NIL) root = y;
+		else if (z == z->parent->left) z->parent->left = y;
+		else z->parent->right = y;
+
+		y->parent = z->parent;
+
+		y->left = z->left;
+		y->left->parent = y;
+
+		y->color = z->color;
+	}
+
+	if (yOriginalColor == 'b') fixUpDelete(x);
+	delete z;
 }
 
 int height(Node* node) {

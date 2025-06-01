@@ -10,17 +10,13 @@ int main() {
 		right_trace[i] = ' ';
 	}
 
-	random_device rd;
-	mt19937 gen(rd());
-	uniform_int_distribution<> ArrayDis(0, 2 * size - 1);
-
 	int ascArr[size], ranArr[size], del[size];
 	for (int i = 0; i < size; i++) {
-		ranArr[i] = ArrayDis(gen);
-		ascArr[i] = ranArr[i];
-		del[i] = i;
+		ascArr[i] = i+1;
+		ranArr[i] = i+1;
+		del[i] = i+1;
 	}
-	sort(ascArr, ascArr + size);
+	random_shuffle(ranArr, ranArr + size);
 	random_shuffle(del, del + size);
 
 	cout << "==================================================\n";
@@ -34,8 +30,8 @@ int main() {
 	}
 
 	for (int i = 0; i < size; i++) {
-		root = Delete(root, ascArr[del[i]]);
-		cout << "\ndelete " << ascArr[del[i]] << endl;
+		root = Delete(root, del[i]);
+		cout << "\ndelete " << del[i] << endl;
 		Print(root, 0, '-');
 	}
 
@@ -50,8 +46,8 @@ int main() {
 	}
 
 	for (int i = 0; i < size; i++) {
-		root = Delete(root, ranArr[del[i]]);
-		cout << "\ndelete " << ranArr[del[i]] << endl;
+		root = Delete(root, del[i]);
+		cout << "\ndelete " << del[i] << endl;
 		Print(root, 0, '-');
 	}
 

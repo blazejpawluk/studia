@@ -7,22 +7,18 @@ int main() {
 	ofstream fileAsc("results/ascResults.txt");
 	ofstream fileRan("results/ranResults.txt");
 
-	random_device rd;
-	mt19937 gen(rd());
-	
 	for (int n = 1000; n <= 10000; n += 1000) {
 		cout << n << endl;
-		uniform_int_distribution<> dis(0, 2 * n - 1);
 
 		for (int k = 0; k < 20; k++) {
 			cout << '\t' << k << endl;
 			int ascArr[n], ranArr[n], del[n];
 			for (int i = 0; i < n; i++) {
-				ranArr[i] = dis(gen);
-				ascArr[i] = ranArr[i];
-				del[i] = i;
+				ascArr[i] = i+1;
+				ranArr[i] = i+1;
+				del[i] = i+1;
 			}
-			sort(ascArr, ascArr + n);
+			random_shuffle(ranArr, ranArr + n);
 			random_shuffle(del, del + n);
 
 			// ascending array
@@ -47,7 +43,7 @@ int main() {
 			maxComps = 0, maxReads = 0;
 			for (int i = 0; i < n; i++) {
 				comps = 0; reads = 0;
-				root = Delete(root, ascArr[del[i]]);
+				root = Delete(root, del[i]);
 				avgComps += comps * 1.0 / n;
 				avgReads += reads * 1.0 / n;
 				avgHeight += Height(root) * 1.0 / n;
@@ -80,7 +76,7 @@ int main() {
 			maxComps = 0, maxReads = 0;
 			for (int i = 0; i < n; i++) {
 				comps = 0; reads = 0;
-				root = Delete(root, ranArr[del[i]]);
+				root = Delete(root, del[i]);
 				avgComps += comps * 1.0 / n;
 				avgReads += reads * 1.0 / n;
 				avgHeight += Height(root) * 1.0 / n;

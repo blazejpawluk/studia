@@ -4,6 +4,8 @@
 #include <fstream>
 
 int main() {
+	initNIL();
+
 	ofstream fileAsc("results/ascResults.txt");
 	ofstream fileRan("results/ranResults.txt");
 
@@ -18,15 +20,15 @@ int main() {
 			cout << '\t' << k << endl;
 			int ascArr[n], ranArr[n], del[n];
 			for (int i = 0; i < n; i++) {
-				ranArr[i] = dis(gen);
-				ascArr[i] = ranArr[i];
-				del[i] = i;
+				ascArr[i] = i+1;
+				ranArr[i] = i+1;
+				del[i] = i+1;
 			}
-			sort(ascArr, ascArr + n);
+			random_shuffle(ranArr, ranArr + n);
 			random_shuffle(del, del + n);
 
 			// ascending array
-			root = nullptr;
+			root = NIL;
 			double avgComps = 0, avgReads = 0, avgHeight = 0;
 			int maxComps = 0, maxReads = 0;
 			for (int i = 0; i < n; i++) {
@@ -47,7 +49,7 @@ int main() {
 			maxComps = 0, maxReads = 0;
 			for (int i = 0; i < n; i++) {
 				comps = 0; reads = 0;
-				Delete(root, ascArr[del[i]]);
+				Delete(root, del[i]);
 				avgComps += comps * 1.0 / n;
 				avgReads += reads * 1.0 / n;
 				avgHeight += Height(root) * 1.0 / n;
@@ -59,7 +61,7 @@ int main() {
 			fileAsc << avgHeight << endl;
 
 			// random array
-			root = nullptr;
+			root = NIL;
 			avgComps = 0, avgReads = 0, avgHeight = 0;
 			maxComps = 0, maxReads = 0;
 			for (int i = 0; i < n; i++) {
@@ -80,7 +82,7 @@ int main() {
 			maxComps = 0, maxReads = 0;
 			for (int i = 0; i < n; i++) {
 				comps = 0; reads = 0;
-				Delete(root, ranArr[del[i]]);
+				Delete(root, del[i]);
 				avgComps += comps * 1.0 / n;
 				avgReads += reads * 1.0 / n;
 				avgHeight += Height(root) * 1.0 / n;

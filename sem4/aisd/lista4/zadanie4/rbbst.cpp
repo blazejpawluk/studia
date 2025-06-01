@@ -28,7 +28,10 @@ Node* root;
 Node* NIL;
 
 void initNIL() {
-	NIL = new Node{0, NIL, NIL, NIL, 'b'};
+	NIL = new Node{0, nullptr, nullptr, nullptr, 'b'};
+	NIL->left = NIL;
+	NIL->right = NIL;
+	NIL->parent = NIL;
 }
 
 void leftRotate(Node* node) {
@@ -139,6 +142,8 @@ void fixUpDelete(Node* node) {
 		if (node == read(node->parent->left)) {
 			Node* w = read(node->parent->right);
 			if (w->color == 'r') {
+				w->color = 'b';
+				read(node->parent)->color = 'r';
 				leftRotate(read(node->parent));
 				w = read(node->parent->right);
 			}
@@ -192,54 +197,63 @@ void fixUpDelete(Node* node) {
 }
 
 void Delete(Node* node, int key) {
-	Node* toDelete = find(root, key);
-	if (toDelete != NIL) {
-		Node* y = NIL;
-		if (read(toDelete->left) == NIL || read(toDelete->right) == NIL) y = toDelete;
-		else y = succesor(toDelete);
+	Node* z = find(root, key);
+	if (z == NIL) return;
 
-		Node* x;
-		if (read(y->left) != NIL) x = read(y->left);
-		else x = read(y->right);
+	Node* y = z;
+	char yOriginalColor = y->color;
+	Node* x = nullptr;
 
-		x->parent = read(read(y->parent));
-
-		if (read(y->parent) == NIL) root = x;
-		else if (y == read(y->parent->left)) y->parent->left = read(x);
-		else y->parent->right = read(x);
-
-		if (y != toDelete) toDelete->key = y->key;
-		if (y->color == 'b') fixUpDelete(x);
-		delete y;
+	if (read(z->left) == NIL) {
+		x = read(z->right);
+		if (read(z->parent) == NIL) root = x;
+		else if (z == read(z->parent->left)) z->parent->left = read(x);
+		else z->parent->right = read(x);
+		x->parent = read(read(z->parent));
 	}
+	else if (read(z->right) == NIL) {
+		x = read(z->left);
+		if (read(z->parent) == NIL) root = x;
+		else if (z == read(z->parent->left)) z->parent->left = read(x);
+		else z->parent->right = read(x);
+		x->parent = read(read(z->parent));
+	}
+	else {
+		y = succesor(z);
+		yOriginalColor = y->color;
+		x = read(y->right);
+
+		if (read(y->parent) == z) x->parent = read(y);
+		else {
+			if (read(y->parent) == NIL) root = x;
+			else if (y == read(y->parent->left)) y->parent->left = read(x);
+			else y->parent->right = read(x);
+			x->parent = read(y->parent);
+
+			y->right = read(read(z->right));
+			y->right->parent = read(y);
+		}
+
+		if (read(z->parent) == NIL) root = y;
+		else if (z == read(z->parent->left)) z->parent->left = read(y);
+		else z->parent->right = read(y);
+
+		y->parent = read(read(z->parent));
+
+		y->left = read(read(z->left));
+		y->left->parent = read(y);
+
+		y->color = z->color;
+	}
+
+	if (yOriginalColor == 'b') fixUpDelete(x);
+	delete z;
 }
 
 int Height(Node* node) {
 	if (node == NIL) return 0;
 	int heightL = Height(read(node->left)), heightR = Height(read(node->right));
 	return (heightL > heightR ? heightL : heightR) + 1;
-}
-
-char left_trace[30];
-char right_trace[30];
-void Print(Node* node, int depth, char prefix) {
-	if (node == NIL) return;
-	if (node->left != NIL) Print(node->left, depth + 1, '/');
-	if (prefix == '/') left_trace[depth - 1] = '|';
-	if (prefix == '\\') right_trace[depth - 1] = ' ';
-	if (depth == 0) cout << "-";
-	if (depth > 0) cout << " ";
-	for (int i = 0; i < depth - 1; i++) {
-		if (left_trace[i] == '|' || right_trace[i] == '|') cout << "| ";
-		else cout << "  ";
-	}
-	if (depth > 0) cout << prefix << "-";
-	cout << (node->color == 'b' ? "[" : "(") << node->key << (node->color == 'b' ? "]" : ")") << endl;
-	left_trace[depth] = ' ';
-	if (node->right != NIL) {
-		right_trace[depth] = '|';
-		Print(node->right, depth + 1, '\\');
-	}
 }
 
 #endif
