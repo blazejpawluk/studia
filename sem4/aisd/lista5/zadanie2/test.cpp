@@ -1,24 +1,21 @@
-#include "zadanie2.cpp"
+#include "signal.cpp"
 
 int main() {
 	int n = 10;
 
-	Graph G = createGraph(n);
-	Tree T = createTree(Tree(0, n), G, 0);
-
-
-	cout << "\nDRZEWO:\n";
-	for (int i = 0; i < n; i++) {
+	Tree T = createTree(n, 1);
+	cout << "Tree:\n";
+	for (int i = 1; i <= n; i++) {
 		cout << i << ": ";
-		for (int k : T.children[i]) cout << k << " ";
+		for (int k : T.N[i]) cout << k << " ";
 		cout << endl;
 	}
 
-	cout << "\nW KOLEJNOSCI:\n";
-	vector<vector<int>> result = signal(T);
-	for (int i = 0; i < n; i++) {
-		cout << i << ": ";
-		for (int k : result[i]) cout << k << " ";
+	T = signal(T);
+	cout << "\nSorted:\n";
+	for (int i = 1; i <= n; i++) {
+		cout << i << " - " << T.X[i] << ": ";
+		for (int k : T.N[i]) cout << k << " ";
 		cout << endl;
 	}
 

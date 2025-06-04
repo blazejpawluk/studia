@@ -13,10 +13,6 @@ struct Edge {
 		V.first = v;
 		V.second = u;
 		this->w = w;
-	} 
-
-	bool operator<(const Edge& other) const {
-		return this->w > other.w;
 	}
 };
 

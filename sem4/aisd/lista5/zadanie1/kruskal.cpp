@@ -3,33 +3,45 @@
 
 #include "graph.cpp"
 
-vector<Edge> kruskal(Graph G) {
+int findSet(int v, vector<int>& parent) {
+	if (parent[v] == v) return v;
+	return parent[v] = findSet(parent[v], parent);
+}
+
+void unionSets(int a, int b, vector<int>& parent, vector<int>& rank) {
+	a = findSet(a, parent);
+	b = findSet(b, parent);
+	if (a != b) {
+		if (rank[a] < rank[b]) swap(a, b);
+		parent[b] = a;
+		if (rank[a] == rank[b]) rank[a]++;
+	}
+}
+
+Graph Kruskal(Graph G) {
 	int n = G.V.size();
 
-	unordered_set<int> Z[n];
-	for (int i = 0; i < n; i++) Z[i].insert(i+1);
+	vector<int> parent(n+1), rank(n+1, 0);
+	for (int i = 1; i <= n; i++) parent[i] = i;
 
-	priority_queue<Edge> Q;
-	for (Edge e : G.E) Q.push(e);
+	vector<Edge> sortedE = G.E;
+	sort(sortedE.begin(), sortedE.end(), [](const Edge& a, const Edge&b) {return a.w < b.w;});
 
-	vector<Edge> T;
-	for (int i = 1; i < n; i++) {
-		Edge e;
-		do {
-			e = Q.top();
-			Q.pop();
+	Graph result;
+	result.V = G.V;
+
+	for (Edge e : sortedE) {
+		int u = e.V.first;
+		int v = e.V.second;
+		if (findSet(u, parent) != findSet(v, parent)) {
+			unionSets(u, v, parent, rank);
+			result.E.push_back(e);
+
+			if (result.E.size() == n-1) break;
 		}
-		while (Z[e.V.first] == Z[e.V.second]);
-
-		T.push_back(e);
-
-		unordered_set<int> temp = Z[e.V.first];
-		temp.insert(Z[e.V.second].begin(), Z[e.V.second].end());
-		Z[e.V.first] = temp;
-		Z[e.V.second] = temp;
 	}
 
-	return T;
+	return result;
 }
 
 #endif
