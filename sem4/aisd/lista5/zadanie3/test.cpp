@@ -1,54 +1,41 @@
 #include "heap.cpp"
 
 int main() {
-	vector<int> H = makeHeap();
+	Node* H = MakeHeap();
 
-	Insert(H, 5);
-	Insert(H, 8);
-	Insert(H, 4);
-	Insert(H, 2);
-	Insert(H, 6);
-	Insert(H, 3);
-	Insert(H, 1);
-	Insert(H, 9);
+	int A[8] = {5, 3, 7, 1, 4, 9, 2, 6};
+	for (int i = 0; i < 8; i++) {
+		cout << "\nInsert " << A[i] << endl;
+		H = Insert(H, A[i]);
+		printHeap(H);
+	}
 
-	cout << "After inserts\n";
-	print(H);
+	cout << "\nMinimum=" << Minimum(H)->key << endl;
 
-	cout << "Minimum " <<  Minimum(H) << endl;
+	int min;
+	H = ExtractMin(H, min);
+	cout << "\nExtractMin=" << min << endl;
+	printHeap(H);
 
-	cout  << "Extracted " << ExtractMin(H) << endl;
-	print(H);
+	H = ExtractMin(H, min);
+	cout << "\nExtractMin=" << min << endl;
+	printHeap(H);
 
-	vector<int> H2 = makeHeap();
-	Insert(H2, 1);
-	Insert(H2, 10);
-	Insert(H2, 7);
+	DecreaseKey(find(H, 9), 8);
+	cout << "\nDecreaseKey(9->8)\n";
+	printHeap(H);
 
-	H = Union(H, H2);
+	DecreaseKey(find(H, 8), 1);
+	cout << "\nDecreaseKey(8->1)\n";
+	printHeap(H);
 
-	cout << "After union\n";
-	print(H);
+	H = Delete(H, find(H, 4));
+	cout << "\nDelete 4\n";
+	printHeap(H);
 
-	DecreaseKey(H, 10, 5);
-	cout << "Decrease 10->5\n";
-	print(H);
-	
-	DecreaseKey(H, 5, 2);
-	cout << "Decrease 5->2\n";
-	print(H);
-
-	Delete(H, 8);
-	cout << "Delete 8\n";
-	print(H);
-
-	Delete(H, 4);
-	cout << "Delete 4\n";
-	print(H);
-
-	Delete(H, 1);
-	cout << "Delete 1\n";
-	print(H);
+	H = Delete(H, find(H, 1));
+	cout << "\nDelete 1\n";
+	printHeap(H);
 
 	return 0;
 }

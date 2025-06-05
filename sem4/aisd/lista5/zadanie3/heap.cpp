@@ -4,112 +4,225 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+struct Node {
+	int key;
+	int degree;
+	Node* parent;
+	Node* child;
+	Node* sibling;
+};
+
+Node* makeNode(int x) {
+	Node* node = (Node*)malloc(sizeof(Node));
+	node->key = x;
+	node->degree = 0;
+	node->parent = nullptr;
+	node->child = nullptr;
+	node->sibling = nullptr;
+	return node;
+}
+
 int comps;
 bool compare(bool a) {
 	comps++;
 	return a;
 }
 
-int parent(int i) {return i/2;}
-int left(int i) {return 2*i;}
-int right(int i) {return 2*i+1;}
-int size(vector<int> A) {return A.size()-1;}
+// used in extractMin
+Node* reverseList(Node* x) {
+	Node* prev = nullptr;
+	Node* curr = x;
+	Node* next;
 
-void heapify(vector<int>& A, int i) {
-	int l = left(i), r = right(i);
-	
-	int smallest = i;
-	if (l <= size(A) && compare(A[l] < A[smallest])) smallest = l;
-	if (r <= size(A) && compare(A[r] < A[smallest])) smallest = r;
-
-	if (smallest != i) {
-		swap(A[i], A[smallest]);
-		heapify(A, smallest);
+	while (curr) {
+		next = curr->sibling;
+		curr->sibling = prev;
+		curr->parent = nullptr;
+		prev = curr;
+		curr = next;
 	}
+
+	return prev;
 }
 
-vector<int> buildHeap(vector<int> A) {
-	for (int i = size(A)/2; i > 0; i--) heapify(A, i);
-	return A;
+// used in union
+Node* mergeRootLists(Node* H1, Node* H2) {
+	if (!H1) return H2;
+	if (!H2) return H1;
+
+	Node* head = nullptr;
+	Node* tail = nullptr;
+	Node* a = H1;
+	Node* b = H2;
+
+	if (a->degree <= b->degree) {
+		head = a;
+		a = a->sibling;
+	} else {
+		head = b;
+		b = b->sibling;
+	}
+	tail = head;
+
+	while (a && b) {
+		if (a->degree <= b->degree) {
+			tail->sibling = a;
+			a = a->sibling;
+		} else {
+			tail->sibling = b;
+			b = b->sibling;
+		}
+		tail = tail->sibling;
+	}
+
+	if (a) tail->sibling = a;
+	else tail->sibling = b;
+
+	return head;
 }
 
-int find(vector<int> A, int x) {
-	for (int i = 1; i <= size(A); i++) 
-		if (compare(A[i] == x)) return i;
-	return -1;
+// used in union
+Node* linkTrees(Node* r1, Node* r2) {
+	r2->parent = r1;
+	r2->sibling = r1->child;
+	r1->child = r2;
+	r1->degree++;
+	return r1;
 }
 
-vector<int> makeHeap() {
-	vector<int> H;
-	H.push_back(-1);
+Node* MakeHeap() {return nullptr;}
+
+Node* Union(Node* H1, Node* H2) {
+	Node* newHead = mergeRootLists(H1, H2);
+	if (!newHead) return nullptr;
+
+	Node* prev = nullptr;
+	Node* curr = newHead;
+	Node* next = curr->sibling;
+
+	while (next) {
+		if (curr->degree != next->degree || (next->sibling && next->sibling->degree == curr->degree)) {
+			prev = curr;
+			curr = next;
+		} else if (compare(curr->key <= next->key)) {
+			curr->sibling = next->sibling;
+			linkTrees(curr, next);
+		} else {
+			if (!prev) newHead = next;
+			else prev->sibling = next;
+			linkTrees(next, curr);
+			curr = next;
+		}
+		next = curr->sibling;
+	}
+
+	return newHead;
+}
+
+Node* Insert(Node* H, int x) {
+	Node* newNode = makeNode(x);
+	H = Union(H, newNode);
 	return H;
 }
 
-void Insert(vector<int>& H, int x) {
-	H.push_back(x);
-	int i = size(H);
-	while (i > 1 && compare(H[parent(i)] > x)) {
-		H[i] = H[parent(i)];
-		i = parent(i);
-	}
-	H[i] = x;
-}
+Node* Minimum(Node* H) {
+	if (!H) return nullptr;
 
-int Minimum(vector<int> H) {
-	return H[1];
-}
+	Node* y = nullptr;
+	Node* x = H;
 
-int ExtractMin(vector<int>& H) {
-	int min = H[1];
-	H[1] = H[size(H)];
-	H.pop_back();
-	heapify(H, 1);
-	return min;
-}
-
-vector<int> Union(vector<int> H1, vector<int> H2) {
-	for (int i = 1; i <= size(H2); i++) H1.push_back(H2[i]);
-	return buildHeap(H1);
-}
-
-void DecreaseKey(vector<int>& H, int x, int k) {
-	int i = find(H, x);
-	if (compare(H[i] < k)) {
-		H[i] = k;
-		heapify(H, i);
-	} else {
-		while (i > 1 && compare(H[parent(i)] > k)) {
-			H[i] = H[parent(i)];
-			i = parent(i);
+	int minKey = INT_MAX;
+	while (x) {
+		if (compare(x->key < minKey)) {
+			minKey = x->key;
+			y = x;
 		}
-		H[i] = k;
+		x = x->sibling;
 	}
+
+	return y;
 }
 
-void Delete(vector<int>& H, int x) {
-	int i = find(H, x);
-	
-	H[i] = H[size(H)];
-	H.pop_back();
-	
-	if (compare(H[i] > H[parent(i)])) heapify(H, i);
-	else {
-		while (i > 1 && compare(H[parent(i)] > H[i])) {
-			swap(H[parent(i)], H[i]);
-			i = parent(i);
+Node* ExtractMin(Node* H, int& minKeyOut) {
+	if (!H) {
+		minKeyOut = INT_MAX;
+		return nullptr;
+	}
+
+	Node* prevMin = nullptr;
+	Node* minNode = H;
+	Node* prev = nullptr;
+	Node* curr = H;
+	int minKey = curr->key;
+
+	while (curr) {
+		if (compare(curr->key < minKey)) {
+			minKey = curr->key;
+			prevMin = prev;
+			minNode = curr;
 		}
+		prev = curr;
+		curr = curr->sibling;
+	}
+
+	if (!prevMin) H = minNode->sibling;
+	else prevMin->sibling = minNode->sibling;
+
+	Node* childList = reverseList(minNode->child);
+
+	minKeyOut = minNode->key;
+
+	free(minNode);
+
+	H = Union(H, childList);
+
+	return H;
+}
+
+void DecreaseKey(Node* x, int newKey) {
+	if (!x || compare(newKey > x->key)) return;
+
+	x->key = newKey;
+	Node* y = x;
+	Node* z = y->parent;
+
+	while (z && compare(y->key < z->key)) {
+		int temp = y->key;
+		y->key = z->key;
+		z->key = temp;
+
+		y = z;
+		z = y->parent;
 	}
 }
 
-void print(vector<int> H) {
-	for (int i = 1; i <= size(H); i++) cout << H[i] << " ";
-	cout << endl;
+Node* Delete(Node* H, Node* x) {
+	if (!H || !x) return H;
+
+	DecreaseKey(x, INT_MIN);
+	int dummy;
+	H = ExtractMin(H, dummy);
+	return H;
 }
 
-bool isSorted(vector<int> H) {
-	for (int i = 2; i <= size(H); i++)
-		if (H[i-1] > H[i]) return false;
-	return true;
+void printHeap(Node* root, int indent = 0) {
+	if (!root) return;
+
+	for (int i = 0; i < indent; i++) cout << "  ";
+
+	cout << root->key << endl;
+
+	printHeap(root->child, indent+1);
+	printHeap(root->sibling, indent);
+}
+
+Node* find(Node* x, int v) {
+	if (x == nullptr) return nullptr;
+	if (compare(x->key == v)) return x;
+	if (compare(x->key > v)) return find(x->sibling, v);
+	Node* sibling = find(x->sibling, v);
+	Node* child = find(x->child, v);
+	return sibling ? sibling : child;
 }
 
 #endif
