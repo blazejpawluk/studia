@@ -14,7 +14,7 @@ start "Game Server" cmd /k ^
 
 REM Bot
 start "Bot Client1" cmd /k ^
-  "cd /d %~dp0 && javac -d bin java\*.java && java -cp bin BotClient 127.0.0.1 4444 1 bot 5"
+  "cd /d %~dp0 && javac -d bin java\*.java && java -cp bin BotClient 127.0.0.1 4444 2 bot 7"
 
 @REM REM Bot
 @REM start "Bot Client2" cmd /k ^
@@ -22,4 +22,4 @@ start "Bot Client1" cmd /k ^
 
 REM Dawid
 start "Bot Dawid" cmd /k ^
-  "cd /d %~dp0 && game\dawid3.exe 127.0.0.1 4444 2 dawid 5"
+  "cd /d %~dp0 && game\dawid3.exe 127.0.0.1 4444 1 dawid 7"

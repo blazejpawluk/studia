@@ -9,55 +9,70 @@ public class Library {
 		return move+1;
 	}
 
-	public static final int giveMove() {
+	public static int giveMove() {
 		System.out.println("Library move.");
 		int move = move();
 
-		if (move == 1) return 21;
-		if (move == 2) {
-			// change
-			if (Board.board[1][0] == 0) return 21;
-			return 41;
+		switch (move) {
+			case 1:
+				System.out.println(21); 
+				return 21;
+			case 2: 
+				if (Board.board[0][1] == 0) {
+					System.out.println(21);
+					return 21;
+				}
+				System.out.println(24);
+				return 24;
+			case 3: 
+				if (Board.board[4][3] == 0) {
+					System.out.println(54);
+					return 54;
+				}
+				System.out.println(24);
+				return 24;
+			case 4: 
+				if (Board.board[1][0] == 1) {
+					if (Board.board[4][3] == 0) {
+						System.out.println(54);
+						return 54;
+					}
+					if (Board.board[1][3] == 0) {
+						System.out.println(24);
+						return 24;
+					}
+					System.out.println(34);
+					return 34;
+				}
+				if (Board.board[4][3] == 0) {
+					System.out.println(54);
+					return 54;
+				}
+				System.out.println(43);
+				return 43;
+			case 5: 
+				if (Board.board[4][3] == 1) {
+					if (Board.board[1][3] == 0) {
+						System.out.println(24);
+						return 24;
+					}
+					if (Board.board[4][0] == 0) {
+						System.out.println(51);
+						return 51;
+					}
+					System.out.println(42);
+					return 42;
+				}
+				if (Board.board[4][0] == 0) {
+					System.out.println(51);
+					return 51;
+				}
+				System.out.println(22);
+				return 22;
+			case 6: break;
 		}
-		if (move == 3) {
-			if (Board.board[4][3] == 0) return 54;
-			return 24;
-		}
-		if (move == 4) {
-			// change
-			if (Board.board[1][0] == 2) {
-				if (Board.board[4][3] == 0) return 54;
-				if (Board.board[1][3] == 0) return 24;
-				return 51;
-			}
-			if (Board.board[0][3] == 0) return 14;
-			return 44;
-		}
-		if (move == 5) {
-			if (Board.board[4][3] == 1) {
-				if (Board.board[1][3] == 0) return 24;
-				if (Board.board[4][0] == 0) return 51;
-				return 42;
-			}
-			if (Board.board[4][0] == 0) return 51;
-			return 22;
-		}
-		if (move == 6) {
 
-		}
-		if (move == 7) {
-
-		}
-		if (move == 8) {
-			
-		}
-		if (move == 9) {
-
-		}
-		if (move == 10) {
-			
-		}
-
+		System.out.println("Case not in library.");
 		return -1;
 	}
 }
