@@ -15,15 +15,18 @@ std::unordered_map<long long,int> globalEval = std::unordered_map<long long,int>
 
 /*
     Zmiany od v1:
-    1. Alfa-beta dopiero od 2 w dół, może uda się odnaleźć lepsze szybciej
+    1. nieaktualne, bo a. (Alfa-beta dopiero od 2 w dół, może uda się odnaleźć lepsze szybciej)
         a. w zasadzie obawiam się że do tego wystarczy beta < alfa, więc zmiana może być do usunięcia
+            i. ponieważ gdy beta < alfa, to nie będzie ucinać równych, czyli może znajdzie szybszą wygraną
     2. Nowe pola:
         a. rogi za 2 pkt
         b. blokowanie całej linii xd za 5 dodatkowych (do 2*samo-blokowanie punktów)
         c. Sprawdzenie "do przodu", czy mamy jakąś wygrywającą możliwość, a przeciwnik ma to pole zablokowane!
             i. za 50 * 50 punktow xd
     3. Naprawienie błędu rejestrowania niektórych zablokowanych pól podwójnie
-    
+    4. Zmiana wybierania wartości na podstawie głębokości
+        a. nie powinniśmy patrzeć na ujemny dodatni, tylko na to czy poprawia poprzedni ruch, czy też nie
+        b. dodam tak samo handlowanie tego co niżej (najszybsza metoda na wygrana, zamiast INF_LOSE > INF_WIN)
     
     TODO:
     4. Znajdowanie najszybszej metody na wygrana, zamiast znajdowanie zawsze INF_LOSE, bo teraz wyjdzie
@@ -34,6 +37,7 @@ std::unordered_map<long long,int> globalEval = std::unordered_map<long long,int>
 
 long long g_evals = 0;
 long long turn = 0;
+int lastMoveValue = 0;
 
 static const int INF = 2000000;
 // static const int INF_win = 999999; //zmienione, bo zeby nie przegrywac powinnismy preferowac, ze przeciwnik przegra niz wygrac
@@ -43,6 +47,7 @@ static const int INF = 2000000;
 // przy zamianie uważać w kodzie na >=
 static const int INF_win = 999999; //zmienione, bo zeby nie przegrywac powinnismy preferowac, ze przeciwnik przegra niz wygrac
 static const int INF_lose = 1000001;
+static const int INF_any = 900000;
 
 
 int debugLevel = 0;
@@ -98,22 +103,22 @@ int evaluateBoard(long long precalculatedHash) {
     
     // korzystac z innych ewaluacji jak jest wiecej
     // za kazde własne samo-blokowanie    [] X X []
-    eval -= getBlockCount(1) * 55;
+    eval -= getBlockCount(1) * 45;
     debugPrint(10, 0, "x blocked %d\n", eval);
     debug_last_eval = eval;
     
     // za kazde samo-blokowanie przeciwnika
-    eval += getBlockCount(2) * 55;
+    eval += getBlockCount(2) * 45;
     debugPrint(10, 0, "o blocked %d\n", eval-debug_last_eval);
     debug_last_eval = eval;
     
     // za każdą możliwość ułożenia 4 z 1 brakiem
-    eval += getWinCount(1) * 35;
+    eval += getWinCount(1) * 55;
     debugPrint(10, 0, "x win %d\n", eval-debug_last_eval);
     debug_last_eval = eval;
     
     // za każdą możliwość przeciwnika ułożenia 4 z 1 brakiem 
-    eval -= getWinCount(2) * 35;
+    eval -= getWinCount(2) * 55;
     debugPrint(10, 0, "o win %d\n", eval-debug_last_eval);
     debug_last_eval = eval;
 
@@ -138,8 +143,8 @@ int evaluateBoard(long long precalculatedHash) {
     eval += getNiceCorners(1) * 2; // byc moze doprowadzi do głupich rozpoczęć!
     eval -= getNiceCorners(2) * 2;
 
-    eval += getBlockedLanes(1) * 3;
-    eval -= getBlockedLanes(2) * 3;
+    eval += getBlockedLanes(1) * 10;
+    eval -= getBlockedLanes(2) * 10;
 
     globalEval[precalculatedHash] = eval;
     return eval;
@@ -158,6 +163,7 @@ struct Result {
 
 // W TRANSPOSITION MATRIX GLEBOKOSC MA ZNACZENIE
 // BO MOZE SIE OKAZAC ZE JAKAS POZYCJA BYLA WOLNIEJ ALBO SZYBCIEJ?
+// Nie aktualizuje sam sobie wartości najlepszego poprzedniego ruchu
 Result minimax(int depth,
             bool maxPlayer,
             int alpha,
@@ -256,22 +262,20 @@ Result minimax(int depth,
         Result r = minimax(depth - 1, !maxPlayer, alpha, beta, tt, maxDepth);
         undoGlobalMove(m.i, m.j);
 
+        if(r.value == INF_win || r.value == INF_lose) r.value = INF_any;
+        if(r.value == -INF_win || r.value == -INF_lose) r.value = -INF_any;
+
         if (maxPlayer) {
             if (r.value > bestValue) {
                 bestValue = r.value;
                 bestMove = m;
                 bestDepth = r.depth;
             } else if(r.value == bestValue) {
-                // jezeli mamy lepiej dla O to chcemy go opóźnić
-                // zał, że maxDepth=5
-                // np.   -15 na głębokości 3 (za 2 tury)  ** - chcemy wybrać to, wolniej przegrywamy (3 < 4)
-                // np.   -15 na głębokości 4 (za 1 ture)
-                // ale jezeli jest lepiej dla X to
-                // np.   15 na głębokości 3 (za 2 tury)  
-                // np.   15 na głębokości 4 (za 1 ture)   ** - chcemy wybrać to, szybciej jest nam lepiej (4 > 3)
-                // wiec dla ujemnych wartości szukamy min(depth), a dodatnich max(depth)
-                if(r.value < 0) {
+                // jeżeli pogarszamy swoją sytuację, chcemy to zrobić jak najwolniej
+                // jeżeli ją polepszamy => jak najszybciej
+                if(lastMoveValue > bestValue) {
                     if(r.depth < bestDepth) {
+                        // opóźniamy przegrywanie
                         // wolniej - głębiej
                         debugPrint(2, maxDepth-depth, "X best changed by depthMin %d %d%d %d prev=%d %d\n", r.value, (r.move.i+1), r.move.j+1, r.depth, bestMove.i*10+bestMove.j+11, bestDepth);
                         bestDepth = r.depth;
@@ -279,6 +283,7 @@ Result minimax(int depth,
                         bestMove = m;
                     }
                 } else if(r.depth > bestDepth) {
+                    // przyspieszamy wygrywanie i remisowanie z poprzednim ruchem
                     bestDepth = r.depth;
                     bestValue = r.value;
                     bestMove = m;
@@ -293,7 +298,8 @@ Result minimax(int depth,
                 bestDepth = r.depth;
             } else if(r.value == bestValue) {
                 // lustrzane odbicie tego na górze
-                if(r.value > 0) {
+                if(lastMoveValue < bestValue) {
+                    // nasz poprzedni ruch był mniejszy (lepszy dla O) niż ten najlepszy do tej pory - spowalniamy przegrywanie
                     if(r.depth < bestDepth) {
                         bestDepth = r.depth;
                         bestValue = r.value;
@@ -309,12 +315,10 @@ Result minimax(int depth,
             }
             beta = std::min(beta, bestValue);
         }
-        // if(depth < maxDepth-2) {
-            if (beta < alpha) {
-                debugPrint(2, maxDepth-depth, "O best pruned by alfa=%d beta=%d value=%d %d%d %d\n", alpha, beta, r.value, (r.move.i+1), r.move.j+1, r.depth);
-                break;
-            }
-        // }
+        if (beta < alpha) {
+            debugPrint(2, maxDepth-depth, "O best pruned by alfa=%d beta=%d value=%d %d%d %d\n", alpha, beta, r.value, (r.move.i+1), r.move.j+1, r.depth);
+            break;
+        }
     }
 
     // 6) zapamiętaj w tabeli i zwróć wynik
