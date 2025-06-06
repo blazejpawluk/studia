@@ -3,42 +3,46 @@
 
 #include "graph.cpp"
 
-vector<Edge> prim(Graph G) {
+Graph Prim(Graph G) {
 	int n = G.V.size();
-	
-	priority_queue<Edge> Q;
-	bool vs[n];
-	vector<Edge> T;
-	
-	int v = 1;
-	vs[0] = true;
-	for (int i = 1; i < n; i++) vs[i] = false;
 
-	for (int i = 1; i < n; i++) {
-		for (Edge e : G.E) {
-			int u = -1;
-			if (e.V.first == v)	u = e.V.second;
-			else if (e.V.second == v) u = e.V.first;
-
-			if (u != -1 && !vs[u]) Q.push(e);
-		}
-
-		Edge e;
-		int u = -1;
-		do {
-			e = Q.top();
-			Q.pop();
-			if (e.V.first == v) u = e.V.second;
-			else if (e.V.second == v) u = e.V.first;
-		}
-		while (u == -1 || (u != -1 && vs[u]));
-
-		T.push_back(e);
-		vs[u] = true;
-		v = u; 
+	vector<vector<pair<int, double>>> neighbour(n+1);
+	for (Edge e : G.E) {
+		neighbour[e.V.first].push_back({e.V.second, e.w});
+		neighbour[e.V.second].push_back({e.V.first, e.w});
 	}
 
-	return T;
+	vector<bool> inMST(n+1, false);
+	vector<double> key(n+1, numeric_limits<double>::infinity());
+	vector<int> parent(n+1, -1);
+
+	priority_queue<pair<double, int>, vector<pair<double, int>>, greater<pair<double, int>>> Q;
+
+	key[1] = 0.0;
+	Q.push({key[1], 1});
+
+	while (!Q.empty()) {
+		pair<double, int> top = Q.top();
+		Q.pop();
+
+		if (inMST[top.second]) continue;
+		inMST[top.second] = true;
+
+		for (pair<int, double> n : neighbour[top.second]) {
+			if (!inMST[n.first] && n.second < key[n.first]) {
+				key[n.first] = n.second;
+				parent[n.first] = top.second;
+				Q.push({key[n.first], n.first});
+			}
+		}
+	}
+
+	Graph result;
+	result.V = G.V;
+	for (int v = 2; v <= n; v++) 
+		if (parent[v] != -1) result.E.push_back(Edge(parent[v], v, key[v]));
+
+	return result;
 }
 
 #endif
