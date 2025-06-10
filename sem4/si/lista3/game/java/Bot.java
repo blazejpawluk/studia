@@ -31,8 +31,10 @@ public class Bot {
 		int move = Library.move();
 		int lib = -1;
 		if (move <= depth) lib = Library.giveMove();
-		if (lib != -1) return lib;
-
+		if (lib != -1) {
+			System.out.println(lib);
+			return lib;
+		}
 		previousScore = evaluate(player, true);
 		Result bestScore = new Result(-1000000, depth+1);
 		int bestMove = -1;
@@ -193,11 +195,6 @@ public class Bot {
 	private static int evaluate(int player, boolean playing) {
 		int opp = 3 - player;
 
-		if (Board.winCheck(player)) return 20000; // pewna wygrana
-		if (Board.winCheck(opp)) return -20000; // pewna porazka
-		if (Board.loseCheck(player)) return -10000; // pewny brak wygranej
-		if (Board.loseCheck(opp)) return 10000; // pewny brak porazki
-
 		int win = 0, lose = 0, unavailable = 0, free = 0, block = 0;
 		for (int[][] line : Board.win) {
 			int[] t = new int[4];
@@ -255,6 +252,6 @@ public class Bot {
 		if (playing && lose > 1) return -1000;
 		if (!playing && win > 1) return 1000;
 
-		return (win-lose)*10 + unavailable*7 + free*3 + block*1;
+		return (win-lose)*1 + unavailable*7 + free*3 + block*1;
 	}
 }
