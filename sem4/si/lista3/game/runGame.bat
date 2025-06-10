@@ -4,9 +4,9 @@ REM Serwer
 start "Game Server" cmd /k ^
   "cd /d %~dp0 && game\game_server.exe 127.0.0.1 4444"
 
-@REM REM Klient
-@REM start "Game Client" cmd /k ^
-@REM   "cd /d %~dp0 && game\game_client.exe 127.0.0.1 4444 1 client"
+REM Klient
+start "Game Client" cmd /k ^
+  "cd /d %~dp0 && game\game_client.exe 127.0.0.1 4444 2 client"
 
 @REM REM Losowy bot
 @REM start "Random Bot" cmd /k ^
@@ -20,6 +20,6 @@ start "Bot 1" cmd /k ^
 @REM start "Bot 2" cmd /k ^
 @REM   "cd /d %~dp0 && javac -d bin java\*.java && java -cp bin BotClient 127.0.0.1 4444 2 bot 5"
 
-REM Dawid
-start "Bot Dawid" cmd /k ^
-  "cd /d %~dp0 && game\dawid.exe 127.0.0.1 4444 2 dawid 6"
+@REM REM Dawid
+@REM start "Bot Dawid" cmd /k ^
+@REM   "cd /d %~dp0 && game\dawid.exe 127.0.0.1 4444 2 dawid 6"

@@ -36,7 +36,7 @@ public class Library {
 					case 22: return 14;
 					case 24: return 12;
 					case 42: return 21;
-					case 44: return 52;
+					case 44: return 42;
 				}
 				return -1;
 			case 3: 
