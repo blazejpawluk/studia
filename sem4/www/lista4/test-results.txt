@@ -1,0 +1,114 @@
+W bazie znajduje sie tylko konto admina
+1) Rejestracja usera - oczekiwany sukces
+SUKCES: POST /auth/register -> HTTP 201
+
+Zapisano token usera.
+Zapisano ID usera.
+
+2) Rejestracja na uzyty adres email - oczekiwana porazka
+PORAZKA: POST /auth/register -> HTTP 400
+
+3) Logowanie usera - oczekiwany sukces
+SUKCES: POST /auth/login -> HTTP 200
+
+Token zwyklego uzytkownika zapisany.
+
+4) Logowanie ze zlym haslem - oczekiwana porazka
+PORAZKA: POST /auth/login -> HTTP 401
+
+5) Dane konta admina
+
+6) Logowanie admina - oczekiwany sukces
+SUKCES: POST /auth/login -> HTTP 200
+
+Token admina zapisany.
+
+7) Wyswietlenie pustej listy filmow bedac niezalogowanym - oczekiwany sukces
+SUKCES: GET /films?page=1&limit=5 -> HTTP 200
+
+8) Dodanie filmu jako user - oczekiwana porazka
+PORAZKA: POST /films -> HTTP 403
+
+9) Dodanie filmu jako admin - oczekiwany sukces
+SUKCES: POST /films -> HTTP 201
+
+Zapisano ID filmu.
+
+10) Pobranie listy filmow bez logowania - oczekiwany sukces
+SUKCES: GET /films?page=1&limit=5 -> HTTP 200
+
+Liczba filmow (oczekiwane 1): 1
+
+11) Wyswietlenie dodanego filmu - oczekiwany sukces
+SUKCES: GET /films/682b5ca106a88e6603ef3774 -> HTTP 200
+
+12) Dodanie recenzji bez logowania - oczekiwana porazka
+PORAZKA: POST /reviews/film/682b5ca106a88e6603ef3774 -> HTTP 401
+
+13) Dodanie recenzji ze zla ocena - oczekiwana porazka
+PORAZKA: POST /reviews/film/682b5ca106a88e6603ef3774 -> HTTP 500
+
+14) Dodanie poprawnej recenzji jako user - oczekiwany sukces
+SUKCES: POST /reviews/film/682b5ca106a88e6603ef3774 -> HTTP 201
+
+Zapisano ID recenzji.
+
+15) Pobranie recenzji filmu - oczekiwany sukces
+SUKCES: GET /reviews/film/682b5ca106a88e6603ef3774 -> HTTP 200
+
+Liczba recenzji (oczekiwana 1): 1
+
+16) Usuniecie recenzji innym userem (rejestracja nowego i proba usuniecia) - oczekiwana porazka
+PORAZKA: DELETE /reviews/682b5ca206a88e6603ef377c -> HTTP 403
+
+17) Usuniecie recenzji przez autora - oczekiwany suckes
+SUKCES: DELETE /reviews/682b5ca206a88e6603ef377c -> HTTP 204
+
+18) Edycja filmu przez autora - oczekiwana porażka
+PORAZKA: PATCH /films/682b5ca106a88e6603ef3774 -> HTTP 403
+
+19) Edycja filmu przez admina - oczekiwany sukces
+SUKCES: PATCH /films/682b5ca106a88e6603ef3774 -> HTTP 200
+
+20) Usuniecie filmu przez usera - oczekiwana porazka
+PORAZKA: DELETE /films/682b5ca106a88e6603ef3774 -> HTTP 403
+
+21) Usuniecie filmu przez admina - oczekiwany sukces
+SUKCES: DELETE /films/682b5ca106a88e6603ef3774 -> HTTP 204
+
+22) Wyswietlenie usunietego filmu - oczekiwana porazka
+PORAZKA: GET /films/682b5ca106a88e6603ef3774 -> HTTP 500
+
+23) Wyswietlenie userow jako user - oczekiwana porazka
+PORAZKA: GET /users -> HTTP 403
+
+24) Wyswietlenie userow jako admin - oczekiwany sukces
+SUKCES: GET /users -> HTTP 200
+
+Liczba uzytkownikow (oczekiwane 3): 3
+
+25) Wyswietlenie usera przez innego usera - oczekiwana porazka
+PORAZKA: GET /users/682b5ca206a88e6603ef3783 -> HTTP 403
+
+26) Wyswietlenie usera przez admina - oczekiwany sukces
+SUKCES: GET /users/682b5c9206a88e6603ef376c -> HTTP 200
+
+27) Wyswietlenie siebie przez usera - oczekiwany sukces
+SUKCES: GET /users/682b5c9206a88e6603ef376c -> HTTP 200
+
+28) Zmiana danych usera przez innego usera - oczekiwana porazka
+PORAZKA: PUT /users/682b5c9206a88e6603ef376c -> HTTP 403
+
+29) Zmiana swoich danych - oczekiwany sukces
+SUKCES: PUT /users/682b5c9206a88e6603ef376c -> HTTP 200
+
+30) Usunięcie usera innym userem - oczekiwana porażka
+PORAZKA: DELETE /users/682b5c9206a88e6603ef376c -> HTTP 403
+
+31) Usunięcie własnego konta userem - oczekiwany sukces
+SUKCES: DELETE /users/682b5ca206a88e6603ef3783 -> HTTP 204
+
+32) Usunięcie konta usera adminem - oczekiwany sukces
+SUKCES: DELETE /users/682b5c9206a88e6603ef376c -> HTTP 204
+
+Wszystkie testy wykonane.
