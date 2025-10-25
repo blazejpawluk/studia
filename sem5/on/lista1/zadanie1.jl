@@ -11,7 +11,7 @@ macheps32 = Float32(1.0)
 while Float32(1.0) + macheps32 > Float32(1.0)
 	global macheps32 /= Float32(2.0)
 end
-println("macheps(Float32) = $(Float32(2.0) * macheps32) | $(eps(Float32)) | 1.1920929e-07")
+println("macheps(Float32) = $(Float32(2.0) * macheps32) | $(eps(Float32)) | 1.1920929e7")
 
 macheps64 = Float64(1.0)
 while Float64(1.0) + macheps64 > Float64(1.0)
@@ -25,6 +25,7 @@ while eta16 / Float16(2.0) > Float16(0.0)
 	global eta16 /= Float16(2.0)
 end
 println("\neta(Float16) = $eta16 | $(nextfloat(Float16(0.0)))")
+println("$(bitstring(eta16))")
 
 eta32 = Float32(1.0)
 while eta32 / Float32(2.0) > Float32(0.0)
@@ -48,16 +49,16 @@ max16 = Float16(1.0)
 while !isinf(Float16(2.0) * max16)
 	global max16 *= Float16(2.0)
 end
-println("\nmax(Float16) = $(prevfloat(max16) * Float16(2.0)) | $(floatmax(Float16))")
+println("\nmax(Float16) = $(prevfloat(max16) * Float16(2.0)) | $(floatmax(Float16)) | brak")
 
 max32 = Float32(1.0)
 while !isinf(Float32(2.0) * max32)
 	global max32 *= 2
 end
-println("max(Float32) = $(prevfloat(max32) * Float32(2.0)) | $(floatmax(Float32))")
+println("max(Float32) = $(prevfloat(max32) * Float32(2.0)) | $(floatmax(Float32)) | 3.4028235e+38")
 
 max64 = Float64(1.0)
 while !isinf(Float64(2.0) * max64)
 	global max64 *= 2
 end
-println("max(Float64) = $(prevfloat(max64) * Float64(2.0)) | $(floatmax(Float64))")
+println("max(Float64) = $(prevfloat(max64) * Float64(2.0)) | $(floatmax(Float64)) | 1.7976931348623157e+308")

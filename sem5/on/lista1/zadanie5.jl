@@ -6,9 +6,10 @@ y32 = Float32[1486.2497, 878366.9879, -22.37492, 4773714.647, 0.000185049]
 x64 = Float64[2.718281828, -3.141592654, 1.414213562, 0.5772156649, 0.3010299957]
 y64 = Float64[1486.2497, 878366.9879, -22.37492, 4773714.647, 0.000185049]
 
+# dokładna wartość iloczynu skalarnego wektorów x i y
 real = Float64(-1.00657107000000 * 10^-11)
 
-# sposob 1
+# sposob 1 - w przód
 S32 = Float32(0.0)
 S64 = Float64(0.0)
 for i in 1:5
@@ -19,7 +20,7 @@ end
 println("Sposób 1:")
 println("$S32 | $S64 | $real")
 
-# sposob 2
+# sposob 2 - w tył
 S32 = Float32(0.0)
 S64 = Float64(0.0)
 for i in 5:-1:1
@@ -30,6 +31,7 @@ end
 println("Sposób 2:")
 println("$S32 | $S64 | $real")
 
+# liczenie sum częsciowym i dzielenie ich na podtablice z wartościami ujemnymi i dodatnimi, aby je posortować do sposobów 3 i 4
 partS32N = Float32[]
 partS32P = Float32[]
 partS64N = Float64[]
@@ -50,12 +52,13 @@ for i in 1:5
 	end
 end
 
-# sposob 3
+# sposob 3 - od największego
 sort(partS32N)
 sort(partS32P, rev=true)
 sort(partS64N)
 sort(partS64P, rev=true)
 
+# sumy podtablic
 S32N = Float32(0.0)
 S32P = Float32(0.0)
 S64N = Float64(0.0)
@@ -80,7 +83,7 @@ S64 = S64N + S64P
 println("Sposób 3:")
 println("$S32 | $S64 | $real")
 
-# sposob 4
+# sposob 4 - od najmniejszych
 sort(partS32N, rev=true)
 sort(partS32P)
 sort(partS64N, rev=true)
