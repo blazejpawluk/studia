@@ -67,15 +67,15 @@ void TopologicalSort(Graph &G) {
 	}
 }
 
-int main(int argc, char* argv[]) {
-	try {
-		Graph G(argc, argv);
+// int main(int argc, char* argv[]) {
+// 	try {
+// 		Graph G(argc, argv);
 		
-		TopologicalSort(G);
+// 		TopologicalSort(G);
 		
-		return 0;
-	} catch(const string err) {
-		cerr << err;
-		return -1;
-	} 
-}
+// 		return 0;
+// 	} catch(const string err) {
+// 		cerr << err;
+// 		return -1;
+// 	} 
+// }
