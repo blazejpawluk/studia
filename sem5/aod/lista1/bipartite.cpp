@@ -27,6 +27,7 @@ void bipartite(Graph &G) {
 	// zmodyfikowany BFS
 	// -1 - brak koloru; 0,1 - kolory, oznaczajace czy naleza do V0 czy V1
 	vector<int> color(G.n+1, -1);
+	vector<bool> visited(G.n+1, false);
 	bool valid = true;
 
 	queue<int> Q;
@@ -38,14 +39,25 @@ void bipartite(Graph &G) {
 				int u = Q.front();
 				Q.pop();
 
+				vector<int> changed;
 				for (int v : adj[u]) {
 					if (color[v] == -1) {
+						changed.push_back(v);
+						visited[v] = true;
+
 						color[v] = 1 - color[u];
 						Q.push(v);
 					} else if (color[v] == color[u]) {
-						// 2 sprawdzone wierzcholki, ktore maja krawedz sa w tym samym zbiorze - graf nie jest dwudzielny
-						valid = false;
-						break;
+						if (!visited[u]) {
+							color[u] = 1 - color[u];
+							visited[u] = true;
+							for (int w : changed) color[w] = 1 - color[w];
+							changed.clear();
+						} else {
+							// 2 sprawdzone wierzcholki, ktore maja krawedz sa w tym samym zbiorze - graf nie jest dwudzielny
+							valid = false;
+							break;
+						}
 					}
 				}
 			}
