@@ -17,7 +17,7 @@ for i in 1:40
 
 	global pn2 = pn2 + r*pn2*(1.0-pn2)
 	if i == 10
-		global pn2 = round(pn2; digits=3)
+		global pn2 = floor(pn2; digits=3)
 	end
 
 	println("p$i = $pn1 | $pn2")
@@ -54,7 +54,7 @@ open(filename, "w") do io
 		
 		global pn2 = pn2 + r*pn2*(1.0-pn2)
 		if i == 10
-			global pn2 = round(pn2; digits=3)
+			global pn2 = floor(pn2; digits=3)
 		end
 		
 		global pn32 = pn32 + r*pn32*(Float32(1.0)-pn32)
