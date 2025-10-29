@@ -43,13 +43,13 @@ for k in 1:20
 	px = abs(p(z[k])) # |p(zk)|
 	diff = abs(z[k]-k) # |zk-k|
 
-	println("$k: |P(zk)|=$Px, |p(xk)|=$px, |zk-k|=$diff")
+	println("$k: |P(zk)| = $Px, |p(xk)| = $px, |zk-k| = $diff")
 end
 
 # punkt b
 println("\nb)")
 param[20] -= 2^-23
-z = roots(Polynomial(param))
+z = real(roots(Polynomial(param)))
 println("Pierwiastki z funkcji roots: $z")
 
 println("\nSprawdzenie pierwiastków:")
@@ -58,5 +58,5 @@ for k in 1:20
 	px = abs(p(z[k])) # |p(zk)|
 	diff = abs(z[k]-k) # |zk-k|
 
-	println("$k: |P(zk)|=$Px, |p(xk)|=$px, |zk-k|=$diff")
+	println("$k: |P(zk)| = $Px, |p(xk)| = $px, |zk-k| = $diff")
 end
