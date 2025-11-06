@@ -47,7 +47,7 @@ function iterate(x0, c, point)
 	scatter!(x, x, label="x_n", color=:green, markerstrokecolor=:green)
 
 	# zapisanie wykresu
-	title!("Wykres iteracji graficznej: f(x)=x^2+$(c), x_0=$(x0)")
+	title!("$point.Wykres iteracji graficznej: f(x)=x^2+$(c), x_0=$(x0), c=$c", titlefontsize=8)
 	xlabel!("x")
 	ylabel!("f(x)")
 
