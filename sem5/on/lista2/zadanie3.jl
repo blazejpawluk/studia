@@ -1,7 +1,3 @@
-# z biblioteki
-# funkcje na stronie Zieliński PWR
-# Dawid ma ładnie rozpisane
-
 # Błażej Pawluk
 using LinearAlgebra
 
