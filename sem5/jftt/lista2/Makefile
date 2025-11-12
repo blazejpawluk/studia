@@ -1,4 +1,4 @@
-EX = 2
+EX = 4
 
 TARGET = zad$(EX)
 
