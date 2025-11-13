@@ -16,23 +16,23 @@ function mstycznych(
 		return (x0,v,0,0)
 	end
 	
-	# pętla wykonywana ograniczoną liczbę razy
-	for k in 1:maxit
+	# główna pętla wykonywana ograniczoną liczbę razy
+	for it in 1:maxit
 		# sprawdzanie czy pochodna jest dopuszczalna
 		if pf(x0) == 0
-			return (x0,v,k,2)
+			return (x0,v,it,2)
 		end
 		
 		# następny element ciągu
-		x1 = x0 - v/pf(x0)
-		v = f(x1)
+		r = x0 - v/pf(x0)
+		v = f(r)
 
 		# sprawdzenie czy osiągnięto oczekiwaną dokładność
-		if abs(x1-x0) < delta || abs(v) < epsilon
-			return (x1,v,k,0)
+		if abs(r-x0) < delta || abs(v) < epsilon
+			return (r,v,it,0)
 		end
 
-		x0 = x1
+		x0 = r
 	end
 
 	# nie osiągnięto oczekiwanego przybliżenia w oczekiwanej liczbie iteraci - zwracamy obecne przybliżenie z błędem
