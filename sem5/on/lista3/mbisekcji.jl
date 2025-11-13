@@ -1,6 +1,6 @@
 # Błażej Pawluk
 
-# funkcja znajdująca miejsce zerowe funkcji w podanym przedziale i z podanymi dokładnościami
+# funkcja znajdująca miejsce zerowe funkcji w podanym przedziale i z podanymi dokładnościami metodą bisekcji
 function mbisekcji(
 	f,					# funkcja anonimowa
 	a::Float64,			# lewa granica przedziału
