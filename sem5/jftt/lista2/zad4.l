@@ -69,27 +69,48 @@ WHITE	[ \t]
 	}
 	else {
 		int b = pop(), a = pop();
-		printf("%d %c %d\n", a, yytext[0], b);
+		// printf("%d %c %d ", a, yytext[0], b);
 
 		switch(yytext[0]) {
-			case '+': push(a+b); break;
-			case '-': push(a-b); break;
-			case '*': push(a*b); break;
+			case '+': 
+				push(a+b); 
+				// printf("= %d\n", a+b); 
+				break;
+			case '-': 
+				push(a-b); 
+				// printf("= %d\n", a-b); 
+				break;
+			case '*': 
+				push(a*b); 
+				// printf("= %d\n", a*b); 
+				break;
 			case '/':
 				if (b == 0) {
 					BEGIN(INVALID);
 					invalid_msg = "blad: proba dzielenia przez 0.";
-				} else push(a/b);
+				} else {
+					push(a/b);
+					// printf("= %d\n", a/b);
+				}
 				break;
 			case '^':
-				if (b < 0) push(1/power(a, b));
-				else push(power(a, b));
+				if (b < 0) {
+					push(1/power(a, b));
+					// printf("= %d\n", 1/power(a, b)); 
+				}
+				else {
+					push(power(a, b));
+					// printf("= %d\n", power(a, b)); 
+				}
 				break;
 			case '%':
 				if (b == 0) {
 					BEGIN(INVALID);
 					invalid_msg = "blad: proba dzielenia przez 0.";
-				} else push(a%b);
+				} else {
+					push(a%b);
+					// printf("= %d\n", a%b); 
+				}
 				break;
 		}
 	}
