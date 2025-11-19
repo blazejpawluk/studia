@@ -12,7 +12,7 @@ function mstycznych(
 	v = f(x0) # aktualna wartość funkcji
 
 	# sprawdzenie obecnego wyniku
-	if abs(v) < epsilon
+	if abs(v) <= epsilon
 		return (x0,v,0,0)
 	end
 	
@@ -28,7 +28,7 @@ function mstycznych(
 		v = f(r)
 
 		# sprawdzenie czy osiągnięto oczekiwaną dokładność
-		if abs(r-x0) < delta || abs(v) < epsilon
+		if abs(r-x0) <= delta || abs(v) <= epsilon
 			return (r,v,it,0)
 		end
 

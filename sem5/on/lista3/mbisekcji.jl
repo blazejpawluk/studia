@@ -16,14 +16,14 @@ function mbisekcji(
 	it = 0		# liczba iteracji
 
 	# sprawdzenie wartości na granicach
-	if valL == 0
+	if abs(valL) <= epsilon
 		return (a,valL,0,0)
-	elseif valR == 0
+	elseif abs(valR) <= epsilon
 		return (b,valR,0,0)
 	end
 
 	# wykrycie tego samego znaku na końcu przedziałów
-	if valL*valR > 0
+	if (valL > 0 && valR > 0) || (valL < 0 && valR < 0)
 		return (0,0,0,1)
 	end
 
@@ -37,9 +37,9 @@ function mbisekcji(
 		v = f(r)
 
 		# sprawdzenie znaków, aby zdecydować, który przedział wybrać
-		if v == 0
+		if abs(v) <= epsilon
 			return (r,v,it,0)
-		elseif valL*v > 0
+		elseif (valL > 0 && v > 0) || (valL < 0 && v < 0)
 			a = r
 			valL = v
 		else
