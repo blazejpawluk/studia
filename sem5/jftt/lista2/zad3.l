@@ -5,44 +5,35 @@
 int leaveDoxygen = 0;
 %}
 
-%x MULTICOMMENT
 %x COMMENT
+%x MULTICOMMENT
 
 %%
-\".*\"					{ECHO; /* zwykłe napisy zostawiamy */}
-\`.*\`					{ECHO; /* zwykłe napisy zostawiamy */}
-#include[ \t]*\<.*\>	{ECHO; /* #include<> zostawiamy */}
 
-\/\*\*\/		{}
-.\/\*\*.*\*\/.	{if(!leaveDoxygen) printf("%c %c", yytext[0], yytext[strlen(yytext)-1]); else ECHO;}
-.\/\*!.*\*\/.	{if(!leaveDoxygen) printf("%c %c", yytext[0], yytext[strlen(yytext)-1]); else ECHO;}
-.\/\*.*\*\/.	{printf("%c %c", yytext[0], yytext[strlen(yytext)-1]);}
+\".*\" {ECHO;}
+#include[ \t]*<.*> {ECHO;}
 
-^[ \t]*\/\*\*	{if(!leaveDoxygen) BEGIN(MULTICOMMENT); else ECHO;}
-[ \t]*\/\*\*	{if(!leaveDoxygen) {printf("\n"); BEGIN(MULTICOMMENT);} else ECHO;}
+^[ \t]*\/\*[\*!][^\/] {if (leaveDoxygen) ECHO; else BEGIN(MULTICOMMENT);}
+[ \t]*\/\*[\*!][^\/] {if (leaveDoxygen) ECHO; else {printf(" "); BEGIN(MULTICOMMENT);}}
 
-^[ \t]*\/\*!	{if(!leaveDoxygen) BEGIN(MULTICOMMENT); else ECHO;}
-[ \t]*\/\*!		{if(!leaveDoxygen) {printf("\n"); BEGIN(MULTICOMMENT);} else ECHO;}
+^[ \t]*\/\/[\/!] {if (leaveDoxygen) ECHO; else BEGIN(COMMENT);}
+[ \t]*\/\/[\/!] {if (leaveDoxygen) ECHO; else {printf("\n"); BEGIN(COMMENT);}}
 
-^[ \t]*\/\/\/	{if(!leaveDoxygen) BEGIN(COMMENT); else ECHO;}
-[ \t]*\/\/\/	{if(!leaveDoxygen) {printf("\n"); BEGIN(COMMENT);} else ECHO;}
+^[ \t]*\/\/ {BEGIN(COMMENT);}
+[ \t]*\/\/ {printf("\n"); BEGIN(COMMENT);}
 
-^[ \t]*\/\/!	{if(!leaveDoxygen) BEGIN(COMMENT); else ECHO;}
-[ \t]*\/\/!		{if(!leaveDoxygen) {printf("\n"); BEGIN(COMMENT);} else ECHO;}
+^[ \t]*\/\* {BEGIN(MULTICOMMENT);}
+[ \t]*\/\* {printf(" "); BEGIN(MULTICOMMENT);}
 
-^[ \t]*\/\/		{BEGIN(COMMENT);}
-[ \t]*\/\/		{printf("\n"); BEGIN(COMMENT);}
+<COMMENT>\\[ \t\r]*\n {}
+<COMMENT>\n {BEGIN(INITIAL);}
+<COMMENT>. {}
 
-^[ \t]*\/\*		{BEGIN(MULTICOMMENT);}
-[ \t]*\/\*		{printf("\n"); BEGIN(MULTICOMMENT);}
+<MULTICOMMENT>\*\/[ \t\r]* {BEGIN(INITIAL);}
+<MULTICOMMENT>\*\/[ \t\r]*\n {BEGIN(INITIAL);}
+<MULTICOMMENT>. {}
+<MULTICOMMENT>\n {}
 
-<MULTICOMMENT>[^*]+ 			{}
-<MULTICOMMENT>\*+[^*/]			{}
-<MULTICOMMENT>\*+\/[ \t\r]*\n	{BEGIN(INITIAL);}
-<MULTICOMMENT>\*+\/				{BEGIN(INITIAL);}
-
-<COMMENT>.*\\\n	{BEGIN(COMMENT);}
-<COMMENT>.*\n	{BEGIN(INITIAL);}
 %%
 
 int main(int argc, char* argv[]) {
