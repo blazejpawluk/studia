@@ -16,9 +16,14 @@ int main() {
 	adj[6].push_back({7,1});
 
 	Graph G(n,adj);
-	G.DijkstraFull(1);
-	cout << G.DijkstraTwo(1,7) << endl;
-	cout << G.DijkstraTwo(1,4) << endl;
+	
+	// G.DijkstraFull(1);
+	// cout << G.DijkstraTwo(1,7) << endl;
+	// cout << G.DijkstraTwo(1,4) << endl;
+	
+	G.DialFull(1);
+	cout << G.DialTwo(1,7) << endl;
+	cout << G.DialTwo(1,4) << endl;
 
 	return 0;
 }
