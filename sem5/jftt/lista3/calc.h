@@ -9,6 +9,10 @@ typedef struct {
 	char *post;
 } Result;
 
+extern int calcError;
+void setCalcError(const char *msg);
+Result *makeError();
+
 // tworzenie i zwalnianie Result
 Result *resultFromLiteral(long long rawValue, long long p);
 Result *resultFromResult(long long value, int isLiteral, char *post);
@@ -19,8 +23,8 @@ Result *unaryMinus(Result *a, long long p);
 Result *add(Result *a, Result *b);
 Result *sub(Result *a, Result *b);
 Result *mul(Result *a, Result *b);
-Result *divide(Result *a, Result *b, int *error);
-Result *mod(Result *a, Result *b, int *error);
+Result *divide(Result *a, Result *b);
+Result *mod(Result *a, Result *b);
 Result *power(Result *a, Result *b);
 
 // pomocnicze do dzialan na Result

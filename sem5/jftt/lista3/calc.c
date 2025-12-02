@@ -4,6 +4,12 @@
 #include <math.h>
 #include <string.h>
 
+int calcError = 0;
+void setCalcError(const char *msg) {
+	calcError = 1;
+	fprintf(stderr, "Blad: %s\n", msg);
+}
+
 long long modNorm(long long x, long long p) {
 	long long m = x % p;
 	if (m < 0) m += p;
@@ -87,6 +93,14 @@ char *concat(const char *a, const char *b) {
 	return r;
 }
 
+Result *makeError() {
+	Result *r = (Result*)malloc(sizeof(Result));
+	r->value = -1;
+	r->isLiteral = 1;
+	r->post = concat("-", convertIntToString(1));
+	return r;
+}
+
 Result* unaryMinus(Result* a, long long p) {
 	Result *r = resultFromLiteral(modNorm(p-a->value, p), p);
 	if (a->isLiteral) r->post = convertIntToString(r->value);
@@ -132,28 +146,32 @@ Result *mul(Result *a, Result *b) {
 	return r;
 }
 
-Result *divide(Result *a, Result *b, int *error) {
+Result *divide(Result *a, Result *b) {
 	long long inv = modInv(b->value);
-	if (!b->value || !inv) {*error = 1; return NULL;}
+	if (!b->value || !inv) {
+		setCalcError("Dzielenie przez 0"); 
+		return NULL;
+	}
 
 	Result *r = resultFromResult(
 		modNorm(a->value * inv, P),
 		0,
 		joinResults(a->post, b->post, "/")
 	);
-	*error = 0;
 	return r;
 }
 
-Result *mod(Result *a, Result *b, int *error) {
-	if (!b->value) {*error = 1; return NULL;}
+Result *mod(Result *a, Result *b) {
+	if (!b->value) {
+		setCalcError("Dzielenie przez 0");
+		return NULL;
+	}
 
 	Result *r = resultFromResult(
 		modNorm(a->value % b->value, P),
 		0,
 		joinResults(a->post, b->post, "/")
 	);
-	error = 0;
 	return r;
 }
 

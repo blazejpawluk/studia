@@ -1,6 +1,8 @@
 %{
 #include <stdio.h>
 
+extern int calcError;
+
 extern int yylex(void);
 extern int yyparse(void);
 void yyerror(const char *s);
@@ -34,81 +36,120 @@ input:
 line:
 	'\n' {}
 	| expr '\n' {
-		printf("%s\nWynik: %d\n", $1->post, $1->value);
-		freeResult($1);
+		if (!calcError) {
+			printf("%s\nWynik: %d\n", $1->post, $1->value);
+			freeResult($1);
+		}
+		calcError = 0;
 	}
-;
-
+	| error '\n' {
+		setCalcError("Niepoprawna skladnia");
+		calcError = 0;
+	}
+	;
+	
 expr:
-	NUMBER {$$ = resultFromLiteral($1, P);}
-	| '(' expr ')' {$$ = $2;}
+	NUMBER {
+		if (calcError) $$ = makeError();
+		else $$ = resultFromLiteral($1, P);
+	}
+	| '(' expr ')' {
+		if (calcError) $$ = makeError();
+		else $$ = $2;
+	}
 	| expr '+' expr {
-		Result *r = add($1, $3);
-		freeResult($1);
-		freeResult($3);
-		$$ = r;
+		if (calcError) $$ = makeError();
+		else {
+			Result *r = add($1, $3);
+			freeResult($1);
+			freeResult($3);
+			$$ = r;
+		}
 	}
 	| expr '-' expr {
-		Result *r = sub($1, $3);
-		freeResult($1);
-		freeResult($3);
-		$$ = r;
+		if (calcError) $$ = makeError();
+		else {
+			Result *r = sub($1, $3);
+			freeResult($1);
+			freeResult($3);
+			$$ = r;
+		}
 	}
 	| expr '*' expr {
-		Result *r = mul($1, $3);
-		freeResult($1);
-		freeResult($3);
-		$$ = r;
+		if (calcError) $$ = makeError();
+		else {
+			Result *r = mul($1, $3);
+			freeResult($1);
+			freeResult($3);
+			$$ = r;
+		}
 	}
 	| expr '/' expr {
-		int error;
-		Result *r = divide($1, $3, &error);
-		if (error) {
-			yyerror("dzielenie przez zero");
-			r = resultFromLiteral(0, P);
+		if (calcError) $$ = makeError();
+		else {
+			Result *r = divide($1, $3);
+			if (calcError) $$ = makeError();
+			else {
+				freeResult($1);
+				freeResult($3);
+				$$ = r;
+			}
 		}
-		freeResult($1);
-		freeResult($3);
-		$$ = r;
 	}
 	| expr '%' expr {
-		int error;
-		Result *r = mod($1, $3, &error);
-		if (error) {
-			yyerror("dzielenie przez zero");
-			r = resultFromLiteral(0, P);
+		if (calcError) $$ = makeError();
+		else {
+			Result *r = mod($1, $3);
+			if (calcError) $$ = makeError();
+			else {
+				freeResult($1);
+				freeResult($3);
+				$$ = r;
+			}
 		}
-		freeResult($1);
-		freeResult($3);
-		$$ = r;
 	}
 	| expr '^' expo {
-		Result *r = power($1, $3);
-		freeResult($1);
-		freeResult($3);
-		$$ = r;
+		if (calcError) $$ = makeError();
+		else {
+			Result *r = power($1, $3);
+			freeResult($1);
+			freeResult($3);
+			$$ = r;
+		}
 	}
 	| '-' expr %prec UMINUS {
-		$$ = unaryMinus($2, P);
-		freeResult($2);
+		if (calcError) $$ = makeError();
+		else {
+			$$ = unaryMinus($2, P);
+			freeResult($2);
+		}
 	}
 	| '+' expr %prec UPLUS {
-		$$ = $2;
+		if (calcError) $$ = makeError();
+		else $$ = $2;
 	}
 
 expo:
-	NUMBER {$$ = resultFromLiteral($1, P-1);}
-	| '(' expr ')' {$$ = $2;}
+	NUMBER {
+		if (calcError) $$ = makeError();
+		else $$ = resultFromLiteral($1, P-1);
+	}
+	| '(' expo ')' {
+		if (calcError) $$ = makeError();
+		else $$ = $2;
+	}
 	| '-' expo %prec UMINUS {
-		$$ = unaryMinus($2, P-1);
-		freeResult($2);
+		if (calcError) $$ = makeError();
+		else {
+			$$ = unaryMinus($2, P-1);
+			freeResult($2);
+		}
 	}
 	| '+' expo %prec UPLUS {
-		$$ = $2;
+		if (calcError) $$ = makeError();
+		else $$ = $2;
 	}
 
 %%
 
-void yyerror(const char *s) {
-	fprintf(stderr, "Blad: %s.\n", s);
-}
+void yyerror(const char *s) {}

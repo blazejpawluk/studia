@@ -22,7 +22,13 @@ DIGIT [0-9]
 "^"				{return '^';}
 "("				{return '(';}
 ")"				{return ')';}
-.				{return yytext[0];}
+.				{
+	setCalcError("Nieznany znak.");
+
+	int c;
+	while ((c = input()) != 0 && c != '\n') {}
+	if (c == '\n') return '\n';
+}
 
 %%
 
