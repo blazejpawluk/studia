@@ -13,7 +13,7 @@ DIGIT [0-9]
 \n				{return '\n';}
 [ \t] 			{/* biale znaki */}
 ^[ \t]*"#".*	{/* komentarz */}
-{DIGIT}+		{yylval.val = atoi(yytext); return NUMBER;}
+{DIGIT}+		{yylval.val = atoll(yytext); return NUMBER;}
 "+"				{return '+';}
 "-"				{return '-';}
 "*"				{return '*';}

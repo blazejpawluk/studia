@@ -44,6 +44,11 @@ long long modPow(long long base, long long exp) {
 }
 
 char *convertIntToString(long long x) {
+	if (!x) {
+		char *s = (char*)malloc(sizeof(char));
+		sprintf(s, "0");
+		return s;
+	}
 	char *s = (char*)malloc((int)((ceil(log10(x)) + 1) * sizeof(char)));
 	sprintf(s, "%d", x);
 	return s;
@@ -51,7 +56,7 @@ char *convertIntToString(long long x) {
 
 Result *resultFromLiteral(long long rawValue, long long p) {
 	long long v = modNorm(rawValue, p);
-	
+
 	Result *r = (Result*)malloc(sizeof(Result));
 	r->value = v;
 	r->isLiteral = 1;

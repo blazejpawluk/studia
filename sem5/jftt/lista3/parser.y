@@ -34,7 +34,7 @@ input:
 line:
 	'\n' {}
 	| expr '\n' {
-		printf("%s\n%d\n", $1->post, $1->value);
+		printf("%s\nWynik: %d\n", $1->post, $1->value);
 		freeResult($1);
 	}
 ;
