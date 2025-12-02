@@ -11,7 +11,7 @@ void yyerror(const char *s);
 }
 
 %union {
-	int val;
+	long long val;
 	Result *res;
 }
 

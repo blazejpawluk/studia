@@ -4,14 +4,14 @@
 #define P 1234577LL
 
 typedef struct {
-	int value;
+	long long value;
 	int isLiteral;
 	char *post;
 } Result;
 
 // tworzenie i zwalnianie Result
-Result *resultFromLiteral(int rawValue);
-Result *resultFromResult(int value, int isLiteral, char *post);
+Result *resultFromLiteral(long long rawValue);
+Result *resultFromResult(long long value, int isLiteral, char *post);
 void freeResult(Result *r);
 
 // operacje na Result
@@ -24,8 +24,8 @@ Result *mod(Result *a, Result *b, int *error);
 Result *power(Result *a, Result *b);
 
 // pomocnicze do dzialan na Result
-int modNorm(int x);
-int modInv(int x);
-int modPow(int base, int exp);
+long long modNorm(long long x);
+long long modInv(long long x);
+long long modPow(long long base, long long exp);
 
 #endif

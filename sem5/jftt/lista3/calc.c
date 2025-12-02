@@ -4,19 +4,19 @@
 #include <math.h>
 #include <string.h>
 
-int modNorm(int x) {
-	int m = x % P;
+long long modNorm(long long x) {
+	long long m = x % P;
 	if (m < 0) m += P;
 	return m;
 }
 
-int modInv(int a) {
+long long modInv(long long a) {
 	a = modNorm(a);
 
-	int u = 1, w = a, x = 0, z = P;
+	long long u = 1, w = a, x = 0, z = P;
 	while (w != 0) {
 		if (w < z) {
-			int temp = u;
+			long long temp = u;
 			u = x;
 			x = temp;
 
@@ -25,7 +25,7 @@ int modInv(int a) {
 			z = temp;
 		}
 
-		int q = w / z;
+		long long q = w / z;
 		u -= (q*x);
 		w -= (q*z);
 	}
@@ -35,7 +35,7 @@ int modInv(int a) {
 	return modNorm(x);
 }
 
-int modPow(int base, int exp) {
+long long modPow(long long base, long long exp) {
 	base = modNorm(base);
 	exp = modNorm(exp);
 	if (exp == 0) return 1;
@@ -43,14 +43,14 @@ int modPow(int base, int exp) {
 	return modNorm(modPow(base*base, exp/2) * (exp % 2 ? base : 1));
 }
 
-char *convertIntToString(int x) {
+char *convertIntToString(long long x) {
 	char *s = (char*)malloc((int)((ceil(log10(x)) + 1) * sizeof(char)));
 	sprintf(s, "%d", x);
 	return s;
 }
 
-Result *resultFromLiteral(int rawValue) {
-	int v = modNorm(rawValue);
+Result *resultFromLiteral(long long rawValue) {
+	long long v = modNorm(rawValue);
 	
 	Result *r = (Result*)malloc(sizeof(Result));
 	r->value = v;
@@ -59,7 +59,7 @@ Result *resultFromLiteral(int rawValue) {
 	return r;
 }
 
-Result *resultFromResult(int value, int isLiteral, char* post) {
+Result *resultFromResult(long long value, int isLiteral, char* post) {
 	Result *r = (Result*)malloc(sizeof(Result));
 	r->value = value;
 	r->isLiteral = isLiteral;
@@ -83,7 +83,7 @@ char *concat(const char *a, const char *b) {
 }
 
 Result* unaryMinus(Result* a) {
-	Result *r = resultFromLiteral(modNorm(-a->value));
+	Result *r = resultFromLiteral(modNorm(P-a->value));
 	if (a->isLiteral) r->post = convertIntToString(r->value);
 	else r->post = concat(a->post, " NEG");
 	return r;
@@ -94,9 +94,9 @@ char *joinResults(const char *a, const char *b, const char* sign) {
 	char *r = (char*)malloc(lenA+lenB+lenS+3);
 	r[0] = '\0';
 	r = concat(a, " ");
-	r = concat(a, b);
-	r = concat(a, " ");
-	r = concat(a, sign);
+	r = concat(r, b);
+	r = concat(r, " ");
+	r = concat(r, sign);
 	return r;
 }
 
@@ -128,15 +128,15 @@ Result *mul(Result *a, Result *b) {
 }
 
 Result *divide(Result *a, Result *b, int *error) {
-	int inv = modInv(b->value);
+	long long inv = modInv(b->value);
 	if (!b->value || !inv) {*error = 1; return NULL;}
 
 	Result *r = resultFromResult(
-		modNorm(a->value / b->value),
+		modNorm(a->value * inv),
 		0,
 		joinResults(a->post, b->post, "/")
 	);
-	error = 0;
+	*error = 0;
 	return r;
 }
 
@@ -144,7 +144,7 @@ Result *mod(Result *a, Result *b, int *error) {
 	if (!b->value) {*error = 1; return NULL;}
 
 	Result *r = resultFromResult(
-		modNorm(a->value / b->value),
+		modNorm(a->value % b->value),
 		0,
 		joinResults(a->post, b->post, "/")
 	);
