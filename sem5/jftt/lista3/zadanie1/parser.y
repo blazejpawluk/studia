@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
 
 extern int calcError;
 
@@ -21,6 +22,7 @@ void yyerror(const char *s);
 %type <res> expo
 
 %token <val> NUMBER
+%token EXIT
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -42,6 +44,7 @@ line:
 		}
 		calcError = 0;
 	}
+	| EXIT '\n' {exit(0);}
 	| error '\n' {
 		setCalcError("Niepoprawna skladnia");
 		calcError = 0;
