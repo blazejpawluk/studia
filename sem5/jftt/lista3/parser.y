@@ -16,6 +16,7 @@ void yyerror(const char *s);
 }
 
 %type <res> expr
+%type <res> expo
 
 %token <val> NUMBER
 
@@ -39,7 +40,7 @@ line:
 ;
 
 expr:
-	NUMBER {$$ = resultFromLiteral($1);}
+	NUMBER {$$ = resultFromLiteral($1, P);}
 	| '(' expr ')' {$$ = $2;}
 	| expr '+' expr {
 		Result *r = add($1, $3);
@@ -64,7 +65,7 @@ expr:
 		Result *r = divide($1, $3, &error);
 		if (error) {
 			yyerror("dzielenie przez zero");
-			r = resultFromLiteral(0);
+			r = resultFromLiteral(0, P);
 		}
 		freeResult($1);
 		freeResult($3);
@@ -75,23 +76,34 @@ expr:
 		Result *r = mod($1, $3, &error);
 		if (error) {
 			yyerror("dzielenie przez zero");
-			r = resultFromLiteral(0);
+			r = resultFromLiteral(0, P);
 		}
 		freeResult($1);
 		freeResult($3);
 		$$ = r;
 	}
-	| expr '^' expr {
+	| expr '^' expo {
 		Result *r = power($1, $3);
 		freeResult($1);
 		freeResult($3);
 		$$ = r;
 	}
 	| '-' expr %prec UMINUS {
-		$$ = unaryMinus($2);
+		$$ = unaryMinus($2, P);
 		freeResult($2);
 	}
 	| '+' expr %prec UPLUS {
+		$$ = $2;
+	}
+
+expo:
+	NUMBER {$$ = resultFromLiteral($1, P-1);}
+	| '(' expr ')' {$$ = $2;}
+	| '-' expo %prec UMINUS {
+		$$ = unaryMinus($2, P-1);
+		freeResult($2);
+	}
+	| '+' expo %prec UPLUS {
 		$$ = $2;
 	}
 

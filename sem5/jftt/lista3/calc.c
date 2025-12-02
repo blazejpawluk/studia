@@ -4,14 +4,14 @@
 #include <math.h>
 #include <string.h>
 
-long long modNorm(long long x) {
-	long long m = x % P;
-	if (m < 0) m += P;
+long long modNorm(long long x, long long p) {
+	long long m = x % p;
+	if (m < 0) m += p;
 	return m;
 }
 
 long long modInv(long long a) {
-	a = modNorm(a);
+	a = modNorm(a, P);
 
 	long long u = 1, w = a, x = 0, z = P;
 	while (w != 0) {
@@ -32,15 +32,15 @@ long long modInv(long long a) {
 
 	if (z != 1) return -1;
 
-	return modNorm(x);
+	return modNorm(x, P);
 }
 
 long long modPow(long long base, long long exp) {
-	base = modNorm(base);
-	exp = modNorm(exp);
+	base = modNorm(base, P);
+	exp = modNorm(exp, P-1);
 	if (exp == 0) return 1;
 	if (exp == 1) return base;
-	return modNorm(modPow(base*base, exp/2) * (exp % 2 ? base : 1));
+	return modNorm(modPow(base*base, exp/2) * (exp % 2 ? base : 1), P);
 }
 
 char *convertIntToString(long long x) {
@@ -49,8 +49,8 @@ char *convertIntToString(long long x) {
 	return s;
 }
 
-Result *resultFromLiteral(long long rawValue) {
-	long long v = modNorm(rawValue);
+Result *resultFromLiteral(long long rawValue, long long p) {
+	long long v = modNorm(rawValue, p);
 	
 	Result *r = (Result*)malloc(sizeof(Result));
 	r->value = v;
@@ -82,8 +82,8 @@ char *concat(const char *a, const char *b) {
 	return r;
 }
 
-Result* unaryMinus(Result* a) {
-	Result *r = resultFromLiteral(modNorm(P-a->value));
+Result* unaryMinus(Result* a, long long p) {
+	Result *r = resultFromLiteral(modNorm(p-a->value, p), p);
 	if (a->isLiteral) r->post = convertIntToString(r->value);
 	else r->post = concat(a->post, " NEG");
 	return r;
@@ -102,7 +102,7 @@ char *joinResults(const char *a, const char *b, const char* sign) {
 
 Result *add(Result *a, Result *b) {
 	Result *r = resultFromResult(
-		modNorm(a->value + b->value),
+		modNorm(a->value + b->value, P),
 		0,
 		joinResults(a->post, b->post, "+")
 	);
@@ -111,7 +111,7 @@ Result *add(Result *a, Result *b) {
 
 Result *sub(Result *a, Result *b) {
 	Result *r = resultFromResult(
-		modNorm(a->value - b->value),
+		modNorm(a->value - b->value, P),
 		0,
 		joinResults(a->post, b->post, "-")
 	);
@@ -120,7 +120,7 @@ Result *sub(Result *a, Result *b) {
 
 Result *mul(Result *a, Result *b) {
 	Result *r = resultFromResult(
-		modNorm(a->value * b->value),
+		modNorm(a->value * b->value, P),
 		0,
 		joinResults(a->post, b->post, "*")
 	);
@@ -132,7 +132,7 @@ Result *divide(Result *a, Result *b, int *error) {
 	if (!b->value || !inv) {*error = 1; return NULL;}
 
 	Result *r = resultFromResult(
-		modNorm(a->value * inv),
+		modNorm(a->value * inv, P),
 		0,
 		joinResults(a->post, b->post, "/")
 	);
@@ -144,7 +144,7 @@ Result *mod(Result *a, Result *b, int *error) {
 	if (!b->value) {*error = 1; return NULL;}
 
 	Result *r = resultFromResult(
-		modNorm(a->value % b->value),
+		modNorm(a->value % b->value, P),
 		0,
 		joinResults(a->post, b->post, "/")
 	);
@@ -154,7 +154,7 @@ Result *mod(Result *a, Result *b, int *error) {
 
 Result *power(Result *a, Result *b) {
 	Result *r = resultFromResult(
-		modNorm(modPow(a->value, b->value)),
+		modNorm(modPow(a->value, b->value), P),
 		0,
 		joinResults(a->post, b->post, "^")
 	);

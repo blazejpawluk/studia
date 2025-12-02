@@ -10,12 +10,12 @@ typedef struct {
 } Result;
 
 // tworzenie i zwalnianie Result
-Result *resultFromLiteral(long long rawValue);
+Result *resultFromLiteral(long long rawValue, long long p);
 Result *resultFromResult(long long value, int isLiteral, char *post);
 void freeResult(Result *r);
 
 // operacje na Result
-Result *unaryMinus(Result *a);
+Result *unaryMinus(Result *a, long long p);
 Result *add(Result *a, Result *b);
 Result *sub(Result *a, Result *b);
 Result *mul(Result *a, Result *b);
@@ -24,7 +24,7 @@ Result *mod(Result *a, Result *b, int *error);
 Result *power(Result *a, Result *b);
 
 // pomocnicze do dzialan na Result
-long long modNorm(long long x);
+long long modNorm(long long x, long long p);
 long long modInv(long long x);
 long long modPow(long long base, long long exp);
 
