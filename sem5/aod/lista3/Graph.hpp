@@ -4,12 +4,13 @@
 using namespace std;
 
 class Graph {
-private:
-	int n; // liczba wierzchołków
-	vector<vector<pair<int,int>>> adj; // lista sąsiedztwa (wierzchołek, do którego prowadzona jest krawędź i jego koszt)
-	int minCost, maxCost;
 public:
-	Graph(int n, vector<pair<pair<int,int>,int>> E, bool directed);
+	int n; // liczba wierzchołków
+	int m; // liczba krawedzi
+	vector<vector<pair<int,int>>> adj; // lista sąsiedztwa u: (v, cost)
+	int minCost, maxCost;
+
+	Graph(int n, vector<pair<pair<int,int>,int>> E); // lista krawędzi ((u,v), cost)
 	Graph(int n, vector<vector<pair<int,int>>> adj);
 
 	void DijkstraFull(int s);
