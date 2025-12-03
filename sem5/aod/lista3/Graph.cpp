@@ -37,11 +37,3 @@ Graph::Graph(int n, vector<vector<pair<int,int>>> adj) {
 	}
 	this->adj = adj;
 }
-
-void Graph::print() {
-	for(int i = 1; i <= n; i++) {
-		for(pair<int, int> u : adj[i]) {
-			cout << i << "-" << u.first << ", cost: " << u.second << endl;
-		}
-	}
-}

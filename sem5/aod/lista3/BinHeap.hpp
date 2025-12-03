@@ -22,6 +22,5 @@ public:
 	void decreaseKey(int v, int k);
 	Node pop();
 	bool empty();
-	void print();
 	bool contains(int v);
 };

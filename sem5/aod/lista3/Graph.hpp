@@ -17,6 +17,7 @@ public:
 
 	void DialFull(int s);
 	int DialTwo(int s, int t);
-	
-	void print();
+
+	void RadixHeapFull(int s);
+	int RadixHeapTwo(int s, int t);
 };

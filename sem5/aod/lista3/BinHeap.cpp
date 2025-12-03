@@ -66,16 +66,6 @@ bool BinHeap::empty() {
 	return !heap.size();
 }
 
-void BinHeap::print() {
-	cout << " ";
-	for(Node x : heap) cout << x.v << " ";
-	cout << endl;
-	for(Node x : heap) cout << x.k << " ";
-	cout << endl;
-	for(int p : pos) cout << p << " ";
-	cout << endl << endl;
-}
-
 bool BinHeap::contains(int v) {
 	return pos[v] != -1;
 }
