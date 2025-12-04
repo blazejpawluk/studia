@@ -1,19 +1,7 @@
 Błażej Pawluk, 279738
 
-folder lib - samodzielnie stworzone biblioteki:
-	BinHeap.hpp - kopiec binarny
-	Graph.hpp - graf
-	Parser.hpp - parser inputu (argumentów wejściowych oraz plików wejściowych)
-	Writer.hpp - funkcje tworzące pliki wyjściowe
-
-folder src - 
-	BinHeap.cpp, Graph.cpp, Parser.cpp, Writer.cpp - implementacja funkcji z biblioteki
-	algorithm - folder z algorytmami (Dijkstra.cpp, Dial.cpp, RadixHeap.cpp)
-
-Main.cpp - główna część programu
-
-Makefile
-make - kompilacja programu do pliku "graph"
-clean - usunięcie pliku "graph"
-
-Wymagania: kompilator g++
+lib - definicje własnych bibliotek (BinHeap, Graph, Parser, Writer)
+src - implementacje bibliotek i algorytmów
+Dijkstra.cpp, Dial.cpp, RadixHeap.cpp - programy dla odpowiednich algorytmów
+Makefile:
+	make - tworzy 3 pliki <nazwa-algorytmu> - pliki wykonywalne

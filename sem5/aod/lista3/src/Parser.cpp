@@ -2,21 +2,14 @@
 #include "../lib/Graph.hpp"
 using namespace std;
 
-vector<string> parseCommand(int argc, char* argv[]) {
-	if(argc != 8) {
+vector<string> parseCommand(int argc, char* argv[], string algorithm) {
+	if(argc != 7) {
 		cerr << "Niepoprawna liczba opcji.\n";
 		exit(1);
 	}
 
 	vector<string> result(5);
-
-	if(string(argv[1]) == "dijkstra") result[0] = "dijkstra";
-	else if(string(argv[1]) == "dial") result[0] = "dial";
-	else if(string(argv[1]) == "radixheap") result[0] = "radixheap";
-	else {
-		cerr << "Nieznany algorytm.\n";
-		exit(1);
-	}
+	result[0] = algorithm;
 
 	if(string(argv[2]) == "-d") result[1] = argv[3];
 	else {
