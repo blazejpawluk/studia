@@ -1,4 +1,4 @@
-#include "Writer.hpp"
+#include "../lib/Writer.hpp"
 
 void writeSS(string inFile, string outFile, string algorithm, int n, int m, int minCost, int maxCost, double avg) {
 	ofstream ofs(outFile);

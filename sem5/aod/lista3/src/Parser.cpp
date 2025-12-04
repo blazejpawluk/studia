@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "Graph.hpp"
+#include "../lib/Graph.hpp"
 using namespace std;
 
 vector<string> parseCommand(int argc, char* argv[]) {
@@ -20,7 +20,7 @@ vector<string> parseCommand(int argc, char* argv[]) {
 
 	if(string(argv[2]) == "-d") result[1] = argv[3];
 	else {
-		cerr << "Niepoprawne użycie. Poprawne: <algorytm> -d <plik-graf> -ss/-p2p <plik-input> -oss/op2p <plik-output>\n";
+		cerr << "Niepoprawne uzycie. Poprawne: <algorytm> -d <plik-graf> -ss/-p2p <plik-input> -oss/op2p <plik-output>\n";
 		exit(1);
 	}
 
@@ -33,7 +33,7 @@ vector<string> parseCommand(int argc, char* argv[]) {
 		result[3] = argv[5];
 		result[4] = argv[7];
 	} else {
-		cerr << "Niepoprawne użycie. Poprawne: <algorytm> -d <plik-graf> -ss/-p2p <plik-input> -oss/op2p <plik-output>\n";
+		cerr << "Niepoprawne uzycie. Poprawne: <algorytm> -d <plik-graf> -ss/-p2p <plik-input> -oss/op2p <plik-output>\n";
 		exit(1);
 	}
 

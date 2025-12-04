@@ -1,4 +1,4 @@
-#include "Graph.hpp"
+#include "../lib/Graph.hpp"
 
 // tworzenie grafu z listy krawędzi
 Graph::Graph(int n, vector<pair<pair<int,int>,int>> E) {

@@ -1,6 +1,6 @@
-#include "Graph.hpp"
-#include "Parser.hpp"
-#include "Writer.hpp"
+#include "lib/Graph.hpp"
+#include "lib/Parser.hpp"
+#include "lib/Writer.hpp"
 
 int main(int argc, char* argv[]) {
 	vector<string> input = parseCommand(argc, argv);

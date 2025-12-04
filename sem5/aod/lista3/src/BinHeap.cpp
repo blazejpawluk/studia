@@ -1,4 +1,4 @@
-#include "BinHeap.hpp"
+#include "../lib/BinHeap.hpp"
 
 BinHeap::BinHeap(int n) {
 	heap.push_back(Node(0,-1));

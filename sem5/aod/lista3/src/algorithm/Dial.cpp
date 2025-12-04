@@ -1,4 +1,4 @@
-#include "Graph.hpp"
+#include "../../lib/Graph.hpp"
 
 bool emptyBuckets(vector<vector<int>> bucket) {
 	for(vector<int> b : bucket) if(!b.empty()) return false;

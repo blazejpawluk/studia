@@ -1,4 +1,4 @@
-#include "Graph.hpp"
+#include "../../lib/Graph.hpp"
 #include <cmath>
 
 bool allEmpty(vector<vector<pair<int,int>>> x) {
@@ -16,13 +16,8 @@ int firstNonEmpty(vector<vector<pair<int,int>>> x) {
 }
 
 void insert(int v, int d, vector<vector<pair<int,int>>> &x, vector<int> a, vector<int> b) {
-	// for(int i = 0; i < a.size(); i++) cout << a[i] << " ";
-	// cout << endl;
-	// for(int i = 0; i < b.size(); i++) cout << b[i] << " ";
-	// cout << endl;
 	int k = 0;
 	while(!(a[k] <= d && b[k] >= d)) k++;
-	// cout << d << " " << k << endl;
 	x[k].push_back({v,d});
 }
 

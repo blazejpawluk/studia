@@ -1,4 +1,4 @@
-#include "Graph.hpp"
+#include "../../lib/Graph.hpp"
 
 void Graph::DijkstraFull(int s) {
 	vector<int> dist(n+1, INT_MAX);
