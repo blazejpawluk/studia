@@ -10,18 +10,35 @@ int main(int argc, char* argv[]) {
 	if(input[2] == "ss") {
 		vector<int> sources = parseSSInput(input[3]);
 
+		double total = 0.0;
+		int n = sources.size();
 		if(algorithm == "dijkstra") {
 			for(int s : sources) {
+				auto start = chrono::high_resolution_clock::now();
 				G.DijkstraFull(s);
+				auto end = chrono::high_resolution_clock::now();
+				chrono::duration<double, std::milli> duration = end - start;
+				total += duration.count();
 			}
+			writeSS(input[3], input[4], algorithm, G.n, G.m, G.minCost, G.maxCost, total/n);
 		} else if(algorithm == "dial") {
 			for(int s : sources) {
-				G.DialFull(s);
+				auto start = chrono::high_resolution_clock::now();
+				G.DijkstraFull(s);
+				auto end = chrono::high_resolution_clock::now();
+				chrono::duration<double, std::milli> duration = end - start;
+				total += duration.count();
 			}
+			writeSS(input[3], input[4], algorithm, G.n, G.m, G.minCost, G.maxCost, total/n);
 		} else if(algorithm == "radixheap") {
 			for(int s : sources) {
-				G.RadixHeapFull(s);
+				auto start = chrono::high_resolution_clock::now();
+				G.DijkstraFull(s);
+				auto end = chrono::high_resolution_clock::now();
+				chrono::duration<double, std::milli> duration = end - start;
+				total += duration.count();
 			}
+			writeSS(input[3], input[4], algorithm, G.n, G.m, G.minCost, G.maxCost, total/n);
 		}
 	} else if(input[2] == "p2p") {
 		vector<pair<int,int>> pairs = parseP2PInput(input[3]);
