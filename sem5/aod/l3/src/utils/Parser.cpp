@@ -31,7 +31,7 @@ Graph *parseGraph(std::string filename) {
 
 	std::string line;
 	int n;
-	Graph *G;
+	Graph *G = nullptr;
 
 	while(std::getline(ifs, line)) {
 		int pos = 0;
@@ -53,8 +53,7 @@ Graph *parseGraph(std::string filename) {
 		if (tag == "p") {
 			std::string sp; int m;
 			iss >> sp >> n >> m;
-			Graph graph(n, true);
-			G = &graph;
+			G = new Graph(n, true);
 		} else if (tag == "a") {
 			int u, v; long long cost;
 			iss >> u >> v >> cost;
