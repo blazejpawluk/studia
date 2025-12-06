@@ -87,13 +87,13 @@ long long radixheapPair(Graph *G, int s, int t) {
 		while (cur < 65 && bucket[cur].empty()) cur++;
 		if (cur == 65) break;
 
-		if (cur == 0 || cur == 1) {
+		if (cur == 0) {
 			auto x = bucket[cur].back();
 			int v = x.second;
 			long long d = x.first;
 			bucket[cur].pop_back();
 
-			if (v == t) return d;
+			if (v == t) return dist[v];
 
 			if (d > dist[v]) continue;
 
@@ -146,5 +146,5 @@ long long radixheapPair(Graph *G, int s, int t) {
 		}
 	}
 
-	return -1;
+	return dist[t];
 }

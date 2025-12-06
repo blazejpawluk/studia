@@ -48,9 +48,9 @@ long long dijkstraPair(Graph *G, int s, int t) {
 	while (!pq.empty()) {
 		auto top = pq.top(); pq.pop();
 		int v = top.second;
-		long long d = top.second;
+		long long d = top.first;
 
-		if (v == t) return d;
+		if (v == t) return dist[v];
 		
 		if (d > dist[v]) continue;
 
@@ -65,5 +65,5 @@ long long dijkstraPair(Graph *G, int s, int t) {
 		}
 	}
 
-	return -1;
+	return dist[t];
 }

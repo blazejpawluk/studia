@@ -120,5 +120,5 @@ long long dialPair(Graph *G, int s, int t) {
 		}
 	}
 
-	return -1;
+	return dist[t];
 }
