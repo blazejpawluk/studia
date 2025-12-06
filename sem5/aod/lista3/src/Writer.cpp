@@ -21,7 +21,7 @@ void writeSS(string inFile, string outFile, string algorithm, int n, int m, int 
 	ofs << "t " << avg << "\n";
 }
 
-void writeP2p(string inFile, string outFile, string algorithm, int n, int m, int minCost, int maxCost, vector<pair<pair<int,int>,int>> results) {
+void writeP2p(string inFile, string outFile, string algorithm, int n, int m, int minCost, int maxCost, vector<pair<pair<int,int>,long long>> results) {
 	ofstream ofs(outFile);
 	if(!ofs) {
         cerr << "Nie można otworzyć pliku: " << outFile << "\n";

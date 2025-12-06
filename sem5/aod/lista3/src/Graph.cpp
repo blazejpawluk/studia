@@ -1,15 +1,16 @@
 #include "../lib/Graph.hpp"
 
 // tworzenie grafu z listy krawędzi
-Graph::Graph(int n, vector<pair<pair<int,int>,int>> E) {
+Graph::Graph(int n, vector<pair<pair<int,int>,long long>> E) {
 	this->n = n;
-	this->m = E.size();
+	this->m = (long long)E.size();
 	this->adj.resize(n+1);
-	this->minCost = INT_MAX;
+	this->adj.reserve(n+1);
+	this->minCost = LONG_LONG_MAX;
 	this->maxCost = -1;
 
-	for(pair<pair<int,int>,int> e : E) {
-		int v = e.first.first, u = e.first.second, cost = e.second;
+	for(pair<pair<int,int>,long long> e : E) {
+		int v = e.first.first, u = e.first.second; long long cost = e.second;
 
 		if(v < 1 || v > n || u < 1 || u > n || cost < 0) throw "invalid data";
 
@@ -21,16 +22,16 @@ Graph::Graph(int n, vector<pair<pair<int,int>,int>> E) {
 }
 
 // tworzenie grafu z listy sąsiedztwa
-Graph::Graph(int n, vector<vector<pair<int,int>>> adj) {
+Graph::Graph(int n, vector<vector<pair<int,long long>>> adj) {
 	this->n = n;
 	this->m = 0;
-	this->minCost = INT_MAX;
+	this->minCost = LONG_LONG_MAX;
 	this->maxCost = -1;
 
 	if(adj.size() != n+1) throw "invalid adj size";
-	for(vector<pair<int,int>> list : adj) {
+	for(vector<pair<int,long long>> list : adj) {
 		for(pair<int,int> e : list) {
-			int u = e.first, cost = e.second;
+			int u = e.first; long long cost = e.second;
 			if(u < 1 || u > n || cost < 0) throw "invalid data";
 			this->m++;
 			if(this->minCost > cost) this->minCost = cost;

@@ -42,7 +42,7 @@ Graph parseGraphInput(string filename) {
 
 	string line;
 	int n = 0;
-	vector<pair<pair<int,int>,int>> edges;
+	vector<pair<pair<int,int>,long long>> edges;
 
 	while(getline(fin, line)) {
 		int pos = 0;

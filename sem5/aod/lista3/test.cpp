@@ -19,7 +19,7 @@ mt19937 gen(rd());
 ofstream ofp2p("output/paths.txt");
 
 void writeResults(string family) {
-try {
+	try {
 		int maxC = 0;
 		Graph *maxG;
 
@@ -42,17 +42,17 @@ try {
 			duration<double, milli> duration = end - start;
 			ofss << duration.count() << " ";
 			
-			start = high_resolution_clock::now();
-			G.DialFull(1);
-			end = high_resolution_clock::now();
-			duration = end - start;
-			ofss << duration.count() << " ";
+			// start = high_resolution_clock::now();
+			// G.DialFull(1);
+			// end = high_resolution_clock::now();
+			// duration = end - start;
+			// ofss << duration.count() << " ";
 			
-			start = high_resolution_clock::now();
-			G.RadixHeapFull(1);
-			end = high_resolution_clock::now();
-			duration = end - start;
-			ofss << duration.count() << " ";
+			// start = high_resolution_clock::now();
+			// G.RadixHeapFull(1);
+			// end = high_resolution_clock::now();
+			// duration = end - start;
+			// ofss << duration.count() << " ";
 			
 			// ss - srednia 5 wierzcholkow
 			cout << "\taverages" << endl;
@@ -66,17 +66,17 @@ try {
 				duration = end - start;
 				total[0] += duration.count();
 
-				start = high_resolution_clock::now();
-				G.DialFull(v);
-				end = high_resolution_clock::now();
-				duration = end - start;
-				total[1] += duration.count();
+				// start = high_resolution_clock::now();
+				// G.DialFull(v);
+				// end = high_resolution_clock::now();
+				// duration = end - start;
+				// total[1] += duration.count();
 				
-				start = high_resolution_clock::now();
-				G.RadixHeapFull(v);
-				end = high_resolution_clock::now();
-				duration = end - start;
-				total[2] += duration.count();
+				// start = high_resolution_clock::now();
+				// G.RadixHeapFull(v);
+				// end = high_resolution_clock::now();
+				// duration = end - start;
+				// total[2] += duration.count();
 			}
 			total[0] /= 5.0; total[1] /= 5.0; total[2] /= 5.0; 
 			ofss << total[0] << " " << total[1] << " " << total[2] << endl;
@@ -85,8 +85,8 @@ try {
 
 		ofp2p << family <<  " ";
 		ofp2p << maxG->DijkstraTwo(1, maxG->n) << " ";
-		ofp2p << maxG->DialTwo(1, maxG->n) << " ";
-		ofp2p << maxG->RadixHeapTwo(1, maxG->n) << " ";
+		// ofp2p << maxG->DialTwo(1, maxG->n) << " ";
+		// ofp2p << maxG->RadixHeapTwo(1, maxG->n) << " ";
 
 		uniform_int_distribution<> distr(1, maxG->n);
 		for(int i = 0; i < 4; i++) {
@@ -94,8 +94,8 @@ try {
 			do {v = distr(gen);} while(u == v);
 
 			ofp2p << maxG->DijkstraTwo(u,v) << " ";
-			ofp2p << maxG->DialTwo(u,v) << " ";
-			ofp2p << maxG->RadixHeapTwo(u,v) << " ";
+			// ofp2p << maxG->DialTwo(u,v) << " ";
+			// ofp2p << maxG->RadixHeapTwo(u,v) << " ";
 		}
 		ofp2p << endl;
 	} catch(const exception& e) {

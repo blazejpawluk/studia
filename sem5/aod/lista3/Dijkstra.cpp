@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 	} else if(input[2] == "p2p") {
 		vector<pair<int,int>> pairs = parseP2PInput(input[3]);
 
-		vector<pair<pair<int,int>,int>> results;
+		vector<pair<pair<int,int>,long long>> results;
 		for(pair<int,int> p : pairs) results.push_back({{p.first, p.second}, G.DijkstraTwo(p.first, p.second)});
 		writeP2p(input[3], input[4], "dijkstra", G.n, G.m, G.minCost, G.maxCost, results);
 	}

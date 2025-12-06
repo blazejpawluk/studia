@@ -1,64 +1,52 @@
 #include "../../lib/Graph.hpp"
 
 void Graph::DijkstraFull(int s) {
-	vector<int> dist(n+1, INT_MAX);
-	vector<bool> visited(n+1, false);
-
+	vector<long long> dist(n+1, INT_MAX);
+	dist.reserve(n+1);
 	dist[s] = 0;
-	visited[s] = true;
 
-	BinHeap heap(n);
-	heap.insert(s,0);
+	priority_queue<pair<long long,int>, vector<pair<long long,int>>, greater<pair<long long,int>>> pq;
+	pq.push({0, s});
 
-	while(!heap.empty()) {
-		Node x = heap.pop();
-		int v = x.v, k = x.k;
+	while(!pq.empty()) {
+		auto x = pq.top(); pq.pop();
+		long long d = x.first; int v = x.second;
 
-		for(pair<int,int> e : adj[v]) {
-			int u = e.first, cost = e.second;
+		if(d > dist[v]) continue;
 
-			if(visited[u]) {
-				if(dist[u] > k+cost) {
-					dist[u] = k+cost;
-					if(heap.contains(u)) heap.decreaseKey(u, k+cost);
-				}
-			} else {
-				dist[u] = k+cost;
-				visited[u] = true;
-				heap.insert(u, k+cost);
+		for(const auto &e : adj[v]) {
+			int u = e.first;  long long cost = e.second;
+
+			if(dist[u] > d+cost) {
+				dist[u] = d+cost;
+				pq.push({dist[u], u});
 			}
 		}
 	}
 }
 
-int Graph::DijkstraTwo(int s, int t) {
-	vector<int> dist(n+1, INT_MAX);
-	vector<bool> visited(n+1, false);
-
+long long Graph::DijkstraTwo(int s, int t) {
+	vector<long long> dist(n+1, INT_MAX);
+	dist.reserve(n+1);
 	dist[s] = 0;
-	visited[s] = true;
 
-	BinHeap heap(n);
-	heap.insert(s,0);
+	priority_queue<pair<long long,int>, vector<pair<long long,int>>, greater<pair<long long,int>>> pq;
+	pq.push({0, s});
 
-	while(!heap.empty()) {
-		Node x = heap.pop();
-		int v = x.v, k = x.k;
+	while(!pq.empty()) {
+		auto x = pq.top(); pq.pop();
+		long long d = x.first; int v = x.second;
 
-		if(v == t) return k;
+		if(v == t) return d;
 
-		for(pair<int,int> e : adj[v]) {
-			int u = e.first, cost = e.second;
+		if(d > dist[v]) continue;
 
-			if(visited[u]) {
-				if(dist[u] > k+cost) {
-					dist[u] = k+cost;
-					if(heap.contains(u)) heap.decreaseKey(u, k+cost);
-				}
-			} else {
-				dist[u] = k+cost;
-				visited[u] = true;
-				heap.insert(u, k+cost);
+		for(const auto &e : adj[v]) {
+			int u = e.first;  long long cost = e.second;
+
+			if(dist[u] > d+cost) {
+				dist[u] = d+cost;
+				pq.push({dist[u], u});
 			}
 		}
 	}

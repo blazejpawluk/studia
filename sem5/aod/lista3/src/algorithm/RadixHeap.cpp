@@ -98,7 +98,7 @@ void Graph::RadixHeapFull(int s) {
 	}
 }
 
-int Graph::RadixHeapTwo(int s, int t) {
+long long Graph::RadixHeapTwo(int s, int t) {
 	int K = ceil(log2(n*maxCost));
 
 	vector<int> dist(n+1, INT_MAX);
