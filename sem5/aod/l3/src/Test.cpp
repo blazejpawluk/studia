@@ -43,7 +43,6 @@ void executeTest(std::string family) {
 				ofs << duration.count() << " ";
 			} catch (const std::exception &e) {std::cerr << "dijkstra: " << e.what() << std::endl;}
 			catch (...) {std::cerr << "dijkstra: unknown" << std::endl;}
-			std::cout << "dijkstra\n";
 			
 			try {
 				auto start = std::chrono::high_resolution_clock::now();
@@ -53,7 +52,6 @@ void executeTest(std::string family) {
 				ofs << duration.count() << " ";
 			} catch (const std::exception &e) {std::cerr << "dial: " << e.what() << std::endl;}
 			catch (...) {std::cerr << "dial: unknown" << std::endl;}
-			std::cout << "dial\n";
 			
 			try {
 				auto start = std::chrono::high_resolution_clock::now();
@@ -63,7 +61,6 @@ void executeTest(std::string family) {
 				ofs << duration.count() << " ";
 			} catch (const std::exception &e) {std::cerr << "radixheap: " << e.what() << std::endl;}
 			catch (...) {std::cerr << "radixheap: unknown" << std::endl;}
-			std::cout << "radixheap\n";
 			
 			std::cout << "\t\tss - random average" << std::endl;
 			
@@ -113,14 +110,17 @@ void executeTest(std::string family) {
 		try {paths << dijkstraPair(maxG, 1, maxG->n) << " ";}
 		catch (const std::exception &e) {std::cerr << "dijkstra: " << e.what() << std::endl;}
 		catch (...) {std::cerr << "dijkstra: unknown" << std::endl;}
+		std::cout << "dijkstra\n";
 		
 		try {paths << dialPair(maxG, 1, maxG->n) << " ";}
 		catch (const std::exception &e) {std::cerr << "dial: " << e.what() << std::endl;}
 		catch (...) {std::cerr << "dial: unknown" << std::endl;}
+		std::cout << "dial\n";
 		
 		try {paths << radixheapPair(maxG, 1, maxG->n) << " ";}
 		catch (const std::exception &e) {std::cerr << "radixheap: " << e.what() << std::endl;}
 		catch (...) {std::cerr << "radixheap: unknown" << std::endl;}
+		std::cout << "radixheap\n";
 		
 		std::cout << "\t\tp2p - random" << std::endl;
 		
