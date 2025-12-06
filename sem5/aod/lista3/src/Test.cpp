@@ -20,7 +20,7 @@ void executeTest(std::string family) {
 		std::cout << family << std::endl;
 
 		int maxC = -1;
-		Graph *maxG;
+		Graph *maxG = nullptr;
 
 		std::ofstream ofs("outputs/raw/" + family + ".txt");
 		for (auto &entry : std::filesystem::directory_iterator("inputs/" + family)) {

@@ -11,7 +11,7 @@ std::vector<long long> dial(Graph *G, int s) {
 	std::vector<int> prevInBucket(G->n + 1);
 
 	auto putInBucket = [&](int v, long long d) {
-		int bucket = d % (G->maxCost + 1);
+		long long bucket = d % (G->maxCost + 1);
 		int previousTop = bucketTop[bucket];
 
 		nextInBucket[v] = previousTop;
@@ -23,8 +23,8 @@ std::vector<long long> dial(Graph *G, int s) {
 		size++;
 	};
 
-	auto removeFromBucket = [&](int v, int d) {
-		int bucket = d % (G->maxCost + 1);
+	auto removeFromBucket = [&](int v, long long d) {
+		long long bucket = d % (G->maxCost + 1);
 
 		int prev = prevInBucket[v], next = nextInBucket[v];
 		if (prev != -1) nextInBucket[prev] = next;
@@ -71,7 +71,7 @@ long long dialPair(Graph *G, int s, int t) {
 	std::vector<int> prevInBucket(G->n + 1);
 
 	auto putInBucket = [&](int v, long long d) {
-		int bucket = d % (G->maxCost + 1);
+		long long bucket = d % (G->maxCost + 1);
 		int previousTop = bucketTop[bucket];
 
 		nextInBucket[v] = previousTop;
@@ -83,8 +83,8 @@ long long dialPair(Graph *G, int s, int t) {
 		size++;
 	};
 
-	auto removeFromBucket = [&](int v, int d) {
-		int bucket = d % (G->maxCost + 1);
+	auto removeFromBucket = [&](int v, long long d) {
+		long long bucket = d % (G->maxCost + 1);
 
 		int prev = prevInBucket[v], next = nextInBucket[v];
 		if (prev != -1) nextInBucket[prev] = next;

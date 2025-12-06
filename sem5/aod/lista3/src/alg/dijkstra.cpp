@@ -1,9 +1,12 @@
 #include <queue>
+#include <limits>
 #include "../../lib/Graph.hpp"
 #include "../../lib/alg/dijkstra.hpp"
 
+const long long INF = std::numeric_limits<long long>::max();
+
 std::vector<long long> dijkstra(Graph *G, int s) {
-	std::vector<long long> dist(G->n + 1, LONG_LONG_MAX);
+	std::vector<long long> dist(G->n + 1, INF);
 	dist[s] = 0;
 
 	std::priority_queue<
@@ -11,7 +14,7 @@ std::vector<long long> dijkstra(Graph *G, int s) {
 		std::vector<std::pair<long long, int>>,
 		std::greater<std::pair<long long, int>>
 	> pq;
-	pq.push({s, 0});
+	pq.push({0, s});
 
 	while (!pq.empty()) {
 		auto top = pq.top(); pq.pop();
@@ -35,7 +38,7 @@ std::vector<long long> dijkstra(Graph *G, int s) {
 }
 
 long long dijkstraPair(Graph *G, int s, int t) {
-	std::vector<long long> dist(G->n + 1, LONG_LONG_MAX);
+	std::vector<long long> dist(G->n + 1, INF);
 	dist[s] = 0;
 
 	std::priority_queue<
@@ -43,7 +46,7 @@ long long dijkstraPair(Graph *G, int s, int t) {
 		std::vector<std::pair<long long, int>>,
 		std::greater<std::pair<long long, int>>
 	> pq;
-	pq.push({s, 0});
+	pq.push({0, s});
 
 	while (!pq.empty()) {
 		auto top = pq.top(); pq.pop();
