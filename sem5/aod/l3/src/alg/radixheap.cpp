@@ -11,7 +11,7 @@ std::vector<long long> radixheap(Graph *G, int s) {
 	long long a = 0;
 	while (true) {
 		int cur = 0;
-		while (bucket[cur].empty() || cur == 65) cur++;
+		while (cur < 65 && bucket[cur].empty()) cur++;
 		if (cur == 65) break;
 
 		if (cur == 0 || cur == 1) {
