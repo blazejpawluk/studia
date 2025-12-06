@@ -42,6 +42,8 @@ void executeTest(std::string family) {
 				std::chrono::duration<double, std::milli> duration = end - start;
 				ofs << duration.count() << " ";
 			} catch (const std::exception &e) {std::cerr << "dijkstra: " << e.what() << std::endl;}
+			catch (...) {std::cerr << "dijkstra: unknown" << std::endl;}
+			std::cout << "dijkstra\n";
 			
 			try {
 				auto start = std::chrono::high_resolution_clock::now();
@@ -50,6 +52,8 @@ void executeTest(std::string family) {
 				std::chrono::duration<double, std::milli> duration = end - start;
 				ofs << duration.count() << " ";
 			} catch (const std::exception &e) {std::cerr << "dial: " << e.what() << std::endl;}
+			catch (...) {std::cerr << "dial: unknown" << std::endl;}
+			std::cout << "dial\n";
 			
 			try {
 				auto start = std::chrono::high_resolution_clock::now();
@@ -58,14 +62,16 @@ void executeTest(std::string family) {
 				std::chrono::duration<double, std::milli> duration = end - start;
 				ofs << duration.count() << " ";
 			} catch (const std::exception &e) {std::cerr << "radixheap: " << e.what() << std::endl;}
+			catch (...) {std::cerr << "radixheap: unknown" << std::endl;}
+			std::cout << "radixheap\n";
 			
 			std::cout << "\t\tss - random average" << std::endl;
-
+			
 			std::uniform_int_distribution<> dis(1, G->n);
 			std::vector<double> total(3, 0);
 			for (int i = 0; i < 5; i++) {
 				int v = dis(gen);
-
+				
 				try {
 					auto start = std::chrono::high_resolution_clock::now();
 					dijkstra(G, v);
@@ -73,6 +79,7 @@ void executeTest(std::string family) {
 					std::chrono::duration<double, std::milli> duration = end - start;
 					ofs << duration.count() << " ";
 				} catch (const std::exception &e) {std::cerr << "dijkstra: " << e.what() << std::endl;}
+				catch (...) {std::cerr << "dijkstra: unknown" << std::endl;}
 				
 				try {
 					auto start = std::chrono::high_resolution_clock::now();
@@ -81,6 +88,7 @@ void executeTest(std::string family) {
 					std::chrono::duration<double, std::milli> duration = end - start;
 					ofs << duration.count() << " ";
 				} catch (const std::exception &e) {std::cerr << "dial: " << e.what() << std::endl;}
+				catch (...) {std::cerr << "dial: unknown" << std::endl;}
 				
 				try {
 					auto start = std::chrono::high_resolution_clock::now();
@@ -89,47 +97,55 @@ void executeTest(std::string family) {
 					std::chrono::duration<double, std::milli> duration = end - start;
 					ofs << duration.count() << " ";
 				} catch (const std::exception &e) {std::cerr << "radixheap: " << e.what() << std::endl;}
+				catch (...) {std::cerr << "radixheap: unknown" << std::endl;}
 			}
-
+			
 			ofs << total[0] / 5.0 << " ";
 			ofs << total[1] / 5.0 << " ";
 			ofs << total[2] / 5.0 << " ";
 			ofs << std::endl;
 		}
-
+		
 		paths << family << " ";
 		
 		std::cout << "\t\tp2p - low-high index" << std::endl;
-
+		
 		try {paths << dijkstraPair(maxG, 1, maxG->n) << " ";}
 		catch (const std::exception &e) {std::cerr << "dijkstra: " << e.what() << std::endl;}
-
+		catch (...) {std::cerr << "dijkstra: unknown" << std::endl;}
+		
 		try {paths << dialPair(maxG, 1, maxG->n) << " ";}
 		catch (const std::exception &e) {std::cerr << "dial: " << e.what() << std::endl;}
-
+		catch (...) {std::cerr << "dial: unknown" << std::endl;}
+		
 		try {paths << radixheapPair(maxG, 1, maxG->n) << " ";}
 		catch (const std::exception &e) {std::cerr << "radixheap: " << e.what() << std::endl;}
-
+		catch (...) {std::cerr << "radixheap: unknown" << std::endl;}
+		
 		std::cout << "\t\tp2p - random" << std::endl;
-
+		
 		std::uniform_int_distribution<> dis(1, maxG->n);
 		for (int i = 0; i < 4; i++) {
 			int v = dis(gen), u;
 			do {u = dis(gen);} while (v == u);
-
+			
 			try {paths << dijkstraPair(maxG, v, u) << " ";}
 			catch (const std::exception &e) {std::cerr << "dijkstra: " << e.what() << std::endl;}
-
+			catch (...) {std::cerr << "dijkstra: unknown" << std::endl;}
+			
 			try {paths << dialPair(maxG, v, u) << " ";}
 			catch (const std::exception &e) {std::cerr << "dial: " << e.what() << std::endl;}
-
+			catch (...) {std::cerr << "dial: unknown" << std::endl;}
+			
 			try {paths << radixheapPair(maxG, v, u) << " ";}
 			catch (const std::exception &e) {std::cerr << "radixheap: " << e.what() << std::endl;}
+			catch (...) {std::cerr << "radixheap: unknown" << std::endl;}
 		}
 		paths << std::endl;
-
+		
 		std::cout << "\t\tdone" << std::endl;
 	} catch (const std::exception &e) {std::cerr << "global: " << e.what() << std::endl;}
+	catch (...) {std::cerr << "global unknown" << std::endl;}
 }
 
 int main() {
