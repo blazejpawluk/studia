@@ -1,6 +1,9 @@
 #pragma once
-#include <bits/stdc++.h>
-using namespace std;
 
-void writeP2p(string inFile, string outFile, string algorithm, int n, int m, int minCost, int maxCost, vector<pair<pair<int,int>,long long>> results);
-void writeSS(string inFile, string outFile, string algorithm, int n, int m, int minCost, int maxCost, double avg);
+#include <vector>
+#include <string>
+#include <fstream>
+#include "Graph.hpp"
+
+void writeSSOutput(std::string alg, std::vector<std::string> input, Graph *G, double avg);
+void writeP2POutput(std::string alg, std::vector<std::string> input, Graph *G, std::vector<std::pair<std::pair<int, int>, long long>> results);

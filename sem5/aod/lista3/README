@@ -1,7 +1,0 @@
-Błażej Pawluk, 279738
-
-lib - definicje własnych bibliotek (BinHeap, Graph, Parser, Writer)
-src - implementacje bibliotek i algorytmów
-Dijkstra.cpp, Dial.cpp, RadixHeap.cpp - programy dla odpowiednich algorytmów
-Makefile:
-	make - tworzy 3 pliki <nazwa-algorytmu> - pliki wykonywalne
