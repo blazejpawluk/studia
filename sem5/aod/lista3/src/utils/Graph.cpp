@@ -10,7 +10,7 @@ Graph::Graph(int n, bool directed) {
 }
 
 void Graph::addEdge(int u, int v, long long cost) {
-	if (u < 1 || u > n || v < 1 || v > 1 || cost < 0) return;
+	if (u < 1 || u > n || v < 1 || v > n || cost < 0) return;
 	adj[u].push_back({v, cost});
 	if (!directed) adj[v].push_back({u, cost});
 

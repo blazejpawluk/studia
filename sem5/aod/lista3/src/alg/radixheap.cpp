@@ -68,6 +68,7 @@ std::vector<long long> radixheap(Graph *G, int s) {
 				}
 				bucket[b].push_back({dist[v], v});
 			}
+			bucket[cur].clear();
 		}
 	}
 
@@ -143,6 +144,7 @@ long long radixheapPair(Graph *G, int s, int t) {
 				}
 				bucket[b].push_back({dist[v], v});
 			}
+			bucket[cur].clear();
 		}
 	}
 
