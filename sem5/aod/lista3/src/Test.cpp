@@ -13,7 +13,7 @@
 
 std::random_device rd;
 std::mt19937 gen(rd());
-std::ofstream paths("outputs/raw/paths.txt");
+std::ofstream paths("outputs/raw/paths.txt", std::ios::app);
 
 void executeTest(std::string family) {
 	try {
@@ -64,19 +64,19 @@ void executeTest(std::string family) {
 				dijkstra(G, v);
 				end = std::chrono::high_resolution_clock::now();
 				duration = end - start;
-				ofs << duration.count() << " ";
+				total[0] += duration.count();
 				
 				start = std::chrono::high_resolution_clock::now();
 				dial(G, v);
 				end = std::chrono::high_resolution_clock::now();
 				duration = end - start;
-				ofs << duration.count() << " ";
+				total[1] += duration.count();
 				
 				start = std::chrono::high_resolution_clock::now();
 				radixheap(G, v);
 				end = std::chrono::high_resolution_clock::now();
 				duration = end - start;
-				ofs << duration.count() << " ";
+				total[2] += duration.count();
 			}
 			
 			ofs << total[0] / 5.0 << " ";
@@ -109,16 +109,16 @@ void executeTest(std::string family) {
 }
 
 int main() {
-	executeTest("Random4-n");
-	executeTest("Random4-C");
+	// executeTest("Random4-n");
+	// executeTest("Random4-C");
 
-	executeTest("Long-n");
-	executeTest("Square-n");
+	// executeTest("Long-n");
+	// executeTest("Square-n");
 
-	executeTest("Long-C");
+	// executeTest("Long-C");
 	executeTest("Square-C");
 
-	executeTest("USA-road-t");
+	// executeTest("USA-road-t");
 
 	return 0;
 }
