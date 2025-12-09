@@ -109,16 +109,13 @@ void executeTest(std::string family) {
 }
 
 int main() {
-	// executeTest("Random4-n");
-	// executeTest("Random4-C");
+	executeTest("Random4-n");
+	executeTest("Random4-C");
 
-	// executeTest("Long-n");
-	// executeTest("Square-n");
+	executeTest("Long-n");
+	executeTest("Square-n");
 
-	// executeTest("Long-C");
-	executeTest("Square-C");
-
-	// executeTest("USA-road-t");
+	executeTest("USA-road-t");
 
 	return 0;
 }
