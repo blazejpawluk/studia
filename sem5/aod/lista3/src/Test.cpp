@@ -115,6 +115,9 @@ int main() {
 	executeTest("Long-n");
 	executeTest("Square-n");
 
+	executeTest("Long-C");
+	executeTest("Square-C");
+
 	executeTest("USA-road-t");
 
 	return 0;
