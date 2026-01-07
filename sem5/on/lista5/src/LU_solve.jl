@@ -7,7 +7,7 @@ include("matrix_helper.jl")
 #	A - bloki na przekątnej (gęste) w U, 
 #	C - bloki nad przekątną (diagonalna) w U,
 #	Y - bloki pod przekątną (macierze zerujące element B z macierzy A) w L
-function LU_solve(n, l, A, C, Y, b)
+function LU_solve(n, l, A, C, Y, b; pivot=pivot)
 	v = div(n, l)
 
 	right = [b[(k-1)*l+1 : k*l] for k in 1:v] # podział wektora na bloki
@@ -23,7 +23,7 @@ function LU_solve(n, l, A, C, Y, b)
 	x = Vector{Vector{Float64}}(undef, v)
 	x[v] = gauss_solve(A[v], y[v]) # A[v]*x[v] = y[v]
 	for k in v-1:-1:1
-		x[k] = gauss_solve(A[k], y[k] - mul_matrix_vector(C[k], x[k+1])) # A[k]*x[k] = y[k] - C[k]*x[k+1]
+		x[k] = gauss_solve(A[k], y[k] - mul_matrix_vector(C[k], x[k+1]); pivot=pivot) # A[k]*x[k] = y[k] - C[k]*x[k+1]
 	end
 
 	# złożenie wyniku do jednego wektora

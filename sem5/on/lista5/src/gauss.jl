@@ -30,7 +30,7 @@ function gauss(n, l, diag, sub, sup, b; pivot=false)
 	x[(v-1)*l+1 : v*l] = gauss_solve(A[v], right[v]; pivot=pivot) # ostatni wiersz - A[v]*x[v] = b[v]
 	for k in v-1:-1:1
 		# pozostałe wiersze - A[k]*x[k] + C[k]*x[k+1] = b[k]
-		x[(k-1)*l+1 : k*l] = gauss_solve(A[k], right[k] - mul_matrix_vector(C[k], x[k*l+1 : (k+1)*l]))
+		x[(k-1)*l+1 : k*l] = gauss_solve(A[k], right[k] - mul_matrix_vector(C[k], x[k*l+1 : (k+1)*l]); pivot=pivot)
 	end
 
 	return x

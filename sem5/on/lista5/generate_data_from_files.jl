@@ -92,7 +92,7 @@ for (n_from_dir, entry) in folders
 	# bez wyboru elementu głównego
 	time_2a3 = @elapsed begin
 		A, C, Y = LU_decomposition(n, l, diag, sub, sup; pivot=false)
-		x_2a3 = LU_solve(n, l, copy(A), copy(C), copy(Y), b)
+		x_2a3 = LU_solve(n, l, copy(A), copy(C), copy(Y), b; pivot=false)
 	end
 	norm_2a3 = norm(x_true - x_2a3)
 	write_vector(file_2a3, x_2a3; norm=norm_2a3)
@@ -100,7 +100,7 @@ for (n_from_dir, entry) in folders
 	# z wyborem elementu głównego
 	time_2b3 = @elapsed begin
 		A, C, Y = LU_decomposition(n, l, diag, sub, sup; pivot=true)
-		x_2b3 = LU_solve(n, l, copy(A), copy(C), copy(Y), b)
+		x_2b3 = LU_solve(n, l, copy(A), copy(C), copy(Y), b; pivot=true)
 	end
 	norm_2b3 = norm(x_true - x_2b3)
 	write_vector(file_2b3, x_2b3; norm=norm_2b3)
