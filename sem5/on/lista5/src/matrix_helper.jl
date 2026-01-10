@@ -3,6 +3,8 @@
 # funkcja pomocnicza obliczająca wynik x równania Mx = b korzystając z eliminacji Gaussa (z opcjonalnym częściowym wyborem elementu głównego), gdzie
 # 	M - macierz gęsta nxn
 # 	b - wektor o długości n
+# funkcja pomocnicza obliczająca wynik x równania Mx = b korzystając z eliminacji Gaussa
+# z opcjonalnym częściowym (skalowanym) wyborem elementu głównego
 function gauss_solve(M, b; pivot=false)
 	n = length(b)
 
@@ -10,25 +12,35 @@ function gauss_solve(M, b; pivot=false)
 	M = copy(M)
 	v = copy(b)
 
-	# transformacja do posiaci górnotrójkątnej
+	# skalowanie wierszy (do skalowanego pivotingu)
+	scales = ones(Float64, n)
+	if pivot
+		for i in 1:n
+			scales[i] = maximum(abs.(M[i,:]))
+		end
+	end
+
+	# transformacja do postaci górnotrójkątnej
 	for k in 1:n-1
 		p = k # element główny
 
-		# opcjonalne wybieranie częściowe elementu głównego
+		# opcjonalny skalowany wybór elementu głównego
 		if pivot
-			# wybierz największy element w kolumnie
-			maxval = abs(M[k,k])
+			maxval = abs(M[k,k]) / scales[k]
 			for i in k+1:n
-				if abs(M[i,k]) > maxval
-					maxval = abs(M[i,k])
+				val = abs(M[i,k]) / scales[i]
+				if val > maxval
+					maxval = val
 					p = i
 				end
 			end
 		end
+
 		if p != k
 			# zamiana wierszy
 			M[k,:], M[p,:] = M[p,:], M[k,:]
 			v[k], v[p] = v[p], v[k]
+			scales[k], scales[p] = scales[p], scales[k]
 		end
 
 		if M[k,k] == 0.0
@@ -36,12 +48,12 @@ function gauss_solve(M, b; pivot=false)
 		end
 
 		# eliminacja
-		for i in k+1:n
-			f = M[i,k] / M[k,k]
-			for j in k:n
-				M[i,j] -= f * M[k,j]
-			end
-			v[i] -= f * v[k]
+		for i in k+1:n 
+			f = M[i,k] / M[k,k] 
+			for j in k:n 
+				M[i,j] -= f * M[k,j] 
+			end 
+			v[i] -= f * v[k] 
 		end
 	end
 
@@ -54,32 +66,64 @@ function gauss_solve(M, b; pivot=false)
 		end
 		x[i] = s / M[i,i]
 	end
+
 	return x
+end
+
+# oblicza macierz odwrotną metodą Gaussa-Jordana
+function inverse_gauss(A; pivot=false)
+	n = size(A,1)
+
+	# macierz rozszerzona [A | I]
+	M = zeros(Float64, n, 2n)
+	M[:,1:n] .= A
+	for i in 1:n
+		M[i,n+i] = 1.0
+	end
+
+	# eliminacja Gaussa-Jordana
+	for k in 1:n
+		p = k
+
+		if pivot
+			maxval = abs(M[k,k])
+			for i in k+1:n
+				if abs(M[i,k]) > maxval
+					maxval = abs(M[i,k])
+					p = i
+				end
+			end
+		end
+
+		if p != k
+			M[k,:], M[p,:] = M[p,:], M[k,:]
+		end
+
+		if M[k,k] == 0.0
+			error("Matrix is singular")
+		end
+
+		# normalizacja wiersza
+		M[k,:] ./= M[k,k]
+
+		# eliminacja w górę i w dół
+		for i in 1:n
+			if i != k
+				f = M[i,k]
+				M[i,:] .-= f .* M[k,:]
+			end
+		end
+	end
+
+	return M[:,n+1:2n]
 end
 
 # funkcja pomocnicza obliczająca wynik Y równania YA = B (z opcjonalnym częściowym wyborem elementu głównego), gdzie
 # 	A - macierz gęsta nxn
-# 	B - macierz nxn o niezerowych pierwszym wierszu i ostatniej kolumnie 
+# 	B - macierz nxn o niezerowych pierwszym wierszu i ostatniej kolumnie
 function solve_Y(A, B; pivot=false)
-	n = size(A,1)
-	Y = zeros(Float64, n, n)
-
-	# transpozycja ręczna A
-	At = Array{Float64}(undef, n, n)
-	for i in 1:n, j in 1:n
-		At[i,j] = A[j,i]
-	end
-
-	# rozwiązujemy tylko potrzebne wiersze
-	for i in 1:n
-		bvec = [B[i,j] for j in 1:n] # b^T
-		x = gauss_solve(At, bvec; pivot=pivot) # (A^T) x = b^T
-		for j in 1:n
-			Y[i,j] = x[j]
-		end
-	end
-
-	return Y
+	Ainv = inverse_gauss(A; pivot=pivot)
+	return B * Ainv
 end
 
 # funkcja mnożąca przez siebie 2 macierze kwadratowe nxn, gdzie macierz B jest macierzą diagonalną

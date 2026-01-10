@@ -78,14 +78,14 @@ for (n_from_dir, entry) in folders
 	time_1a = @elapsed begin
 		x_1a = gauss(n, l, diag, sub, sup, b; pivot=false)
 	end
-	norm_1a = norm(x_true - x_1a)
+	norm_1a = norm(x_true - x_1a) / norm(x_true)
 	write_vector(file_1a, x_1a; norm=norm_1a)
 
 	# z wyborem elementu głównego
 	time_1b = @elapsed begin
 		x_1b = gauss(n, l, diag, sub, sup, b; pivot=true)
 	end
-	norm_1b = norm(x_true - x_1b)
+	norm_1b = norm(x_true - x_1b) / norm(x_true)
 	write_vector(file_1b, x_1b; norm=norm_1b)
 
 	# ZADANIE 2+3 - LU
@@ -94,7 +94,7 @@ for (n_from_dir, entry) in folders
 		A, C, Y = LU_decomposition(n, l, diag, sub, sup; pivot=false)
 		x_2a3 = LU_solve(n, l, copy(A), copy(C), copy(Y), b; pivot=false)
 	end
-	norm_2a3 = norm(x_true - x_2a3)
+	norm_2a3 = norm(x_true - x_2a3) / norm(x_true)
 	write_vector(file_2a3, x_2a3; norm=norm_2a3)
 
 	# z wyborem elementu głównego
@@ -102,7 +102,7 @@ for (n_from_dir, entry) in folders
 		A, C, Y = LU_decomposition(n, l, diag, sub, sup; pivot=true)
 		x_2b3 = LU_solve(n, l, copy(A), copy(C), copy(Y), b; pivot=true)
 	end
-	norm_2b3 = norm(x_true - x_2b3)
+	norm_2b3 = norm(x_true - x_2b3) / norm(x_true)
 	write_vector(file_2b3, x_2b3; norm=norm_2b3)
 
 	# zapis norm

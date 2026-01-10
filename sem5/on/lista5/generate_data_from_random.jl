@@ -86,13 +86,13 @@ for n in n_list
 		time_1a = @elapsed begin
 			x_1a = gauss(n_read, l_read, diag, sub, sup, b; pivot=false)
 		end
-		push!(norms_1a, norm(x_true - x_1a))
+		push!(norms_1a, norm(x_true - x_1a) / norm(x_true))
 		push!(times_1a, time_1a)
 
 		time_1b = @elapsed begin
 			x_1b = gauss(n_read, l_read, diag, sub, sup, b; pivot=true)
 		end
-		push!(norms_1b, norm(x_true - x_1b))
+		push!(norms_1b, norm(x_true - x_1b) / norm(x_true))
 		push!(times_1b, time_1b)
 
 		# ZADANIE 2+3 - LU
@@ -100,14 +100,14 @@ for n in n_list
 			A, C, Y = LU_decomposition(n_read, l_read, diag, sub, sup; pivot=false)
 			x_2a3 = LU_solve(n_read, l_read, copy(A), copy(C), copy(Y), b; pivot=false)
 		end
-		push!(norms_2a3, norm(x_true - x_2a3))
+		push!(norms_2a3, norm(x_true - x_2a3) / norm(x_true))
 		push!(times_2a3, time_2a3)
 
 		time_2b3 = @elapsed begin
 			A, C, Y = LU_decomposition(n_read, l_read, diag, sub, sup; pivot=true)
 			x_2b3 = LU_solve(n_read, l_read, copy(A), copy(C), copy(Y), b; pivot=true)
 		end
-		push!(norms_2b3, norm(x_true - x_2b3))
+		push!(norms_2b3, norm(x_true - x_2b3) / norm(x_true))
 		push!(times_2b3, time_2b3)
 	end
 
