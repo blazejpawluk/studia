@@ -9,8 +9,10 @@ function LU_decomposition(n, l, diag, sub, sup; pivot=false)
 	v = div(n,l)
 
 	# tworzenie struktury LU
-	A = copy(diag)
-	C = copy(sup)
+	A = diag
+	C = sup
+	# A = copy(diag)
+	# C = copy(sup)
 	Y = Vector{Matrix{Float64}}()
 
 	for k in 1:v-1

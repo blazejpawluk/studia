@@ -11,9 +11,12 @@ function gauss(n, l, diag, sub, sup, b; pivot=false)
 	v = div(n,l)
 
 	# tworzenie kopii
-	A = deepcopy(diag)
-	B = deepcopy(sub)
-	C = deepcopy(sup)
+	A = diag
+	B = sub
+	C = sup
+	# A = deepcopy(diag)
+	# B = deepcopy(sub)
+	# C = deepcopy(sup)
 	right = [copy(b[(k-1)*l+1 : k*l]) for k in 1:v] # podział wektora na bloki
 
 	# krok 1: eliminacja do postaci górnotrójkątnej

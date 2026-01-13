@@ -75,31 +75,44 @@ for (n_from_dir, entry) in folders
 
 	# ZADANIE 1 - Gauss
 	# bez wyboru elementu głównego
+	diagc = deepcopy(diag)
+	subc = deepcopy(sub)
+	supc = deepcopy(sup)
 	time_1a = @elapsed begin
-		x_1a = gauss(n, l, diag, sub, sup, b; pivot=false)
+		x_1a = gauss(n, l, diagc, subc, supc, b; pivot=false)
+		# x_1a = gauss(n, l, diag, sub, sup, b; pivot=false)
 	end
 	norm_1a = norm(x_true - x_1a) / norm(x_true)
 	write_vector(file_1a, x_1a; norm=norm_1a)
 
 	# z wyborem elementu głównego
+	diagc = deepcopy(diag)
+	subc = deepcopy(sub)
+	supc = deepcopy(sup)
 	time_1b = @elapsed begin
-		x_1b = gauss(n, l, diag, sub, sup, b; pivot=true)
+		x_1b = gauss(n, l, diagc, subc, supc, b; pivot=true)
 	end
 	norm_1b = norm(x_true - x_1b) / norm(x_true)
 	write_vector(file_1b, x_1b; norm=norm_1b)
 
 	# ZADANIE 2+3 - LU
 	# bez wyboru elementu głównego
+	diagc = deepcopy(diag)
+	subc = deepcopy(sub)
+	supc = deepcopy(sup)
 	time_2a3 = @elapsed begin
-		A, C, Y = LU_decomposition(n, l, diag, sub, sup; pivot=false)
+		A, C, Y = LU_decomposition(n, l, diagc, subc, supc; pivot=false)
 		x_2a3 = LU_solve(n, l, copy(A), copy(C), copy(Y), b; pivot=false)
 	end
 	norm_2a3 = norm(x_true - x_2a3) / norm(x_true)
 	write_vector(file_2a3, x_2a3; norm=norm_2a3)
 
 	# z wyborem elementu głównego
+	diagc = deepcopy(diag)
+	subc = deepcopy(sub)
+	supc = deepcopy(sup)
 	time_2b3 = @elapsed begin
-		A, C, Y = LU_decomposition(n, l, diag, sub, sup; pivot=true)
+		A, C, Y = LU_decomposition(n, l, diagc, subc, supc; pivot=true)
 		x_2b3 = LU_solve(n, l, copy(A), copy(C), copy(Y), b; pivot=true)
 	end
 	norm_2b3 = norm(x_true - x_2b3) / norm(x_true)
