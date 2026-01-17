@@ -83,28 +83,40 @@ for n in n_list
 		x_true = ones(Float64, n_read)
 
 		# ZADANIE 1 - Gauss
+		diagc = deepcopy(diag)
+		subc = deepcopy(sub)
+		supc = deepcopy(sup)
 		time_1a = @elapsed begin
-			x_1a = gauss(n_read, l_read, diag, sub, sup, b; pivot=false)
+			x_1a = gauss(n_read, l_read, diagc, subc, supc, b; pivot=false)
 		end
 		push!(norms_1a, norm(x_true - x_1a) / norm(x_true))
 		push!(times_1a, time_1a)
 
+		diagc = deepcopy(diag)
+		subc = deepcopy(sub)
+		supc = deepcopy(sup)
 		time_1b = @elapsed begin
-			x_1b = gauss(n_read, l_read, diag, sub, sup, b; pivot=true)
+			x_1b = gauss(n_read, l_read, diagc, subc, supc, b; pivot=true)
 		end
 		push!(norms_1b, norm(x_true - x_1b) / norm(x_true))
 		push!(times_1b, time_1b)
 
 		# ZADANIE 2+3 - LU
+		diagc = deepcopy(diag)
+		subc = deepcopy(sub)
+		supc = deepcopy(sup)
 		time_2a3 = @elapsed begin
-			A, C, Y = LU_decomposition(n_read, l_read, diag, sub, sup; pivot=false)
+			A, C, Y = LU_decomposition(n_read, l_read, diagc, subc, supc; pivot=false)
 			x_2a3 = LU_solve(n_read, l_read, copy(A), copy(C), copy(Y), b; pivot=false)
 		end
 		push!(norms_2a3, norm(x_true - x_2a3) / norm(x_true))
 		push!(times_2a3, time_2a3)
 
+		diagc = deepcopy(diag)
+		subc = deepcopy(sub)
+		supc = deepcopy(sup)
 		time_2b3 = @elapsed begin
-			A, C, Y = LU_decomposition(n_read, l_read, diag, sub, sup; pivot=true)
+			A, C, Y = LU_decomposition(n_read, l_read, diagc, subc, supc; pivot=true)
 			x_2b3 = LU_solve(n_read, l_read, copy(A), copy(C), copy(Y), b; pivot=true)
 		end
 		push!(norms_2b3, norm(x_true - x_2b3) / norm(x_true))
