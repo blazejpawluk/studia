@@ -4,23 +4,20 @@ CXXFLAGS = -Wall -Wextra -std=c++17 -O3 -march=native -flto
 SRC_DIR = src
 BIN_DIR = bin
 
-TARGET = main
+TARGET = edmonds-karp
 
-SRCS = $(SRC_DIR)/main.cpp \
-       $(SRC_DIR)/Graph.cpp \
-       $(SRC_DIR)/HyperCube.cpp \
-	   $(SRC_DIR)/EdmondsKarp.cpp
-
-OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(BIN_DIR)/%.o)
-HEADERS = $(SRC_DIR)/Graph.hpp
+SRCS = $(wildcard $(SRC_DIR)/*.cpp)
+OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BIN_DIR)/%.o,$(SRCS))
 
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET)
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
 
-$(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp $(HEADERS)
-	@mkdir -p $(BIN_DIR)
+$(TARGET): $(BIN_DIR) $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
+
+$(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:

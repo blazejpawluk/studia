@@ -1,82 +1,12 @@
-// #include "Graph.hpp"
-// #include <algorithm>
-// #include <cstring>
-
-// bool Graph::BFS(int s, int t) {
-// 	fill(parentNode.begin(), parentNode.end(), -1);
-// 	fill(parentEdge.begin(), parentEdge.end(), -1);
-// 	fill(visited.begin(), visited.end(), 0);
-	
-// 	q.clear();
-// 	q.reserve(n);
-// 	int ql = 0;
-	
-// 	q.push_back(s);
-// 	visited[s] = 1;
-	
-// 	while (ql < (int) q.size()) {
-// 		int u = q[ql++];
-		
-// 		const auto &au = adj[u];
-// 		for (int i = 0; i < (int) au.size(); i++) {
-// 			const Edge &e = au[i];
-// 			int v = e.to;
-			
-// 			if (!visited[v] && e.cap > 0) {
-// 				visited[v] = 1;
-// 				parentNode[v] = u;
-// 				parentEdge[v] = i;
-				
-// 				if (v == t) return true;
-// 				q.push_back(v);
-// 			}
-// 		}
-// 	}
-	
-// 	return false;
-// }
-
-// int Graph::EdmondsKarp(int s, int t) {
-// 	augmentingPaths = 0;
-// 	int maxFlow = 0;
-
-// 	constexpr int INF = 1e9;
-// 	while (BFS(s, t)) {
-// 		cout << augmentingPaths << endl;
-// 		int cf = INF;
-
-// 		for (int v = t; v != s; v = parentNode[v]) {
-// 			int u = parentNode[v];
-// 			int ei = parentEdge[v];
-// 			cf = min(cf, adj[u][ei].cap);
-// 		}
-
-// 		for (int v = t; v != s; v = parentNode[v]) {
-// 			int u = parentNode[v];
-// 			int ei = parentEdge[v];
-
-// 			Edge &e = adj[u][ei];
-// 			Edge &rev = adj[e.to][e.rev];
-			
-// 			e.cap -= cf;
-// 			rev.cap += cf;
-// 		}
-
-// 		maxFlow += cf;
-// 		augmentingPaths++;
-// 	}
-
-// 	return maxFlow;
-// }
-
 #include "Graph.hpp"
 #include <queue>
 #include <algorithm>
 
-bool Graph::BFS(const vector<vector<int>>& r, int s, int t, vector<int>& path) {
+bool Graph::BFS(int s, int t, vector<int>& path) {
 	path.clear();
 	parent.assign(n, -1);
 	visited.assign(n, 0);
+
 	q.clear(); q.reserve(n);
 	int ql = 0;
 
@@ -86,9 +16,9 @@ bool Graph::BFS(const vector<vector<int>>& r, int s, int t, vector<int>& path) {
 	while (ql < (int) q.size()) {
 		int u = q[ql++];
 
-		const vector<int> &ru = r[u];
-		for (int v = 0; v < n; v++) {
-			if (!visited[v] && ru[v] > 0) {
+		for (const auto &e : E[u]) {
+			int v = e.to, c = e.capacity, f = e.flow;
+			if (!visited[v] && c-f > 0) {
 				visited[v] = 1;
 				parent[v] = u;
 
@@ -106,41 +36,45 @@ FOUND:
 		cur = parent[cur];
 	}
 
-	reverse(path.begin(), path.end());	
+	reverse(path.begin(), path.end());
+
 	return true;
 }
 
-int Graph::minCF(const vector<int> &p, const vector<vector<int>> &r) {
-	int minCf = r[p[0]][p[1]];
-	for (int i = 1; i+1 < (int) p.size(); i++) {
-		int c = r[p[i]][p[i+1]];
+int Graph::findEdge(int u, int v) {
+	for (int i = 0; i < (int) E[u].size(); i++) {
+		if (E[u][i].to == v) return i;
+	}
+	return -1;
+}
+
+int Graph::minCF(const vector<int> &p) {
+	int minCf = INT_MAX;
+	for (int i = 0; i+1 < (int) p.size(); i++) {
+		int e = findEdge(p[i], p[i+1]);
+		int c = E[p[i]][e].capacity - E[p[i]][e].flow;
 		if (c < minCf) minCf = c;
 	}
 	return minCf;
 }
 
-vector<vector<int>> Graph::EdmondsKarp(int s, int t) {
-	vector<vector<int>> f(n, vector<int>(n, 0));
-	vector<vector<int>> r = E;
+void Graph::EdmondsKarp(int s, int t) {
 	augmentingPaths = 0;
 
 	vector<int> p;
-	while (BFS(r, s, t, p)) {
-		int cf = minCF(p, r);
+	while (BFS(s, t, p)) {
+		int cf = minCF(p);
 
 		for (int i = 0; i+1 < (int) p.size(); i++) {
 			int u = p[i];
 			int v = p[i+1];
 
-			f[u][v] += cf;
-			f[v][u] -= cf;
-
-			r[u][v] -= cf;
-			r[v][u] += cf;
+			int eF = findEdge(u, v);
+			int eB = findEdge(v, u);
+			E[u][eF].flow += cf;
+			E[v][eB].flow -= cf;
 		}
 
 		augmentingPaths++;
 	}
-
-	return f;
 }

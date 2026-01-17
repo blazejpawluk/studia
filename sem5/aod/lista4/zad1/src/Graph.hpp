@@ -1,53 +1,3 @@
-// #ifndef GRAPH
-// #define GRAPH
-
-// #include <iostream>
-// #include <vector>
-// using namespace std;
-
-// class Graph {
-// public:
-// 	struct Edge {
-// 		int to;
-// 		int rev;
-// 		int cap;
-// 		int orig;
-// 	};
-
-// 	int n;
-// 	vector<vector<Edge>> adj;
-
-// 	Graph();
-// 	Graph(int N);
-
-// 	void setN(int N);
-// 	void addEdge(int u, int v, int c);
-
-// 	int EdmondsKarp(int s, int t);
-// 	int getAugmentingPaths() const;
-
-// 	void print();
-// 	void printFlow() const;
-
-// private:
-// 	vector<int> parentNode;
-// 	vector<int> parentEdge;
-// 	vector<unsigned char> visited;
-// 	vector<int> q;
-
-// 	int augmentingPaths = 0;
-
-// 	bool BFS(int s, int t);
-// };
-
-// class HyperCube : public Graph {
-// public:
-// 	int k;
-// 	HyperCube(int k);
-// };
-
-// #endif
-
 #ifndef GRAPH
 #define GRAPH
 
@@ -59,22 +9,28 @@ using namespace std;
 class Graph {
 public:
 	int n;
-	vector<vector<int>> E;
+	
+	struct Edge {
+		int to;
+		int capacity;
+		int flow;
+		Edge(int t, int c, int f) : to(t), capacity(c), flow(f) {}
+	};
+	vector<vector<Edge>> E;
 
 	Graph();
 	Graph(int N);
-	Graph(int N, vector<vector<int>> edges);
 
 	void setN(int N);
 	void addEdge(int i, int j, int c);
 
-	int flowVal (const vector<vector<int>> &f, int s);
+	int flowVal (int s);
 	int getAugmentingPaths() const;
 	
-	vector<vector<int>> EdmondsKarp(int s, int t);
+	void EdmondsKarp(int s, int t);
 
 	void print();
-	void printFlow(const vector<vector<int>> &f);
+	void printFlow();
 
 private:
 	vector<int> parent;
@@ -83,9 +39,9 @@ private:
 
 	int augmentingPaths = 0;
 
-	bool BFS(const vector<vector<int>> &r, int s, int t, vector<int> &path);
-
-	int minCF(const vector<int> &p, const vector<vector<int>> &r);
+	bool BFS(int s, int t, vector<int> &path);
+	int minCF(const vector<int> &p);
+	int findEdge(int u, int v);
 };
 
 class HyperCube : public Graph {
