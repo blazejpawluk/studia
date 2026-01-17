@@ -1,6 +1,7 @@
 *.out
 *.exe
 *.json
+*.o
 
 venv
 
@@ -15,3 +16,5 @@ do oddania
 
 input
 output
+
+bin
