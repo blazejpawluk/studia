@@ -51,7 +51,7 @@ public:
 	int k;
 
 	HyperCube(int k);
-	void generateCode(const string &filename);
+	void generateCode(const string &filename, bool pF);
 };
 
 class BiPartite : public Graph {
@@ -59,7 +59,7 @@ public:
 	int k, i;
 	
 	BiPartite(int k, int i);
-	void generateCode(const string &filename);
+	void generateCode(const string &filename, bool pM);
 };
 
 #endif

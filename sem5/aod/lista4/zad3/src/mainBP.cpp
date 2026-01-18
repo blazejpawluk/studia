@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
 	}
 	if (glkp) {
 		cout << "--------------------------\n";
-		bp.generateCode(filename);
+		bp.generateCode(filename, pM);
 	}
 	cout << "======= OUTPUT P2 =======\n";
 	cerr << " execution time: " << elapsed << endl;

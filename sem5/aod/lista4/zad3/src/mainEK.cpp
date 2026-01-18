@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 	}
 	if (glkp) {
 		cout << "--------------------------\n";
-		hc.generateCode(filename);
+		hc.generateCode(filename, pF);
 	}
 	cout << "======= OUTPUT P2 =======\n";
 	cerr << " execution time: " << elapsed << endl;
