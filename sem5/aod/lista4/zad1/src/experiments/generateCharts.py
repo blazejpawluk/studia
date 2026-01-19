@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 DATA_PATH = os.path.join("../output", "raw-data.txt")
 
-cols = ["k", "time_s", "a"]
+cols = ["k", "time_s", "a", "flow"]
 
 df = pd.read_csv(DATA_PATH, sep=r"\s+", names=cols, header=None)
 
@@ -30,6 +30,17 @@ plt.tight_layout()
 plt.savefig(os.path.join("../output", "avg_paths_vs_k.png"))
 plt.close()
 
+plt.figure()
+plt.plot(summary["k"], summary["flow"], marker="o")
+plt.title("Średni przepływ (k)")
+plt.xlabel("k")
+plt.ylabel("średni przepływ")
+plt.grid(True)
+plt.tight_layout()
+plt.savefig(os.path.join("../output", "avg_flow_vs_k.png"))
+plt.close()
+
 print("Wykresy zapisane w katalogu output:")
 print("- avg_time_vs_k.png")
 print("- avg_paths_vs_k.png")
+print("- avg_flow_vs_k.png")

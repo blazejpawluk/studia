@@ -8,16 +8,16 @@ using namespace chrono;
 int main(int argc, char *argv[]) {
 	// number of arguments
 	if (argc < 5) {
-		cerr << "ERROR: wrong number of arguments. Usage: ./main --size k --degree i [--printFlow] [--glkp filename].\n";
+		cerr << "ERROR: wrong number of arguments. Usage: ./main --size k --degree i [--printFlow] [--glpk filename].\n";
 		return 1;
 	} else if (argc > 8) {
-		cerr << "ERROR: wrong number of arguments. Usage: ./main --size k --degree i [--printFlow] [--glkp filename].\n";
+		cerr << "ERROR: wrong number of arguments. Usage: ./main --size k --degree i [--printFlow] [--glpk filename].\n";
 		return 2;
 	}
 
 	// check "--size" flag
 	if (string(argv[1]) != "--size") {
-		cerr << "ERROR: unknown flag : '" << argv[1] << "'. Usage: ./main --size k --degree i [--printFlow] [--glkp filename].\n";
+		cerr << "ERROR: unknown flag : '" << argv[1] << "'. Usage: ./main --size k --degree i [--printFlow] [--glpk filename].\n";
 		return 3;
 	}
 
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 
 	// check "--degree" flag
 	if (string(argv[3]) != "--degree") {
-		cerr << "ERROR: unknown flag : '" << argv[1] << "'. Usage: ./main --size k --degree i [--printFlow] [--glkp filename].\n";
+		cerr << "ERROR: unknown flag : '" << argv[1] << "'. Usage: ./main --size k --degree i [--printFlow] [--glpk filename].\n";
 		return 6;
 	}
 
@@ -55,45 +55,45 @@ int main(int argc, char *argv[]) {
 		return 8;
 	}
 
-	// read "--printMatching" and "--glkp" flag
-	bool pM, glkp;
+	// read "--printMatching" and "--glpk" flag
+	bool pM, glpk;
 	string filename;
-	if (argc == 5) {pM = false; glkp = false;}
+	if (argc == 5) {pM = false; glpk = false;}
 	else if (string(argv[5]) == "--printMatching") {
 		if (argc == 6) {
 			pM =  true;
-			glkp = false;
-		} else if (argc == 7 && string(argv[6]) == "--glkp") {
-			cerr << "ERROR: no argument for '--glkp' flag: '" << "'. Usage: ./main --size k [--printMatching] [--glkp filename].\n";
+			glpk = false;
+		} else if (argc == 7 && string(argv[6]) == "--glpk") {
+			cerr << "ERROR: no argument for '--glpk' flag: '" << "'. Usage: ./main --size k [--printMatching] [--glpk filename].\n";
 			return 9;
-		} else if (string(argv[6]) == "--glkp") {
+		} else if (string(argv[6]) == "--glpk") {
 			pM = true;
-			glkp = true;
+			glpk = true;
 			filename = string(argv[7]);
 		} else {
-			cerr << "ERROR: unknown flag: '" << argv[6] << "'. Usage: ./main --size k [--printMatching] [--glkp filename].\n";
+			cerr << "ERROR: unknown flag: '" << argv[6] << "'. Usage: ./main --size k [--printMatching] [--glpk filename].\n";
 			return 10;
 		}
 	}
-	else if (string(argv[5]) == "--glkp") {
+	else if (string(argv[5]) == "--glpk") {
 		if (argc == 6) {
-			cerr << "ERROR: no argument for '--glkp' flag: '" << "'. Usage: ./main --size k [--printMatching] [--glkp filename].\n";
+			cerr << "ERROR: no argument for '--glpk' flag: '" << "'. Usage: ./main --size k [--printMatching] [--glpk filename].\n";
 			return 11;
 		} if (argc == 7) {
 			pM = false;
-			glkp = true;
+			glpk = true;
 			filename = string(argv[6]);
 		} else if (string(argv[7]) == "--printMatching") {
 			pM =  true;
-			glkp = true;
+			glpk = true;
 			filename = string(argv[6]);
 		} else {
-			cerr << "ERROR: unknown flag: '" << argv[6] << "'. Usage: ./main --size k [--printMatching] [--glkp filename].\n";
+			cerr << "ERROR: unknown flag: '" << argv[6] << "'. Usage: ./main --size k [--printMatching] [--glpk filename].\n";
 			return 12;
 		}
 	}
 	else {
-		cerr << "ERROR: unknown flag: '" << argv[5] << "'. Usage: ./main --size k [--printMatching] [--glkp filename].\n";
+		cerr << "ERROR: unknown flag: '" << argv[5] << "'. Usage: ./main --size k [--printMatching] [--glpk filename].\n";
 		return 13;
 	}
 
@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
 		cout << "--------------------------\n";
 		bp.printMatching();
 	}
-	if (glkp) {
+	if (glpk) {
 		cout << "--------------------------\n";
 		bp.generateCode(filename, pM);
 	}

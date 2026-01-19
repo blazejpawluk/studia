@@ -41,8 +41,9 @@ int main() {
 			auto elapsed = duration_cast<milliseconds>(t1-t0).count();
 
 			int au = hc.getAugmentingPaths();
+			int flow = hc.flowVal(0);
 
-			out << k << " " << fixed << setprecision(6) << elapsed << " " << au << "\n";
+			out << k << " " << fixed << setprecision(6) << elapsed << " " << au << " " << flow << "\n";
 		}
 	}
 

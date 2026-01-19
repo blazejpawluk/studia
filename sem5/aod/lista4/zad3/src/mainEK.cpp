@@ -8,16 +8,16 @@ using namespace chrono;
 int main(int argc, char *argv[]) {
 	// number of arguments
 	if (argc < 3) {
-		cerr << "ERROR: wrong number of arguments. Usage: ./main --size k [--printFlow] [--glkp filename].\n";
+		cerr << "ERROR: wrong number of arguments. Usage: ./main --size k [--printFlow] [--glpk filename].\n";
 		return 1;
 	} else if (argc > 6) {
-		cerr << "ERROR: wrong number of arguments. Usage: ./main --size k [--printFlow] [--glkp filename].\n";
+		cerr << "ERROR: wrong number of arguments. Usage: ./main --size k [--printFlow] [--glpk filename].\n";
 		return 2;
 	}
 
 	// check "--size" flag
 	if (string(argv[1]) != "--size") {
-		cerr << "ERROR: unknown flag : '" << argv[1] << "'. Usage: ./main --size k [--printFlow] [--glkp filename].\n";
+		cerr << "ERROR: unknown flag : '" << argv[1] << "'. Usage: ./main --size k [--printFlow] [--glpk filename].\n";
 		return 3;
 	}
 
@@ -35,45 +35,45 @@ int main(int argc, char *argv[]) {
 		return 5;
 	}
 
-	// read "--printFlow" and "--glkp" flag
-	bool pF, glkp;
+	// read "--printFlow" and "--glpk" flag
+	bool pF, glpk;
 	string filename;
-	if (argc == 3) {pF = false; glkp = false;}
+	if (argc == 3) {pF = false; glpk = false;}
 	else if (string(argv[3]) == "--printFlow") {
 		if (argc == 4) {
 			pF =  true;
-			glkp = false;
-		} else if (argc == 5 && string(argv[4]) == "--glkp") {
-			cerr << "ERROR: no argument for '--glkp' flag: '" << "'. Usage: ./main --size k [--printFlow] [--glkp filename].\n";
+			glpk = false;
+		} else if (argc == 5 && string(argv[4]) == "--glpk") {
+			cerr << "ERROR: no argument for '--glpk' flag: '" << "'. Usage: ./main --size k [--printFlow] [--glpk filename].\n";
 			return 6;
-		} else if (string(argv[4]) == "--glkp") {
+		} else if (string(argv[4]) == "--glpk") {
 			pF = true;
-			glkp = true;
+			glpk = true;
 			filename = string(argv[5]);
 		} else {
-			cerr << "ERROR: unknown flag: '" << argv[4] << "'. Usage: ./main --size k [--printFlow] [--glkp filename].\n";
+			cerr << "ERROR: unknown flag: '" << argv[4] << "'. Usage: ./main --size k [--printFlow] [--glpk filename].\n";
 			return 7;
 		}
 	}
-	else if (string(argv[3]) == "--glkp") {
+	else if (string(argv[3]) == "--glpk") {
 		if (argc == 4) {
-			cerr << "ERROR: no argument for '--glkp' flag: '" << "'. Usage: ./main --size k [--printFlow] [--glkp filename].\n";
+			cerr << "ERROR: no argument for '--glpk' flag: '" << "'. Usage: ./main --size k [--printFlow] [--glpk filename].\n";
 			return 8;
 		} if (argc == 5) {
 			pF = false;
-			glkp = true;
+			glpk = true;
 			filename = string(argv[4]);
 		} else if (string(argv[5]) == "--printFlow") {
 			pF =  true;
-			glkp = true;
+			glpk = true;
 			filename = string(argv[4]);
 		} else {
-			cerr << "ERROR: unknown flag: '" << argv[5] << "'. Usage: ./main --size k [--printFlow] [--glkp filename].\n";
+			cerr << "ERROR: unknown flag: '" << argv[5] << "'. Usage: ./main --size k [--printFlow] [--glpk filename].\n";
 			return 9;
 		}
 	}
 	else {
-		cerr << "ERROR: unknown flag: '" << argv[3] << "'. Usage: ./main --size k [--printFlow] [--glkp filename].\n";
+		cerr << "ERROR: unknown flag: '" << argv[3] << "'. Usage: ./main --size k [--printFlow] [--glpk filename].\n";
 		return 10;
 	}
 
@@ -82,8 +82,8 @@ int main(int argc, char *argv[]) {
 	cout << "Performing algorithm for:\n";
 	cout << "          k: " << k << endl;
 	cout << "  printFlow: " << (pF ? "yes" : "no") << endl;
-	cout << "       glkp: " << (glkp ? "yes" : "no") << endl;
-	if (glkp) cout << "   filename: " << filename << endl;
+	cout << "       glpk: " << (glpk ? "yes" : "no") << endl;
+	if (glpk) cout << "   filename: " << filename << endl;
 	cout << "=========================\n";
 	
 	auto t0 = high_resolution_clock::now();
@@ -110,7 +110,7 @@ int main(int argc, char *argv[]) {
 		cout << "--------------------------\n";
 		hc.printFlow();
 	}
-	if (glkp) {
+	if (glpk) {
 		cout << "--------------------------\n";
 		hc.generateCode(filename, pF);
 	}

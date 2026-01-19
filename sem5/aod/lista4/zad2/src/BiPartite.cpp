@@ -13,10 +13,7 @@ BiPartite::BiPartite(int k, int i) {
 
 	for (int v = 1; v <= b; v++) {
 		addEdge(0, v, 1);
-		addEdge(v, 0, 0);
-
 		addEdge(b+v, n-1, 1);
-		addEdge(n-1, b+v, 0);
 
 		for (int j = 0; j < i; j++) {
 			int u = b + dis(gen);
