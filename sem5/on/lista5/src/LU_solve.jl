@@ -21,9 +21,9 @@ function LU_solve(n, l, A, C, Y, b; pivot=pivot)
 
 	# krok 2: Ux = y
 	x = Vector{Vector{Float64}}(undef, v)
-	x[v] = gauss_solve(A[v], y[v]) # A[v]*x[v] = y[v]
+	x[v] = small_lu_solve(A[v], y[v]; pivot=pivot) # A[v]*x[v] = y[v]
 	for k in v-1:-1:1
-		x[k] = gauss_solve(A[k], y[k] - mul_matrix_vector(C[k], x[k+1]); pivot=pivot) # A[k]*x[k] = y[k] - C[k]*x[k+1]
+		x[k] = small_lu_solve(A[k], y[k] - mul_matrix_vector(C[k], x[k+1]); pivot=pivot) # A[k]*x[k] = y[k] - C[k]*x[k+1]
 	end
 
 	# złożenie wyniku do jednego wektora

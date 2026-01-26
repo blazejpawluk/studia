@@ -9,8 +9,7 @@ function gauss_solve(M, b; pivot=false)
 	n = length(b)
 
 	# tworzenie kopii
-	M = copy(M)
-	v = copy(b)
+	v = b
 
 	# skalowanie wierszy (do skalowanego pivotingu)
 	scales = ones(Float64, n)
@@ -65,6 +64,54 @@ function gauss_solve(M, b; pivot=false)
 			s -= M[i,j] * x[j]
 		end
 		x[i] = s / M[i,i]
+	end
+
+	return x
+end
+
+function small_lu(A; pivoting=false)
+	n = size(A, 1)
+	U = A
+	L = Matrix{Float64}(I, n, n)
+	P = collect(1:n)
+
+	for k in 1:n-1
+		if pivoting
+			pivot = argmax(abs.(U[k:end, k])) + k - 1
+			if pivot != k
+				U[[k, pivot], :] = U[[pivot, k], :]
+				L[[k, pivot], 1:k-1] = L[[pivot, k], 1:k-1]
+				P[[k, pivot]] = P[[pivot, k]]
+			end
+		end
+
+		for i in k+1:n
+			L[i, k] = U[i, k] / U[k, k]
+			U[i, k:end] .-= L[i, k] * U[k, k:end]
+		end
+	end
+
+	return L, U, P
+end
+
+function small_lu_solve(A, b; pivot=false)
+	L, U, P = small_lu(A; pivoting=pivot)
+	println(L)
+	println(U)
+	b_perm = b[P]
+
+	n = length(b)
+	y = zeros(n)
+	x = zeros(n)
+
+	# podstawianie w przód: Ly = Pb
+	for i in 1:n
+		y[i] = b_perm[i] - sum(L[i, 1:i-1] .* y[1:i-1])
+	end
+
+	# podstawianie wstecz: Ux = y
+	for i in n:-1:1
+		x[i] = (y[i] - sum(U[i, i+1:end] .* x[i+1:end])) / U[i, i]
 	end
 
 	return x

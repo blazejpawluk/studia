@@ -44,8 +44,11 @@ x = undef
 if method == "G"
 	x = gauss(n, l, diag, sub, sup, b; pivot=pivot)
 elseif method == "LU"
-	A, C, Y = LU_decomposition(n, l, diag, sub, sup; pivot=false)
-	x = LU_solve(n, l, A, C, Y, b)
+	diagc = deepcopy(diag)
+	subc = deepcopy(sub)
+	supc = deepcopy(sup)
+	A, C, Y = LU_decomposition(n, l, diagc, subc, supc; pivot=pivot)
+	x = LU_solve(n, l, A, C, Y, b; pivot=pivot)
 else
 	println("Nieznana metoda.")
 	exit()
