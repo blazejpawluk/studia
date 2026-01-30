@@ -57,5 +57,5 @@ end
 if b_from_file
 	write_vector(out_file, x)
 else
-	write_vector(out_file, x; norm=norm(x - ones(Float64, n)))
+	write_vector(out_file, x; norm=norm(x - ones(Float64, n))/norm(ones(Float64, n)))
 end
