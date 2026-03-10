@@ -16,6 +16,7 @@ public:
 	void print();
 
 	vector<int> randomPath();
+	pair<double, vector<pair<pair<double,double>, pair<double,double>>>> minimalSpanningTree();
 private:
 	void loadFromFile(const string &filename);
 };
