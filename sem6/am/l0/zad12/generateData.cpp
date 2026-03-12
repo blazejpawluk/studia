@@ -35,7 +35,7 @@ int main() {
 			for (int i = 0; i < cd.n - 1; i++) {
 				double dx = abs(cd.P[path[i]].first - cd.P[path[i+1]].first);
 				double dy = abs(cd.P[path[i]].second - cd.P[path[i+1]].second);
-				double d = sqrt(dx + dy);
+				double d = sqrt(dx*dx + dy*dy);
 				sum += round(d);
 			}
 			double dx = abs(cd.P[path[cd.n-1]].first - cd.P[path[0]].first);
