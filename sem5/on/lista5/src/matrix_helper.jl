@@ -96,8 +96,8 @@ end
 
 function small_lu_solve(A, b; pivot=false)
 	L, U, P = small_lu(A; pivoting=pivot)
-	println(L)
-	println(U)
+	println(L) 
+	println(U) 
 	b_perm = b[P]
 
 	n = length(b)
