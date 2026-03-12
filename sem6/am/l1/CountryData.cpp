@@ -4,6 +4,7 @@
 #include <iostream>
 #include <random>
 #include <algorithm>
+#include <functional>
 
 CountryData::CountryData(const string &filename) {
 	loadFromFile(filename);
@@ -111,4 +112,43 @@ pair<double, vector<pair<pair<double,double>, pair<double,double>>>> CountryData
 		}
 	}
 	return {total, edges};
+}
+
+pair<double, vector<pair<double,double>>> CountryData::tspFromMSTCoordinates() {
+    auto mst = minimalSpanningTree();
+    vector<vector<int>> adj(n);
+    for (auto &e : mst.second) {
+        int u = -1, v = -1;
+        for (int i = 0; i < n; i++) {
+            if (P[i] == e.first) u = i;
+            if (P[i] == e.second) v = i;
+        }
+        if (u != -1 && v != -1) {
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+    }
+
+    vector<int> pathIndices;
+    vector<char> visited(n, false);
+    function<void(int)> dfs = [&](int u) {
+        visited[u] = true;
+        pathIndices.push_back(u);
+        for (int v : adj[u]) if (!visited[v]) dfs(v);
+    };
+    dfs(0);
+
+    double total = 0.0;
+    vector<pair<double,double>> pathCoords;
+    for (int i = 0; i < n; i++) {
+        int u = pathIndices[i];
+        int v = pathIndices[(i+1)%n];
+        double dx = P[u].first - P[v].first;
+        double dy = P[u].second - P[v].second;
+        total += sqrt(dx*dx + dy*dy);
+        pathCoords.push_back(P[u]);
+    }
+    pathCoords.push_back(P[pathIndices[0]]);
+
+    return {total, pathCoords};
 }

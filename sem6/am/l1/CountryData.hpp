@@ -17,6 +17,7 @@ public:
 
 	vector<int> randomPath();
 	pair<double, vector<pair<pair<double,double>, pair<double,double>>>> minimalSpanningTree();
+	pair<double, vector<pair<double,double>>> tspFromMSTCoordinates();
 private:
 	void loadFromFile(const string &filename);
 };
