@@ -79,33 +79,41 @@ vector<int> CountryData::randomPath() {
 // algorytm prima
 pair<double, vector<pair<pair<double,double>, pair<double,double>>>> CountryData::minimalSpanningTree() {
 	if (n <= 0) return {0.0, {}};
+
 	vector<double> minDist(n, numeric_limits<double>::infinity());
 	vector<int> parent(n, -1);
 	vector<char> used(n, false);
 	minDist[0] = 0.0;
+
 	for (int i = 0; i < n; i++) {
 		int v = -1;
 		for (int j = 0; j < n; j++) {
 			if (!used[j] && (v == -1 || minDist[j] < minDist[v])) v = j;
 		}
+
 		if (v == -1) break;
 		used[v] = true;
+		
 		for (int to = 0; to < n; to++) {
 			if (used[to]) continue;
+
 			double dx = P[v].first - P[to].first;
 			double dy = P[v].second - P[to].second;
 			double d = sqrt(dx*dx + dy*dy);
+
 			if (d < minDist[to]) {
 				minDist[to] = d;
 				parent[to] = v;
 			}
 		}
 	}
+
 	double total = 0.0;
 	vector<pair<pair<double,double>, pair<double,double>>> edges;
 	for (int i = 1; i < n; i++) {
 		if (parent[i] != -1) {
 			edges.emplace_back(P[parent[i]], P[i]);
+
 			double dx = P[parent[i]].first - P[i].first;
 			double dy = P[parent[i]].second - P[i].second;
 			total += sqrt(dx*dx + dy*dy);
@@ -117,12 +125,15 @@ pair<double, vector<pair<pair<double,double>, pair<double,double>>>> CountryData
 pair<double, vector<pair<double,double>>> CountryData::tspFromMSTCoordinates() {
     auto mst = minimalSpanningTree();
     vector<vector<int>> adj(n);
+
     for (auto &e : mst.second) {
         int u = -1, v = -1;
+
         for (int i = 0; i < n; i++) {
             if (P[i] == e.first) u = i;
             if (P[i] == e.second) v = i;
         }
+
         if (u != -1 && v != -1) {
             adj[u].push_back(v);
             adj[v].push_back(u);
@@ -131,6 +142,7 @@ pair<double, vector<pair<double,double>>> CountryData::tspFromMSTCoordinates() {
 
     vector<int> pathIndices;
     vector<char> visited(n, false);
+	
     function<void(int)> dfs = [&](int u) {
         visited[u] = true;
         pathIndices.push_back(u);

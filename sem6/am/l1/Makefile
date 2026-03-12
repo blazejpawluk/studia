@@ -1,4 +1,4 @@
-.PHONY: zad12, zad3, zad4
+.PHONY: zad12 zad3 zad4 clean
 
 zad12:
 	g++ -o zad12/gen CountryData.cpp zad12/generateData.cpp
