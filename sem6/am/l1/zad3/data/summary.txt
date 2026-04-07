@@ -1,0 +1,40 @@
+wi29.tsp
+ >  mst cost: 21750.6
+ >  avg path: 28173.2
+ > avg steps: 10.3333
+
+dj38.tsp
+ >  mst cost: 5830.86
+ >  avg path: 6926.86
+ > avg steps: 8.71429
+
+qa194.tsp
+ >  mst cost: 8028.01
+ >  avg path: 9912.43
+ > avg steps: 51.3571
+
+uy734.tsp
+ >  mst cost: 69876.5
+ >  avg path: 84422.1
+ > avg steps: 166.464
+
+zi929.tsp
+ >  mst cost: 82872.6
+ >  avg path: 101955
+ > avg steps: 218.774
+
+mu1979.tsp
+ >  mst cost: 74099.9
+ >  avg path: 93405.7
+ > avg steps: 408.444
+
+ca4663.tsp
+ >  mst cost: 1.11856e+06
+ >  avg path: 1.38793e+06
+ > avg steps: 982.217
+
+tz6117.tsp
+ >  mst cost: 348001
+ >  avg path: 430944
+ > avg steps: 1296.91
+

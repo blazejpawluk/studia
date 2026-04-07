@@ -1,0 +1,24 @@
+wi29.tsp
+ >  avg path: 42582.3
+ > avg steps: 39.4828
+
+dj38.tsp
+ >  avg path: 11605.3
+ > avg steps: 48.1579
+
+qa194.tsp
+ >  avg path: 16947.2
+ > avg steps: 363.778
+
+uy734.tsp
+ >  avg path: 174026
+ > avg steps: 1590.26
+
+zi929.tsp
+ >  avg path: 155496
+ > avg steps: 2425.57
+
+mu1979.tsp
+ >  avg path: 182995
+ > avg steps: 5093.83
+
