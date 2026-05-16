@@ -1,0 +1,27 @@
+=== Simulated Annealing - wyniki ===
+Parametry: T=2000  alpha=0.99  epochLen=n  stopEpochs=150
+
+wi29.tsp
+best: 27603
+avg:  27901.4
+
+dj38.tsp
+best: 6656
+avg:  6785.53
+
+qa194.tsp
+best: 9735
+avg:  10209.6
+
+uy734.tsp
+best: 86569
+avg:  89475.3
+
+zi929.tsp
+best: 103640
+avg:  107683
+
+mu1979.tsp
+best: 95163
+avg:  98133.2
+

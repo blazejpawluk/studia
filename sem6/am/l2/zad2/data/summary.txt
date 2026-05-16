@@ -1,0 +1,18 @@
+=== Tabu Search - wyniki ===
+Parametry bazowe: tabuLen=50  maxIter=2000
+
+wi29.tsp
+tabuLen=50  maxIter=2000
+best: 27603
+avg:  27625.5
+
+dj38.tsp
+tabuLen=50  maxIter=2000
+best: 6656
+avg:  6742
+
+qa194.tsp
+tabuLen=50  maxIter=2000
+best: 9585
+avg:  10048
+

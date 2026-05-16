@@ -1,0 +1,31 @@
+=== Tabu Search - testowanie parametrow ===
+Liczba prob na konfiguracje: 5
+
+Plik: wi29.tsp (n=29)
+tabuLen	maxIter	avg	best
+10	500	28006.2	27603
+10	2000	28119.4	27603
+50	500	27632.4	27603
+50	2000	27603	27603
+100	500	27632.4	27603
+100	2000	27603	27603
+
+Plik: dj38.tsp (n=38)
+tabuLen	maxIter	avg	best
+10	500	6880.8	6656
+10	2000	6703	6656
+50	500	6739.8	6656
+50	2000	6656	6656
+100	500	6656	6656
+100	2000	6656	6656
+
+Plik: qa194.tsp (n=194)
+tabuLen	maxIter	avg	best
+10	500	9955.8	9821
+10	2000	10033.4	9878
+50	500	10059.8	9707
+50	2000	10072.4	9923
+100	500	10163.4	9873
+100	2000	9937.6	9779
+
+Najlepsze parametry: tabuLen=50  maxIter=2000
