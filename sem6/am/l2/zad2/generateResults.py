@@ -1,10 +1,10 @@
 import os
 import matplotlib.pyplot as plt
 
-os.makedirs("zad1/results", exist_ok=True)
+os.makedirs("zad2/results", exist_ok=True)
 
-data_dir = "zad1/data"
-out_dir = "zad1/results"
+data_dir = "zad2/data"
+out_dir = "zad2/results"
 
 for fname in os.listdir(data_dir):
     if not fname.lower().endswith(".txt"):
