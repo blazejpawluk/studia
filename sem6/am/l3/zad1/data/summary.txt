@@ -1,0 +1,18 @@
+wi29.tsp
+avg path: 27603
+avg path2: 27603
+dj38.tsp
+avg path: 6656
+avg path2: 6656
+qa194.tsp
+avg path: 9544.1
+avg path2: 9557
+uy734.tsp
+avg path: 145942
+avg path2: 145806
+zi929.tsp
+avg path: 194125
+avg path2: 194574
+mu1979.tsp
+avg path: 1.13303e+06
+avg path2: 1.13111e+06
